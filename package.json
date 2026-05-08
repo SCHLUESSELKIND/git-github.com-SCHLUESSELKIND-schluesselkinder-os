@@ -12,6 +12,7 @@
     "dev:web": "pnpm --filter @schluesselkinder/web dev",
     "dev:api": "pnpm --filter @schluesselkinder/api dev",
     "build": "pnpm -r --filter './apps/**' --filter './services/**' --filter './packages/**' --if-present build",
+    "test": "pnpm -r --filter './apps/**' --filter './services/**' --filter './packages/**' --if-present test",
     "typecheck": "pnpm -r --filter './apps/**' --filter './services/**' --filter './packages/**' --if-present typecheck"
   }
 }

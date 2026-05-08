@@ -1,27 +1,26 @@
 import Fastify from "fastify";
 import { pathToFileURL } from "node:url";
+import { loadApiEnv } from "./config/env.js";
+import { registerHealthRoutes } from "./routes/health.js";
 
 export function buildServer() {
+  const env = loadApiEnv();
   const server = Fastify({
     logger: {
-      level: process.env.LOG_LEVEL ?? "info"
+      level: env.logLevel
     }
   });
 
-  server.get("/health", async () => ({
-    service: "api",
-    status: "ok"
-  }));
+  void server.register(registerHealthRoutes);
 
   return server;
 }
 
 async function start() {
+  const env = loadApiEnv();
   const server = buildServer();
-  const port = Number(process.env.PORT ?? 3001);
-  const host = process.env.HOST ?? "0.0.0.0";
 
-  await server.listen({ host, port });
+  await server.listen({ host: env.host, port: env.port });
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
