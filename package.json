@@ -1,0 +1,17 @@
+{
+  "name": "schluesselkinder-os",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=24.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @schluesselkinder/web --filter @schluesselkinder/api dev",
+    "dev:web": "pnpm --filter @schluesselkinder/web dev",
+    "dev:api": "pnpm --filter @schluesselkinder/api dev",
+    "build": "pnpm -r --filter './apps/**' --filter './services/**' --filter './packages/**' --if-present build",
+    "typecheck": "pnpm -r --filter './apps/**' --filter './services/**' --filter './packages/**' --if-present typecheck"
+  }
+}
