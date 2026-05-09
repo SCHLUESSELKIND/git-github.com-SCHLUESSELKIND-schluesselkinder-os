@@ -1,28 +1,46 @@
 import { prisma } from "@schluesselkinder/db";
 import type {
+  Asset,
+  AssetTag,
+  ArtistCampaignWorld,
   Artist,
   AudiencePersona,
   BrandRule,
+  CampaignWorld,
+  CampaignWorldAsset,
+  CampaignWorldMoodReference,
+  CampaignWorldVisualEnvironment,
+  ChannelFragment,
   ChannelRule,
   ForbiddenEnergy,
   Fragment,
   LanguageRule,
   MusicRelease,
+  MusicReleaseCampaignWorld,
+  MoodReference,
   ObjectRelease,
+  ReleaseFragment,
   SignalScoringRule,
   Track,
+  TrackMoodReference,
   VisualRule,
+  VisualEnvironment,
   VoiceProfile
 } from "@schluesselkinder/db";
 
 export type ArtistRecord = Artist;
+export type AssetRecord = Asset;
+export type AssetTagRecord = AssetTag;
 export type AudiencePersonaRecord = AudiencePersona;
 export type BrandRuleRecord = BrandRule;
+export type CampaignWorldRecord = CampaignWorld;
 export type ChannelRuleRecord = ChannelRule;
 export type ForbiddenEnergyRecord = ForbiddenEnergy;
 export type LanguageRuleRecord = LanguageRule;
+export type MoodReferenceRecord = MoodReference;
 export type SignalScoringRuleRecord = SignalScoringRule;
 export type VisualRuleRecord = VisualRule;
+export type VisualEnvironmentRecord = VisualEnvironment;
 export type VoiceProfileRecord = VoiceProfile;
 
 export type ObjectReleaseRecord = ObjectRelease & {
@@ -35,6 +53,65 @@ export type MusicReleaseRecord = MusicRelease & {
 };
 
 export type FragmentRecord = Fragment;
+
+type ArtistCompatibilityRecord = ArtistCampaignWorld & {
+  artist: Pick<Artist, "id" | "name" | "slug">;
+  campaignWorld: CampaignWorld;
+};
+
+type MusicReleaseCompatibilityRecord = MusicReleaseCampaignWorld & {
+  musicRelease: Pick<MusicRelease, "id" | "releaseCode" | "title">;
+  campaignWorld: CampaignWorld;
+};
+
+type TrackMoodCompatibilityRecord = TrackMoodReference & {
+  track: Pick<Track, "id" | "title">;
+  moodReference: MoodReference;
+};
+
+type CampaignWorldVisualCompatibilityRecord = CampaignWorldVisualEnvironment & {
+  campaignWorld: CampaignWorld;
+  visualEnvironment: VisualEnvironment;
+};
+
+type CampaignWorldMoodCompatibilityRecord = CampaignWorldMoodReference & {
+  campaignWorld: CampaignWorld;
+  moodReference: MoodReference;
+};
+
+type CampaignWorldAssetCompatibilityRecord = CampaignWorldAsset & {
+  asset: Asset;
+  campaignWorld: CampaignWorld;
+};
+
+export type CompatibilityRecord =
+  | { kind: "ARTIST_CAMPAIGN_WORLD"; record: ArtistCompatibilityRecord }
+  | { kind: "MUSIC_RELEASE_CAMPAIGN_WORLD"; record: MusicReleaseCompatibilityRecord }
+  | { kind: "TRACK_MOOD_REFERENCE"; record: TrackMoodCompatibilityRecord }
+  | { kind: "CAMPAIGN_WORLD_VISUAL_ENVIRONMENT"; record: CampaignWorldVisualCompatibilityRecord }
+  | { kind: "CAMPAIGN_WORLD_MOOD_REFERENCE"; record: CampaignWorldMoodCompatibilityRecord }
+  | { kind: "CAMPAIGN_WORLD_ASSET"; record: CampaignWorldAssetCompatibilityRecord };
+
+export type ReleaseFragmentRecord = ReleaseFragment & {
+  fragment: Pick<Fragment, "content" | "id" | "language" | "type">;
+  musicRelease: Pick<MusicRelease, "id" | "releaseCode" | "title"> | null;
+  track: Pick<Track, "id" | "title"> | null;
+};
+
+export type ChannelFragmentRecord = ChannelFragment & {
+  campaignWorld: Pick<CampaignWorld, "code" | "id" | "name"> | null;
+  fragment: Pick<Fragment, "content" | "id" | "language" | "type">;
+  moodReference: Pick<MoodReference, "code" | "id" | "name"> | null;
+};
+
+export type ContentGraphMusicReleaseRecord = Readonly<{
+  campaignWorlds: CompatibilityRecord[];
+  release: MusicRelease & {
+    artist: Pick<Artist, "name" | "slug">;
+  };
+  releaseFragments: ReleaseFragmentRecord[];
+  trackMoodReferences: CompatibilityRecord[];
+}>;
 
 export type ApiRepositories = Readonly<{
   artists: {
@@ -60,6 +137,17 @@ export type ApiRepositories = Readonly<{
     listScoringRules(): Promise<SignalScoringRuleRecord[]>;
     listVisualRules(): Promise<VisualRuleRecord[]>;
     listVoiceProfiles(): Promise<VoiceProfileRecord[]>;
+  };
+  contentGraph: {
+    findMusicReleaseGraph(releaseCode: string): Promise<ContentGraphMusicReleaseRecord | null>;
+    listAssets(): Promise<AssetRecord[]>;
+    listAssetTags(): Promise<AssetTagRecord[]>;
+    listCampaignWorlds(): Promise<CampaignWorldRecord[]>;
+    listChannelFragments(): Promise<ChannelFragmentRecord[]>;
+    listCompatibility(): Promise<CompatibilityRecord[]>;
+    listMoodReferences(): Promise<MoodReferenceRecord[]>;
+    listReleaseFragments(): Promise<ReleaseFragmentRecord[]>;
+    listVisualEnvironments(): Promise<VisualEnvironmentRecord[]>;
   };
 }>;
 
@@ -165,6 +253,263 @@ export function createPrismaRepositories(): ApiRepositories {
           orderBy: { code: "asc" },
           where: { active: true }
         })
+    },
+    contentGraph: {
+      findMusicReleaseGraph: async (releaseCode) => {
+        const release = await prisma.musicRelease.findUnique({
+          include: {
+            artist: {
+              select: {
+                name: true,
+                slug: true
+              }
+            }
+          },
+          where: { releaseCode }
+        });
+
+        if (!release) {
+          return null;
+        }
+
+        const [campaignWorlds, releaseFragments, tracks] = await Promise.all([
+          prisma.musicReleaseCampaignWorld.findMany({
+            include: {
+              campaignWorld: true,
+              musicRelease: {
+                select: {
+                  id: true,
+                  releaseCode: true,
+                  title: true
+                }
+              }
+            },
+            orderBy: [{ weight: "desc" }],
+            where: { musicReleaseId: release.id }
+          }),
+          prisma.releaseFragment.findMany({
+            include: releaseFragmentIncludes,
+            orderBy: [{ weight: "desc" }],
+            where: {
+              OR: [
+                { musicReleaseId: release.id },
+                {
+                  track: {
+                    releaseId: release.id
+                  }
+                }
+              ],
+              active: true
+            }
+          }),
+          prisma.track.findMany({
+            select: { id: true },
+            where: { releaseId: release.id }
+          })
+        ]);
+
+        const trackMoodReferences = await prisma.trackMoodReference.findMany({
+          include: {
+            moodReference: true,
+            track: {
+              select: {
+                id: true,
+                title: true
+              }
+            }
+          },
+          orderBy: [{ weight: "desc" }],
+          where: {
+            trackId: {
+              in: tracks.map((track) => track.id)
+            }
+          }
+        });
+
+        return {
+          campaignWorlds: campaignWorlds.map((record) => ({
+            kind: "MUSIC_RELEASE_CAMPAIGN_WORLD",
+            record
+          })),
+          release,
+          releaseFragments,
+          trackMoodReferences: trackMoodReferences.map((record) => ({
+            kind: "TRACK_MOOD_REFERENCE",
+            record
+          }))
+        };
+      },
+      listAssets: () =>
+        prisma.asset.findMany({
+          orderBy: [{ weight: "desc" }, { code: "asc" }],
+          where: { active: true }
+        }),
+      listAssetTags: () =>
+        prisma.assetTag.findMany({
+          orderBy: { code: "asc" },
+          where: { active: true }
+        }),
+      listCampaignWorlds: () =>
+        prisma.campaignWorld.findMany({
+          orderBy: [{ weight: "desc" }, { code: "asc" }],
+          where: { active: true }
+        }),
+      listChannelFragments: () =>
+        prisma.channelFragment.findMany({
+          include: channelFragmentIncludes,
+          orderBy: [{ weight: "desc" }],
+          where: { active: true }
+        }),
+      listCompatibility: async () => {
+        const [
+          artistCampaignWorlds,
+          musicReleaseCampaignWorlds,
+          trackMoodReferences,
+          campaignWorldVisualEnvironments,
+          campaignWorldMoodReferences,
+          campaignWorldAssets
+        ] = await Promise.all([
+          prisma.artistCampaignWorld.findMany({
+            include: {
+              artist: {
+                select: {
+                  id: true,
+                  name: true,
+                  slug: true
+                }
+              },
+              campaignWorld: true
+            },
+            orderBy: [{ weight: "desc" }]
+          }),
+          prisma.musicReleaseCampaignWorld.findMany({
+            include: {
+              campaignWorld: true,
+              musicRelease: {
+                select: {
+                  id: true,
+                  releaseCode: true,
+                  title: true
+                }
+              }
+            },
+            orderBy: [{ weight: "desc" }]
+          }),
+          prisma.trackMoodReference.findMany({
+            include: {
+              moodReference: true,
+              track: {
+                select: {
+                  id: true,
+                  title: true
+                }
+              }
+            },
+            orderBy: [{ weight: "desc" }]
+          }),
+          prisma.campaignWorldVisualEnvironment.findMany({
+            include: {
+              campaignWorld: true,
+              visualEnvironment: true
+            },
+            orderBy: [{ weight: "desc" }]
+          }),
+          prisma.campaignWorldMoodReference.findMany({
+            include: {
+              campaignWorld: true,
+              moodReference: true
+            },
+            orderBy: [{ weight: "desc" }]
+          }),
+          prisma.campaignWorldAsset.findMany({
+            include: {
+              asset: true,
+              campaignWorld: true
+            },
+            orderBy: [{ weight: "desc" }]
+          })
+        ]);
+
+        return [
+          ...artistCampaignWorlds.map((record) => ({ kind: "ARTIST_CAMPAIGN_WORLD" as const, record })),
+          ...musicReleaseCampaignWorlds.map((record) => ({ kind: "MUSIC_RELEASE_CAMPAIGN_WORLD" as const, record })),
+          ...trackMoodReferences.map((record) => ({ kind: "TRACK_MOOD_REFERENCE" as const, record })),
+          ...campaignWorldVisualEnvironments.map((record) => ({
+            kind: "CAMPAIGN_WORLD_VISUAL_ENVIRONMENT" as const,
+            record
+          })),
+          ...campaignWorldMoodReferences.map((record) => ({
+            kind: "CAMPAIGN_WORLD_MOOD_REFERENCE" as const,
+            record
+          })),
+          ...campaignWorldAssets.map((record) => ({ kind: "CAMPAIGN_WORLD_ASSET" as const, record }))
+        ];
+      },
+      listMoodReferences: () =>
+        prisma.moodReference.findMany({
+          orderBy: [{ weight: "desc" }, { code: "asc" }],
+          where: { active: true }
+        }),
+      listReleaseFragments: () =>
+        prisma.releaseFragment.findMany({
+          include: releaseFragmentIncludes,
+          orderBy: [{ weight: "desc" }],
+          where: { active: true }
+        }),
+      listVisualEnvironments: () =>
+        prisma.visualEnvironment.findMany({
+          orderBy: [{ weight: "desc" }, { code: "asc" }],
+          where: { active: true }
+        })
     }
   };
 }
+
+const releaseFragmentIncludes = {
+  fragment: {
+    select: {
+      content: true,
+      id: true,
+      language: true,
+      type: true
+    }
+  },
+  musicRelease: {
+    select: {
+      id: true,
+      releaseCode: true,
+      title: true
+    }
+  },
+  track: {
+    select: {
+      id: true,
+      title: true
+    }
+  }
+} as const;
+
+const channelFragmentIncludes = {
+  campaignWorld: {
+    select: {
+      code: true,
+      id: true,
+      name: true
+    }
+  },
+  fragment: {
+    select: {
+      content: true,
+      id: true,
+      language: true,
+      type: true
+    }
+  },
+  moodReference: {
+    select: {
+      code: true,
+      id: true,
+      name: true
+    }
+  }
+} as const;

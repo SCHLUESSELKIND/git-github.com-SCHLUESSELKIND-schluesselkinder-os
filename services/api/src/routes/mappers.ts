@@ -1,15 +1,23 @@
 import type {
+  AssetRecord,
+  AssetTagRecord,
   AudiencePersonaRecord,
   ArtistRecord,
   BrandRuleRecord,
+  CampaignWorldRecord,
   ChannelRuleRecord,
+  ChannelFragmentRecord,
+  CompatibilityRecord,
   ForbiddenEnergyRecord,
   FragmentRecord,
   LanguageRuleRecord,
   MusicReleaseRecord,
+  MoodReferenceRecord,
   ObjectReleaseRecord,
+  ReleaseFragmentRecord,
   SignalScoringRuleRecord,
   VisualRuleRecord,
+  VisualEnvironmentRecord,
   VoiceProfileRecord
 } from "../repositories.js";
 
@@ -164,5 +172,187 @@ export function mapSignalScoringRule(rule: SignalScoringRuleRecord) {
     maxScore: rule.maxScore,
     title: rule.title,
     weight: rule.weight
+  };
+}
+
+export function mapCampaignWorld(world: CampaignWorldRecord) {
+  return {
+    active: world.active,
+    code: world.code,
+    createdAt: world.createdAt.toISOString(),
+    description: world.description,
+    id: world.id,
+    name: world.name,
+    weight: world.weight
+  };
+}
+
+export function mapVisualEnvironment(environment: VisualEnvironmentRecord) {
+  return {
+    active: environment.active,
+    code: environment.code,
+    createdAt: environment.createdAt.toISOString(),
+    description: environment.description,
+    id: environment.id,
+    name: environment.name,
+    weight: environment.weight
+  };
+}
+
+export function mapMoodReference(mood: MoodReferenceRecord) {
+  return {
+    active: mood.active,
+    code: mood.code,
+    createdAt: mood.createdAt.toISOString(),
+    description: mood.description,
+    id: mood.id,
+    name: mood.name,
+    weight: mood.weight
+  };
+}
+
+export function mapAsset(asset: AssetRecord) {
+  return {
+    active: asset.active,
+    code: asset.code,
+    createdAt: asset.createdAt.toISOString(),
+    description: asset.description,
+    id: asset.id,
+    referenceKey: asset.referenceKey,
+    sourceType: asset.sourceType,
+    title: asset.title,
+    type: asset.type,
+    weight: asset.weight
+  };
+}
+
+export function mapAssetTag(tag: AssetTagRecord) {
+  return {
+    active: tag.active,
+    code: tag.code,
+    createdAt: tag.createdAt.toISOString(),
+    id: tag.id,
+    label: tag.label
+  };
+}
+
+export function mapCompatibility(compatibility: CompatibilityRecord) {
+  const base = {
+    kind: compatibility.kind,
+    reason: compatibility.record.reason,
+    verdict: compatibility.record.verdict,
+    weight: compatibility.record.weight
+  };
+
+  switch (compatibility.kind) {
+    case "ARTIST_CAMPAIGN_WORLD":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.artist.slug,
+          id: compatibility.record.artist.id,
+          label: compatibility.record.artist.name
+        },
+        target: {
+          code: compatibility.record.campaignWorld.code,
+          id: compatibility.record.campaignWorld.id,
+          label: compatibility.record.campaignWorld.name
+        }
+      };
+    case "MUSIC_RELEASE_CAMPAIGN_WORLD":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.musicRelease.releaseCode,
+          id: compatibility.record.musicRelease.id,
+          label: compatibility.record.musicRelease.title
+        },
+        target: {
+          code: compatibility.record.campaignWorld.code,
+          id: compatibility.record.campaignWorld.id,
+          label: compatibility.record.campaignWorld.name
+        }
+      };
+    case "TRACK_MOOD_REFERENCE":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.track.title,
+          id: compatibility.record.track.id,
+          label: compatibility.record.track.title
+        },
+        target: {
+          code: compatibility.record.moodReference.code,
+          id: compatibility.record.moodReference.id,
+          label: compatibility.record.moodReference.name
+        }
+      };
+    case "CAMPAIGN_WORLD_VISUAL_ENVIRONMENT":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.campaignWorld.code,
+          id: compatibility.record.campaignWorld.id,
+          label: compatibility.record.campaignWorld.name
+        },
+        target: {
+          code: compatibility.record.visualEnvironment.code,
+          id: compatibility.record.visualEnvironment.id,
+          label: compatibility.record.visualEnvironment.name
+        }
+      };
+    case "CAMPAIGN_WORLD_MOOD_REFERENCE":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.campaignWorld.code,
+          id: compatibility.record.campaignWorld.id,
+          label: compatibility.record.campaignWorld.name
+        },
+        target: {
+          code: compatibility.record.moodReference.code,
+          id: compatibility.record.moodReference.id,
+          label: compatibility.record.moodReference.name
+        }
+      };
+    case "CAMPAIGN_WORLD_ASSET":
+      return {
+        ...base,
+        source: {
+          code: compatibility.record.campaignWorld.code,
+          id: compatibility.record.campaignWorld.id,
+          label: compatibility.record.campaignWorld.name
+        },
+        target: {
+          code: compatibility.record.asset.code,
+          id: compatibility.record.asset.id,
+          label: compatibility.record.asset.title
+        }
+      };
+  }
+}
+
+export function mapReleaseFragment(releaseFragment: ReleaseFragmentRecord) {
+  return {
+    active: releaseFragment.active,
+    fragment: releaseFragment.fragment,
+    id: releaseFragment.id,
+    musicRelease: releaseFragment.musicRelease,
+    placement: releaseFragment.placement,
+    track: releaseFragment.track,
+    weight: releaseFragment.weight
+  };
+}
+
+export function mapChannelFragment(channelFragment: ChannelFragmentRecord) {
+  return {
+    active: channelFragment.active,
+    campaignWorld: channelFragment.campaignWorld,
+    channel: channelFragment.channel,
+    fragment: channelFragment.fragment,
+    id: channelFragment.id,
+    moodReference: channelFragment.moodReference,
+    placement: channelFragment.placement,
+    weight: channelFragment.weight
   };
 }

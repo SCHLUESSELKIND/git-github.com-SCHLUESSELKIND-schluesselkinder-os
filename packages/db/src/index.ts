@@ -1,7 +1,11 @@
 export { prisma } from "./client.js";
 export {
+  AssetSourceType,
+  AssetType,
   ArtistStatus,
   Channel,
+  CompatibilityVerdict,
+  FragmentPlacement,
   FragmentType,
   Prisma,
   PrismaClient,
@@ -10,18 +14,32 @@ export {
   RuleSeverity
 } from "@prisma/client";
 export type {
+  Asset,
+  AssetTag,
+  AssetTagAssignment,
   Artist,
+  ArtistCampaignWorld,
   AudiencePersona,
   BrandRule,
+  CampaignWorld,
+  CampaignWorldAsset,
+  CampaignWorldMoodReference,
+  CampaignWorldVisualEnvironment,
+  ChannelFragment,
   ChannelRule,
   ForbiddenEnergy,
   Fragment,
   LanguageRule,
   MusicRelease,
+  MusicReleaseCampaignWorld,
+  MoodReference,
   ObjectRelease,
+  ReleaseFragment,
   SignalScoringRule,
   Track,
+  TrackMoodReference,
   VisualRule,
+  VisualEnvironment,
   VoiceProfile
 } from "@prisma/client";
 

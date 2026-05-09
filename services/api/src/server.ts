@@ -4,6 +4,7 @@ import { loadApiEnv } from "./config/env.js";
 import { createPrismaRepositories, type ApiRepositories } from "./repositories.js";
 import { registerArtistRoutes } from "./routes/artists.js";
 import { registerBrandIntelligenceRoutes } from "./routes/brand-intelligence.js";
+import { registerContentGraphRoutes } from "./routes/content-graph.js";
 import { registerFragmentRoutes } from "./routes/fragments.js";
 import { registerHealthRoutes } from "./routes/health.js";
 import { registerMusicRoutes } from "./routes/music.js";
@@ -48,6 +49,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerMusicRoutes(instance, repositories));
   void server.register(async (instance) => registerFragmentRoutes(instance, repositories));
   void server.register(async (instance) => registerBrandIntelligenceRoutes(instance, repositories));
+  void server.register(async (instance) => registerContentGraphRoutes(instance, repositories));
 
   return server;
 }

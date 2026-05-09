@@ -95,6 +95,47 @@ Read-only API routes:
 
 Sprint 5 does not implement scoring execution, AI generation, automation, integrations, or admin UI.
 
+## Sprint 6 Content Graph
+
+Sprint 6 adds the semantic layer before campaign generation.
+
+Content Graph models:
+
+- `CampaignWorld`
+- `VisualEnvironment`
+- `MoodReference`
+- `Asset`
+- `AssetTag`
+- `ReleaseFragment`
+- `ChannelFragment`
+
+Compatibility uses four verdicts:
+
+- `REQUIRED`
+- `ALLOWED`
+- `DISCOURAGED`
+- `FORBIDDEN`
+
+The graph stores relationships between artists, releases, tracks, worlds, environments, mood references, symbolic assets, fragments, and channel fragments. It does not generate, approve, schedule, publish, upload, or process files.
+
+Assets remain symbolic references through `referenceKey`. Sprint 6 does not introduce uploads, CDN logic, storage providers, dimensions, image processing, or file metadata systems.
+
+Read-only API routes:
+
+- `/content-graph`
+- `/content-graph/campaign-worlds`
+- `/content-graph/campaign-worlds/:code`
+- `/content-graph/visual-environments`
+- `/content-graph/mood-references`
+- `/content-graph/assets`
+- `/content-graph/asset-tags`
+- `/content-graph/release-fragments`
+- `/content-graph/channel-fragments`
+- `/content-graph/compatibility`
+- `/content-graph/music/:releaseCode`
+
+Sprint 6 is the data structure future moodboard generation, approval checks, channel adaptation, and brand-fit scoring will read from.
+
 ## Security Direction
 
 - No secrets in Git.

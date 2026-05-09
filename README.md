@@ -66,6 +66,17 @@ The API exposes read-only archive endpoints when `services/api` is running:
 - `/brand-intelligence/voice-profiles`
 - `/brand-intelligence/channel-rules`
 - `/brand-intelligence/scoring-rules`
+- `/content-graph`
+- `/content-graph/campaign-worlds`
+- `/content-graph/campaign-worlds/:code`
+- `/content-graph/visual-environments`
+- `/content-graph/mood-references`
+- `/content-graph/assets`
+- `/content-graph/asset-tags`
+- `/content-graph/release-fragments`
+- `/content-graph/channel-fragments`
+- `/content-graph/compatibility`
+- `/content-graph/music/:releaseCode`
 
 Start local Postgres:
 
@@ -176,6 +187,7 @@ Implemented:
 - Prisma PostgreSQL schema, migration, client export, and seed setup
 - Read-only API routes for artists, objects, music, and fragments
 - Read-only Brand Intelligence routes and seed data
+- Read-only Content Graph routes for semantic asset orchestration
 - Zod response contracts for archive endpoints
 - Placeholder packages for UI and brand data
 - Architecture documentation
@@ -192,7 +204,9 @@ Not implemented yet:
 
 ## Next Sprint
 
-Recommended next sprint: connect selected public pages to the read-only API or add admin authentication planning. Stripe, Printful, checkout, carts, inventory, and fulfillment remain separate future sprints.
+Recommended next sprint: plan the approval layer around content graph relationships, rule violations, and human review. Stripe, Printful, checkout, carts, inventory, auth, admin UI, and fulfillment remain separate future sprints.
+
+Sprint 6 Content Graph deliberately does not include uploads, CDN logic, AI generation, prompts, approval queues, posting, scheduling, automation, or admin UI.
 
 ## Prisma Version
 

@@ -1,6 +1,10 @@
 import {
+  AssetSourceType,
+  AssetType,
   ArtistStatus,
   Channel,
+  CompatibilityVerdict,
+  FragmentPlacement,
   FragmentType,
   PrismaClient,
   ReleaseStatus,
@@ -519,6 +523,559 @@ async function seedSignalScoringRules() {
   }
 }
 
+async function seedCampaignWorlds() {
+  const worlds = [
+    {
+      code: "ROOM_AFTER_LIGHT",
+      description: "Primary campaign world for chair, concrete, low light, and after-room pressure.",
+      name: "Room after light",
+      weight: 100
+    },
+    {
+      code: "COLD_ARCHIVE",
+      description: "Object and release archive world built from restraint, metadata, and closed-system language.",
+      name: "Cold archive",
+      weight: 90
+    },
+    {
+      code: "CONCRETE_SIGNAL",
+      description: "Infrastructure world for hard surfaces, institutional marks, and signal-first composition.",
+      name: "Concrete signal",
+      weight: 80
+    },
+    {
+      code: "POST_CLUB_SILENCE",
+      description: "Music world for empty-room timing, late pressure, and minimal afterhours fragments.",
+      name: "Post-club silence",
+      weight: 70
+    }
+  ] as const;
+
+  for (const world of worlds) {
+    await prisma.campaignWorld.upsert({
+      where: { code: world.code },
+      update: world,
+      create: world
+    });
+  }
+}
+
+async function seedVisualEnvironments() {
+  const environments = [
+    {
+      code: "DUNGEON_CHAIR_PRIMARY",
+      description: "Primary recurring campaign environment. Concrete room, chair, rope, low light.",
+      name: "Dungeon chair primary",
+      weight: 100
+    },
+    {
+      code: "BLACK_FABRIC_VOID",
+      description: "Black material field for object archive restraint. No horror prop usage.",
+      name: "Black fabric void",
+      weight: 70
+    },
+    {
+      code: "CONCRETE_WALL_LOW_LIGHT",
+      description: "Concrete texture and low-light surface environment for institutional signal work.",
+      name: "Concrete wall low light",
+      weight: 85
+    },
+    {
+      code: "ARCHIVE_OBJECT_TABLE",
+      description: "Controlled object-study environment for future archive references.",
+      name: "Archive object table",
+      weight: 60
+    }
+  ] as const;
+
+  for (const environment of environments) {
+    await prisma.visualEnvironment.upsert({
+      where: { code: environment.code },
+      update: environment,
+      create: environment
+    });
+  }
+}
+
+async function seedMoodReferences() {
+  const moods = [
+    {
+      code: "TENSION_LOW_LIGHT",
+      description: "Low-light pressure with restrained contrast and no theatrical horror.",
+      name: "Tension low light",
+      weight: 90
+    },
+    {
+      code: "INSTITUTIONAL_COLDNESS",
+      description: "Cold system tone, technical distance, and label-level restraint.",
+      name: "Institutional coldness",
+      weight: 100
+    },
+    {
+      code: "EMPTY_ROOM_PRESSURE",
+      description: "After-room pressure, silence, and spatial absence.",
+      name: "Empty room pressure",
+      weight: 95
+    },
+    {
+      code: "BLACKOUT_SILENCE",
+      description: "Reduced signal state, blackout field, and minimal channel energy.",
+      name: "Blackout silence",
+      weight: 75
+    },
+    {
+      code: "POST_CLUB_MELANCHOLY",
+      description: "Controlled late-hour melancholy without soft nostalgia.",
+      name: "Post-club melancholy",
+      weight: 80
+    }
+  ] as const;
+
+  for (const mood of moods) {
+    await prisma.moodReference.upsert({
+      where: { code: mood.code },
+      update: mood,
+      create: mood
+    });
+  }
+}
+
+async function seedAssets() {
+  const assets = [
+    {
+      code: "CHAIR_CAMPAIGN_ENVIRONMENT",
+      description: "Dungeon/chair campaign environment used as primary visual world.",
+      referenceKey: "brand/chair-campaign-environment",
+      sourceType: AssetSourceType.LOCAL_REFERENCE,
+      title: "Chair campaign environment",
+      type: AssetType.IMAGE,
+      weight: 100
+    },
+    {
+      code: "RUNE_KEY_SYMBOL",
+      description: "Institutional rune/key mark. System language, not decoration.",
+      referenceKey: "brand/rune-key-symbol",
+      sourceType: AssetSourceType.SYMBOLIC_REFERENCE,
+      title: "Rune/key symbol",
+      type: AssetType.SYMBOL,
+      weight: 100
+    },
+    {
+      code: "ROPEFACE_ARTIST_STAMP",
+      description: "SHIBARI KAWAII secondary artist stamp. Not masterbrand hero identity.",
+      referenceKey: "brand/ropeface-artist-stamp",
+      sourceType: AssetSourceType.SYMBOLIC_REFERENCE,
+      title: "Ropeface artist stamp",
+      type: AssetType.SYMBOL,
+      weight: 60
+    },
+    {
+      code: "SHIBARI_KAWAII_WORDMARK",
+      description: "Artist wordmark reference for dossier contexts only.",
+      referenceKey: "brand/shibari-kawaii-wordmark",
+      sourceType: AssetSourceType.SYMBOLIC_REFERENCE,
+      title: "SHIBARI KAWAII wordmark",
+      type: AssetType.SYMBOL,
+      weight: 40
+    },
+    {
+      code: "EIN_POSTER_TEXTURE",
+      description: "Supporting poster texture. Influence only, not primary system.",
+      referenceKey: "brand/ein-poster-texture",
+      sourceType: AssetSourceType.LOCAL_REFERENCE,
+      title: "EIN poster texture",
+      type: AssetType.IMAGE,
+      weight: 30
+    }
+  ] as const;
+
+  for (const asset of assets) {
+    await prisma.asset.upsert({
+      where: { code: asset.code },
+      update: asset,
+      create: asset
+    });
+  }
+}
+
+async function seedAssetTags() {
+  const tags = [
+    ["RUNE_KEY", "Rune/key"],
+    ["CHAIR", "Chair"],
+    ["CONCRETE", "Concrete"],
+    ["LOW_LIGHT", "Low light"],
+    ["BLACK_MATERIAL", "Black material"],
+    ["ARTIST_STAMP", "Artist stamp"],
+    ["ARCHIVE_SIGNAL", "Archive signal"]
+  ] as const;
+
+  for (const [code, label] of tags) {
+    await prisma.assetTag.upsert({
+      where: { code },
+      update: { label },
+      create: { code, label }
+    });
+  }
+}
+
+async function seedAssetTagAssignments() {
+  const assignments = [
+    ["CHAIR_CAMPAIGN_ENVIRONMENT", "CHAIR", 100],
+    ["CHAIR_CAMPAIGN_ENVIRONMENT", "CONCRETE", 90],
+    ["CHAIR_CAMPAIGN_ENVIRONMENT", "LOW_LIGHT", 90],
+    ["RUNE_KEY_SYMBOL", "RUNE_KEY", 100],
+    ["RUNE_KEY_SYMBOL", "ARCHIVE_SIGNAL", 90],
+    ["ROPEFACE_ARTIST_STAMP", "ARTIST_STAMP", 70],
+    ["SHIBARI_KAWAII_WORDMARK", "ARTIST_STAMP", 50],
+    ["EIN_POSTER_TEXTURE", "ARCHIVE_SIGNAL", 30],
+    ["EIN_POSTER_TEXTURE", "BLACK_MATERIAL", 20]
+  ] as const;
+
+  for (const [assetCode, tagCode, weight] of assignments) {
+    const asset = await prisma.asset.findUniqueOrThrow({ where: { code: assetCode } });
+    const tag = await prisma.assetTag.findUniqueOrThrow({ where: { code: tagCode } });
+
+    await prisma.assetTagAssignment.upsert({
+      where: {
+        assetId_tagId: {
+          assetId: asset.id,
+          tagId: tag.id
+        }
+      },
+      update: { weight },
+      create: {
+        assetId: asset.id,
+        tagId: tag.id,
+        weight
+      }
+    });
+  }
+}
+
+async function seedCompatibilityGraph(artistId: string) {
+  const campaignWorldIds = await getIdMap("campaignWorld");
+  const visualEnvironmentIds = await getIdMap("visualEnvironment");
+  const moodReferenceIds = await getIdMap("moodReference");
+  const assetIds = await getIdMap("asset");
+
+  await upsertArtistCampaignWorld(
+    artistId,
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    CompatibilityVerdict.REQUIRED,
+    "SHIBARI KAWAII is anchored in the primary chair campaign world.",
+    100
+  );
+  await upsertArtistCampaignWorld(
+    artistId,
+    campaignWorldIds.COLD_ARCHIVE,
+    CompatibilityVerdict.ALLOWED,
+    "Artist dossier can inherit archive restraint.",
+    70
+  );
+
+  const releases = await prisma.musicRelease.findMany({
+    include: { tracks: true },
+    where: {
+      releaseCode: {
+        in: ["SKM-001", "SKM-002", "SKM-003"]
+      }
+    }
+  });
+
+  for (const release of releases) {
+    const releaseWorld =
+      release.releaseCode === "SKM-002" ? "CONCRETE_SIGNAL" : release.releaseCode === "SKM-001" ? "POST_CLUB_SILENCE" : "ROOM_AFTER_LIGHT";
+
+    await upsertMusicReleaseCampaignWorld(
+      release.id,
+      campaignWorldIds[releaseWorld],
+      release.releaseCode === "SKM-003" ? CompatibilityVerdict.REQUIRED : CompatibilityVerdict.ALLOWED,
+      `${release.releaseCode} belongs to ${releaseWorld}.`,
+      release.releaseCode === "SKM-003" ? 100 : 80
+    );
+
+    for (const track of release.tracks) {
+      const moodCode =
+        release.releaseCode === "SKM-001"
+          ? "POST_CLUB_MELANCHOLY"
+          : release.releaseCode === "SKM-002"
+            ? "EMPTY_ROOM_PRESSURE"
+            : "TENSION_LOW_LIGHT";
+
+      await upsertTrackMoodReference(
+        track.id,
+        moodReferenceIds[moodCode],
+        CompatibilityVerdict.REQUIRED,
+        `${track.title} uses ${moodCode} as its core mood reference.`,
+        100
+      );
+    }
+  }
+
+  await upsertCampaignWorldVisualEnvironment(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    visualEnvironmentIds.DUNGEON_CHAIR_PRIMARY,
+    CompatibilityVerdict.REQUIRED,
+    "The chair image is the primary recurring campaign environment.",
+    100
+  );
+  await upsertCampaignWorldVisualEnvironment(
+    campaignWorldIds.CONCRETE_SIGNAL,
+    visualEnvironmentIds.CONCRETE_WALL_LOW_LIGHT,
+    CompatibilityVerdict.REQUIRED,
+    "Concrete signal requires concrete, low-light environment logic.",
+    90
+  );
+  await upsertCampaignWorldVisualEnvironment(
+    campaignWorldIds.COLD_ARCHIVE,
+    visualEnvironmentIds.ARCHIVE_OBJECT_TABLE,
+    CompatibilityVerdict.ALLOWED,
+    "The object archive may use controlled artifact-study framing.",
+    70
+  );
+  await upsertCampaignWorldVisualEnvironment(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    visualEnvironmentIds.BLACK_FABRIC_VOID,
+    CompatibilityVerdict.DISCOURAGED,
+    "Black fabric can flatten the chair-led world if it becomes generic dark merch staging.",
+    20
+  );
+
+  await upsertCampaignWorldMoodReference(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    moodReferenceIds.EMPTY_ROOM_PRESSURE,
+    CompatibilityVerdict.REQUIRED,
+    "Room-after-light must preserve empty-room pressure.",
+    100
+  );
+  await upsertCampaignWorldMoodReference(
+    campaignWorldIds.COLD_ARCHIVE,
+    moodReferenceIds.INSTITUTIONAL_COLDNESS,
+    CompatibilityVerdict.REQUIRED,
+    "The archive requires institutional coldness.",
+    100
+  );
+  await upsertCampaignWorldMoodReference(
+    campaignWorldIds.POST_CLUB_SILENCE,
+    moodReferenceIds.POST_CLUB_MELANCHOLY,
+    CompatibilityVerdict.ALLOWED,
+    "Post-club silence may carry controlled melancholy.",
+    80
+  );
+
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    assetIds.CHAIR_CAMPAIGN_ENVIRONMENT,
+    CompatibilityVerdict.REQUIRED,
+    "Chair environment is required for the primary campaign world.",
+    100
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    assetIds.RUNE_KEY_SYMBOL,
+    CompatibilityVerdict.REQUIRED,
+    "Rune/key remains the institutional punctuation mark.",
+    95
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.ROOM_AFTER_LIGHT,
+    assetIds.ROPEFACE_ARTIST_STAMP,
+    CompatibilityVerdict.DISCOURAGED,
+    "Ropeface must stay secondary and archival, not hero-dominant.",
+    30
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.COLD_ARCHIVE,
+    assetIds.RUNE_KEY_SYMBOL,
+    CompatibilityVerdict.REQUIRED,
+    "The archive is rune/key-led.",
+    100
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.COLD_ARCHIVE,
+    assetIds.ROPEFACE_ARTIST_STAMP,
+    CompatibilityVerdict.FORBIDDEN,
+    "Ropeface cannot replace the rune/key as institutional archive language.",
+    100
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.CONCRETE_SIGNAL,
+    assetIds.SHIBARI_KAWAII_WORDMARK,
+    CompatibilityVerdict.FORBIDDEN,
+    "Artist wordmarks cannot lead institutional concrete signal contexts.",
+    95
+  );
+  await upsertCampaignWorldAsset(
+    campaignWorldIds.COLD_ARCHIVE,
+    assetIds.EIN_POSTER_TEXTURE,
+    CompatibilityVerdict.DISCOURAGED,
+    "Poster texture is influence only and should not become collage energy.",
+    20
+  );
+}
+
+async function seedReleaseFragments() {
+  const releaseFragmentData = [
+    ["SKM-001", null, "NACHT BLEIBT MATERIAL.", FragmentPlacement.RELEASE_NOTE, 90],
+    ["SKM-002", null, "DER RAUM IST LEER. DER TON BLEIBT.", FragmentPlacement.RELEASE_NOTE, 90],
+    ["SKM-003", null, "No soft biography.", FragmentPlacement.METADATA, 80],
+    [null, "PICK ME UP", "Afterhours is a method.", FragmentPlacement.METADATA, 70],
+    [null, "TUESDAY MORNING COMEDOWN", "DER RAUM IST LEER. DER TON BLEIBT.", FragmentPlacement.METADATA, 90],
+    [null, "ROPEMASTER", "No soft biography.", FragmentPlacement.METADATA, 80]
+  ] as const;
+
+  await prisma.releaseFragment.deleteMany({});
+
+  for (const [releaseCode, trackTitle, fragmentContent, placement, weight] of releaseFragmentData) {
+    const fragment = await prisma.fragment.findFirstOrThrow({ where: { content: fragmentContent } });
+    const musicRelease = releaseCode
+      ? await prisma.musicRelease.findUniqueOrThrow({ where: { releaseCode } })
+      : null;
+    const track = trackTitle ? await prisma.track.findFirstOrThrow({ where: { title: trackTitle } }) : null;
+
+    await prisma.releaseFragment.create({
+      data: {
+        active: true,
+        fragmentId: fragment.id,
+        musicReleaseId: musicRelease?.id,
+        placement,
+        trackId: track?.id,
+        weight
+      }
+    });
+  }
+}
+
+async function seedChannelFragments() {
+  const campaignWorldIds = await getIdMap("campaignWorld");
+  const moodReferenceIds = await getIdMap("moodReference");
+  const channelFragmentData = [
+    ["NACHT BLEIBT MATERIAL.", Channel.WEBSITE, "ROOM_AFTER_LIGHT", null, FragmentPlacement.HERO, 100],
+    ["DER RAUM IST LEER. DER TON BLEIBT.", Channel.INSTAGRAM, "ROOM_AFTER_LIGHT", "EMPTY_ROOM_PRESSURE", FragmentPlacement.CAPTION, 80],
+    ["SIGNAL ZUERST. WARE SPÄTER.", Channel.WEBSITE, "COLD_ARCHIVE", "INSTITUTIONAL_COLDNESS", FragmentPlacement.OBJECT_ARCHIVE, 90],
+    ["Archiv offen. Store geschlossen.", Channel.INSTAGRAM, "COLD_ARCHIVE", null, FragmentPlacement.CAPTION, 70],
+    ["NO BRIGHT ROOM.", Channel.TIKTOK, "POST_CLUB_SILENCE", "BLACKOUT_SILENCE", FragmentPlacement.CHANNEL_COPY, 60],
+    ["Evidence, not lifestyle.", Channel.SOUNDCLOUD, null, "INSTITUTIONAL_COLDNESS", FragmentPlacement.METADATA, 60]
+  ] as const;
+
+  await prisma.channelFragment.deleteMany({});
+
+  for (const [fragmentContent, channel, campaignWorldCode, moodReferenceCode, placement, weight] of channelFragmentData) {
+    const fragment = await prisma.fragment.findFirstOrThrow({ where: { content: fragmentContent } });
+
+    await prisma.channelFragment.create({
+      data: {
+        active: true,
+        campaignWorldId: campaignWorldCode ? campaignWorldIds[campaignWorldCode] : null,
+        channel,
+        fragmentId: fragment.id,
+        moodReferenceId: moodReferenceCode ? moodReferenceIds[moodReferenceCode] : null,
+        placement,
+        weight
+      }
+    });
+  }
+}
+
+type IdMapModel = "campaignWorld" | "visualEnvironment" | "moodReference" | "asset";
+
+async function getIdMap(model: IdMapModel) {
+  const records =
+    model === "campaignWorld"
+      ? await prisma.campaignWorld.findMany()
+      : model === "visualEnvironment"
+        ? await prisma.visualEnvironment.findMany()
+        : model === "moodReference"
+          ? await prisma.moodReference.findMany()
+          : await prisma.asset.findMany();
+
+  return Object.fromEntries(records.map((record) => [record.code, record.id]));
+}
+
+async function upsertArtistCampaignWorld(
+  artistId: string,
+  campaignWorldId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.artistCampaignWorld.upsert({
+    where: { artistId_campaignWorldId: { artistId, campaignWorldId } },
+    update: { reason, verdict, weight },
+    create: { artistId, campaignWorldId, reason, verdict, weight }
+  });
+}
+
+async function upsertMusicReleaseCampaignWorld(
+  musicReleaseId: string,
+  campaignWorldId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.musicReleaseCampaignWorld.upsert({
+    where: { musicReleaseId_campaignWorldId: { campaignWorldId, musicReleaseId } },
+    update: { reason, verdict, weight },
+    create: { campaignWorldId, musicReleaseId, reason, verdict, weight }
+  });
+}
+
+async function upsertTrackMoodReference(
+  trackId: string,
+  moodReferenceId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.trackMoodReference.upsert({
+    where: { trackId_moodReferenceId: { moodReferenceId, trackId } },
+    update: { reason, verdict, weight },
+    create: { moodReferenceId, reason, trackId, verdict, weight }
+  });
+}
+
+async function upsertCampaignWorldVisualEnvironment(
+  campaignWorldId: string,
+  visualEnvironmentId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.campaignWorldVisualEnvironment.upsert({
+    where: { campaignWorldId_visualEnvironmentId: { campaignWorldId, visualEnvironmentId } },
+    update: { reason, verdict, weight },
+    create: { campaignWorldId, reason, verdict, visualEnvironmentId, weight }
+  });
+}
+
+async function upsertCampaignWorldMoodReference(
+  campaignWorldId: string,
+  moodReferenceId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.campaignWorldMoodReference.upsert({
+    where: { campaignWorldId_moodReferenceId: { campaignWorldId, moodReferenceId } },
+    update: { reason, verdict, weight },
+    create: { campaignWorldId, moodReferenceId, reason, verdict, weight }
+  });
+}
+
+async function upsertCampaignWorldAsset(
+  campaignWorldId: string,
+  assetId: string,
+  verdict: CompatibilityVerdict,
+  reason: string,
+  weight: number
+) {
+  await prisma.campaignWorldAsset.upsert({
+    where: { campaignWorldId_assetId: { assetId, campaignWorldId } },
+    update: { reason, verdict, weight },
+    create: { assetId, campaignWorldId, reason, verdict, weight }
+  });
+}
+
 async function main() {
   const artist = await seedArtist();
 
@@ -533,6 +1090,15 @@ async function main() {
   await seedAudiencePersonas();
   await seedChannelRules();
   await seedSignalScoringRules();
+  await seedCampaignWorlds();
+  await seedVisualEnvironments();
+  await seedMoodReferences();
+  await seedAssets();
+  await seedAssetTags();
+  await seedAssetTagAssignments();
+  await seedCompatibilityGraph(artist.id);
+  await seedReleaseFragments();
+  await seedChannelFragments();
 }
 
 main()

@@ -55,6 +55,38 @@ enum Channel {
   SPOTIFY
 }
 
+enum AssetType {
+  IMAGE
+  VIDEO
+  AUDIO
+  SYMBOL
+  TEXT
+  OBJECT
+  MOTION
+}
+
+enum AssetSourceType {
+  LOCAL_REFERENCE
+  EXTERNAL_REFERENCE
+  SYMBOLIC_REFERENCE
+}
+
+enum CompatibilityVerdict {
+  ALLOWED
+  DISCOURAGED
+  FORBIDDEN
+  REQUIRED
+}
+
+enum FragmentPlacement {
+  HERO
+  CAPTION
+  METADATA
+  RELEASE_NOTE
+  CHANNEL_COPY
+  OBJECT_ARCHIVE
+}
+
 model Artist {
   id          String       @id @default(cuid())
   slug        String       @unique
@@ -66,6 +98,7 @@ model Artist {
 
   musicReleases  MusicRelease[]
   objectReleases ObjectRelease[]
+  campaignWorlds ArtistCampaignWorld[]
 }
 
 model ObjectRelease {
@@ -92,8 +125,11 @@ model MusicRelease {
   coverImage  String?
   createdAt   DateTime      @default(now())
 
-  artist Artist @relation(fields: [artistId], references: [id])
+  artist Artist  @relation(fields: [artistId], references: [id])
   tracks Track[]
+
+  campaignWorlds   MusicReleaseCampaignWorld[]
+  releaseFragments ReleaseFragment[]
 }
 
 model Track {
@@ -104,6 +140,9 @@ model Track {
   moodFragment String?
 
   release MusicRelease @relation(fields: [releaseId], references: [id])
+
+  moodReferences   TrackMoodReference[]
+  releaseFragments ReleaseFragment[]
 }
 
 model Fragment {
@@ -114,6 +153,9 @@ model Fragment {
   weight    Int          @default(0)
   active    Boolean      @default(true)
   createdAt DateTime     @default(now())
+
+  releaseFragments ReleaseFragment[]
+  channelFragments ChannelFragment[]
 }
 
 model BrandRule {
@@ -204,4 +246,205 @@ model SignalScoringRule {
   weight      Int      @default(1)
   active      Boolean  @default(true)
   createdAt   DateTime @default(now())
+}
+
+model CampaignWorld {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  active      Boolean  @default(true)
+  weight      Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  artists            ArtistCampaignWorld[]
+  musicReleases      MusicReleaseCampaignWorld[]
+  visualEnvironments CampaignWorldVisualEnvironment[]
+  moodReferences     CampaignWorldMoodReference[]
+  assets             CampaignWorldAsset[]
+  channelFragments   ChannelFragment[]
+}
+
+model VisualEnvironment {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  active      Boolean  @default(true)
+  weight      Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  campaignWorlds CampaignWorldVisualEnvironment[]
+}
+
+model MoodReference {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  active      Boolean  @default(true)
+  weight      Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  tracks           TrackMoodReference[]
+  campaignWorlds   CampaignWorldMoodReference[]
+  channelFragments ChannelFragment[]
+}
+
+model Asset {
+  id           String          @id @default(cuid())
+  code         String          @unique
+  type         AssetType
+  sourceType   AssetSourceType
+  title        String
+  description  String?
+  referenceKey String?
+  active       Boolean         @default(true)
+  weight       Int             @default(0)
+  createdAt    DateTime        @default(now())
+
+  campaignWorlds CampaignWorldAsset[]
+  tags           AssetTagAssignment[]
+}
+
+model AssetTag {
+  id        String   @id @default(cuid())
+  code      String   @unique
+  label     String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  assets AssetTagAssignment[]
+}
+
+model ArtistCampaignWorld {
+  id              String               @id @default(cuid())
+  artistId        String
+  campaignWorldId String
+  verdict         CompatibilityVerdict @default(ALLOWED)
+  reason          String?
+  weight          Int                  @default(0)
+
+  artist        Artist        @relation(fields: [artistId], references: [id])
+  campaignWorld CampaignWorld @relation(fields: [campaignWorldId], references: [id])
+
+  @@unique([artistId, campaignWorldId])
+}
+
+model MusicReleaseCampaignWorld {
+  id              String               @id @default(cuid())
+  musicReleaseId  String
+  campaignWorldId String
+  verdict         CompatibilityVerdict @default(ALLOWED)
+  reason          String?
+  weight          Int                  @default(0)
+
+  musicRelease  MusicRelease  @relation(fields: [musicReleaseId], references: [id])
+  campaignWorld CampaignWorld @relation(fields: [campaignWorldId], references: [id])
+
+  @@unique([musicReleaseId, campaignWorldId])
+}
+
+model TrackMoodReference {
+  id              String               @id @default(cuid())
+  trackId         String
+  moodReferenceId String
+  verdict         CompatibilityVerdict @default(ALLOWED)
+  reason          String?
+  weight          Int                  @default(0)
+
+  track         Track         @relation(fields: [trackId], references: [id])
+  moodReference MoodReference @relation(fields: [moodReferenceId], references: [id])
+
+  @@unique([trackId, moodReferenceId])
+}
+
+model CampaignWorldVisualEnvironment {
+  id                  String               @id @default(cuid())
+  campaignWorldId     String
+  visualEnvironmentId String
+  verdict             CompatibilityVerdict @default(ALLOWED)
+  reason              String?
+  weight              Int                  @default(0)
+
+  campaignWorld     CampaignWorld     @relation(fields: [campaignWorldId], references: [id])
+  visualEnvironment VisualEnvironment @relation(fields: [visualEnvironmentId], references: [id])
+
+  @@unique([campaignWorldId, visualEnvironmentId])
+}
+
+model CampaignWorldMoodReference {
+  id              String               @id @default(cuid())
+  campaignWorldId String
+  moodReferenceId String
+  verdict         CompatibilityVerdict @default(ALLOWED)
+  reason          String?
+  weight          Int                  @default(0)
+
+  campaignWorld CampaignWorld @relation(fields: [campaignWorldId], references: [id])
+  moodReference MoodReference @relation(fields: [moodReferenceId], references: [id])
+
+  @@unique([campaignWorldId, moodReferenceId])
+}
+
+model CampaignWorldAsset {
+  id              String               @id @default(cuid())
+  campaignWorldId String
+  assetId         String
+  verdict         CompatibilityVerdict @default(ALLOWED)
+  reason          String?
+  weight          Int                  @default(0)
+
+  campaignWorld CampaignWorld @relation(fields: [campaignWorldId], references: [id])
+  asset         Asset         @relation(fields: [assetId], references: [id])
+
+  @@unique([campaignWorldId, assetId])
+}
+
+model AssetTagAssignment {
+  id      String @id @default(cuid())
+  assetId String
+  tagId   String
+  weight  Int    @default(0)
+
+  asset Asset    @relation(fields: [assetId], references: [id])
+  tag   AssetTag @relation(fields: [tagId], references: [id])
+
+  @@unique([assetId, tagId])
+}
+
+model ReleaseFragment {
+  id             String            @id @default(cuid())
+  fragmentId     String
+  musicReleaseId String?
+  trackId        String?
+  placement      FragmentPlacement
+  weight         Int               @default(0)
+  active         Boolean           @default(true)
+
+  fragment     Fragment      @relation(fields: [fragmentId], references: [id])
+  musicRelease MusicRelease? @relation(fields: [musicReleaseId], references: [id])
+  track        Track?        @relation(fields: [trackId], references: [id])
+
+  @@index([musicReleaseId])
+  @@index([trackId])
+}
+
+model ChannelFragment {
+  id              String            @id @default(cuid())
+  fragmentId      String
+  channel         Channel
+  campaignWorldId String?
+  moodReferenceId String?
+  placement       FragmentPlacement
+  weight          Int               @default(0)
+  active          Boolean           @default(true)
+
+  fragment      Fragment       @relation(fields: [fragmentId], references: [id])
+  campaignWorld CampaignWorld? @relation(fields: [campaignWorldId], references: [id])
+  moodReference MoodReference? @relation(fields: [moodReferenceId], references: [id])
+
+  @@index([channel])
+  @@index([campaignWorldId])
+  @@index([moodReferenceId])
 }

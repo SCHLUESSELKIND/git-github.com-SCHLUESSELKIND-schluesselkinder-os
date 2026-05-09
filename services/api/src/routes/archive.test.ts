@@ -116,6 +116,17 @@ const repositories: ApiRepositories = {
     listScoringRules: async () => [],
     listVisualRules: async () => [],
     listVoiceProfiles: async () => []
+  },
+  contentGraph: {
+    findMusicReleaseGraph: async () => null,
+    listAssets: async () => [],
+    listAssetTags: async () => [],
+    listCampaignWorlds: async () => [],
+    listChannelFragments: async () => [],
+    listCompatibility: async () => [],
+    listMoodReferences: async () => [],
+    listReleaseFragments: async () => [],
+    listVisualEnvironments: async () => []
   }
 };
 

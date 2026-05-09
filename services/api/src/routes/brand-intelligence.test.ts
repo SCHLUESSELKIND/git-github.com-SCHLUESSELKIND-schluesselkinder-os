@@ -119,6 +119,17 @@ const repositories: ApiRepositories = {
         name: "Masterbrand"
       }
     ]
+  },
+  contentGraph: {
+    findMusicReleaseGraph: async () => null,
+    listAssets: async () => [],
+    listAssetTags: async () => [],
+    listCampaignWorlds: async () => [],
+    listChannelFragments: async () => [],
+    listCompatibility: async () => [],
+    listMoodReferences: async () => [],
+    listReleaseFragments: async () => [],
+    listVisualEnvironments: async () => []
   }
 };
 
