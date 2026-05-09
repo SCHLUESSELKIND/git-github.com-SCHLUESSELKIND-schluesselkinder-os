@@ -32,22 +32,22 @@ export default function Home() {
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr_120px]">
             <div>
               <h1 className="max-w-5xl font-black uppercase text-stone-100" style={{ fontSize: "clamp(4.8rem, 14vw, 13rem)", lineHeight: 0.78 }}>
-                {seedCopy.hero.en}
+                {seedCopy.hero.de}
               </h1>
               <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">
-                <p>{seedCopy.hero.de}</p>
-                <p>{seedCopy.campaign.en}</p>
+                <p>{seedCopy.systemFragments.afterhours}</p>
+                <p>{seedCopy.hero.en}</p>
               </div>
             </div>
             <div className="hidden md:block" />
-            <RotatedMeta>{firstArtist.archiveCode} / music is the key</RotatedMeta>
+            <RotatedMeta>{firstArtist.archiveCode} / rune index</RotatedMeta>
           </div>
         </div>
       </section>
 
       <SymbolRail labels={["KEY", "CHAIR", "ROPE", "ROOM", "AFTER"]} />
 
-      <SectionFrame kicker="collective identity" title="Cold room. Red trace.">
+      <SectionFrame kicker="system identity" title="Cold room. Red trace.">
         <div className="border-t border-stone-800">
           {seedCopy.collective.map((line) => (
             <ManifestLine de={line.de} en={line.en} key={line.en} />
@@ -55,19 +55,19 @@ export default function Home() {
         </div>
       </SectionFrame>
 
-      <SectionFrame kicker="first artist" title="Body as signal.">
+      <SectionFrame kicker="artist dossier" title="Body as signal.">
         <ArtistSignal />
       </SectionFrame>
 
       <section className="border-t border-stone-800">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1.1fr_0.9fr] md:px-8 md:py-24">
           <div className="self-end">
-            <p className="text-xs font-black uppercase text-red-600">campaign evidence</p>
+            <p className="text-xs font-black uppercase text-red-600">campaign environment</p>
             <p className="mt-8 max-w-4xl font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 10vw, 9rem)", lineHeight: 0.82 }}>The room keeps the signal.</p>
           </div>
           <EditorialImage
             alt="Cropped dungeon room wall and chair"
-            caption="campaign fragment"
+            caption="campaign environment"
             className="h-[620px]"
             imageClassName="image-noir object-[58%_48%]"
             src={brandAssets.campaignDungeonChair}
@@ -76,14 +76,14 @@ export default function Home() {
         </div>
       </section>
 
-      <SectionFrame kicker="music signal" title="Three artifacts.">
+      <SectionFrame kicker="release artifacts" title="Three artifacts.">
         <TrackList mode="compact" />
         <Link className="mt-8 inline-block border border-red-800 px-5 py-3 text-sm font-black uppercase text-stone-100 hover:bg-red-900" href="/music">
-          Enter music archive
+          Open music archive
         </Link>
       </SectionFrame>
 
-      <SectionFrame kicker="streetwear signal" title="Objects later.">
+      <SectionFrame kicker="object archive" title="Objects later.">
         <ShopPreview />
       </SectionFrame>
 

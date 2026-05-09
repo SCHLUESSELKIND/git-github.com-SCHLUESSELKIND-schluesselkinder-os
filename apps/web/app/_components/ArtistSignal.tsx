@@ -20,7 +20,7 @@ export function ArtistSignal() {
         <div>
           <p className="text-xs font-black uppercase tracking-[0.35em] text-stone-500">{firstArtist.name}</p>
           <p className="mt-8 max-w-lg text-3xl font-black uppercase leading-none text-stone-100 group-hover:text-stone-200 md:text-6xl">
-            {firstArtist.fragments.en[0]} {firstArtist.fragments.de[2]}
+            {firstArtist.fragments.de[0]} {firstArtist.fragments.de[2]}
           </p>
         </div>
       </div>

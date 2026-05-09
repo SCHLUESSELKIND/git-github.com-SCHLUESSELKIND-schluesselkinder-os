@@ -7,7 +7,7 @@ export const firstArtist = {
   location: "Berlin afterhours",
   archiveCode: "SK-A001",
   fragments: {
-    de: ["Kalte Nähe.", "Rope pressure.", "Nacht bleibt Material."],
+    de: ["Kalte Nähe.", "Keine Biografie. Nur Druck.", "Nacht bleibt Material."],
     en: ["Cold intimacy.", "Body as signal.", "Sound after the room empties."]
   },
   tracks: [
@@ -52,8 +52,14 @@ export const platformPlan = {
 export const seedCopy = {
   shortDescription: "Music, garments, residue.",
   hero: {
-    de: "Keine helle Stunde.",
-    en: "No bright room."
+    de: "NACHT BLEIBT MATERIAL.",
+    en: "NO BRIGHT ROOM."
+  },
+  systemFragments: {
+    afterhours: "Afterhours is a method.",
+    evidence: "Evidence, not lifestyle.",
+    noSoftBiography: "No soft biography.",
+    roomTone: "Der Raum ist leer. Der Ton bleibt."
   },
   campaign: {
     de: "Beton hält den Ton.",
@@ -78,12 +84,12 @@ export const seedCopy = {
     en: "Three tracks. No promise."
   },
   shopSignal: {
-    de: "Kein Store. Ein Zeichen.",
-    en: "Not a store. A signal."
+    de: "Archiv offen. Store geschlossen.",
+    en: "SIGNAL ZUERST. WARE SPÄTER."
   },
   shopArchive: {
-    de: "Kalte Formen. Späte Materialien. Noch geschlossen.",
-    en: "Cold forms. Late materials. Still closed."
+    de: "Kalte Formen. Späte Materialien.",
+    en: "Future object system."
   },
   about: [
     {
@@ -111,7 +117,7 @@ export const seedCopy = {
       en: "Metal, paper, pressure."
     },
     {
-      label: "drop study",
+      label: "signal study",
       de: "Erst Signal. Dann Ware.",
       en: "Signal first. Product later."
     }

@@ -104,5 +104,8 @@
 
 - Copy must stay sparse, cold, bilingual, and editorial.
 - Use short fragments, metadata, and manifest lines.
+- Use one dominant statement per public view.
+- Prefer metadata over explanation.
+- Let approved fragments exist almost alone in space.
 - Avoid explaining the system to the user.
 - Avoid jokes, memes, feature language, and conversion copy.

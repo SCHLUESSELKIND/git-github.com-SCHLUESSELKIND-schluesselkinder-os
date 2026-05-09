@@ -52,7 +52,7 @@ export default function ShibariKawaiiPage() {
                 <dd className="mt-2 text-stone-100">{masterbrand}</dd>
               </div>
               <div className="py-4 md:px-5">
-                <dt>tracks</dt>
+                <dt>release artifacts</dt>
                 <dd className="mt-2 text-stone-100">{firstArtist.tracks.length} artifacts</dd>
               </div>
             </dl>
@@ -60,7 +60,7 @@ export default function ShibariKawaiiPage() {
           <div className="grid gap-8 md:grid-rows-[1fr_auto]">
             <EditorialImage
               alt="Cropped dungeon room campaign environment"
-              caption="campaign anchor"
+              caption="campaign environment"
               className="min-h-[420px]"
               imageClassName="image-noir object-[55%_48%]"
               priority
@@ -72,14 +72,14 @@ export default function ShibariKawaiiPage() {
         </div>
       </section>
       <SymbolRail labels={["ROPE", "STATIC", "DAWN", "CONTROL", "AFTER"]} />
-      <SectionFrame kicker="artist fragments" title="No soft biography.">
+      <SectionFrame kicker="dossier fragments" title="No soft biography.">
         <div className="border-t border-stone-800">
           {firstArtist.fragments.de.map((line, index) => (
             <ManifestLine de={line} en={firstArtist.fragments.en[index]} key={line} />
           ))}
         </div>
       </SectionFrame>
-      <SectionFrame kicker="tracks" title="Release pressure.">
+      <SectionFrame kicker="release artifacts" title="Release pressure.">
         <TrackList />
       </SectionFrame>
       <section className="border-t border-stone-800">

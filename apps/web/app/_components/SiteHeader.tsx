@@ -4,8 +4,8 @@ import { masterbrand } from "@schluesselkinder/brand";
 const navItems = [
   { href: "/artists", label: "Artists" },
   { href: "/music", label: "Music" },
-  { href: "/shop", label: "Shop" },
-  { href: "/about", label: "About" }
+  { href: "/shop", label: "Objects" },
+  { href: "/about", label: "System" }
 ] as const;
 
 export function SiteHeader() {
