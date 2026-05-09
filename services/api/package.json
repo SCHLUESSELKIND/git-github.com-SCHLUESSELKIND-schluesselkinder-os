@@ -11,7 +11,9 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "fastify": "latest"
+    "@schluesselkinder/db": "workspace:*",
+    "fastify": "latest",
+    "zod": "latest"
   },
   "devDependencies": {
     "@types/node": "latest",

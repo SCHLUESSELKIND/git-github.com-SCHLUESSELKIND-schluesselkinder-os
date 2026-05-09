@@ -18,5 +18,8 @@ pnpm-debug.log*
 .env
 .env.*
 !.env.example
+.secrets/
+ROTATE.md
+HANDOVER.old.md
 
 *.tsbuildinfo

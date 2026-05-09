@@ -12,8 +12,8 @@ Initial seed tracks:
 
 ```text
 apps/web        Next.js app router site, shop route, and admin route
-services/api    Fastify API service with /health
-packages/db     Prisma-ready database package placeholder
+services/api    Fastify API service with read-only archive endpoints
+packages/db     Prisma PostgreSQL package for archive domain data
 packages/ui     Shared UI component placeholder
 packages/brand  Brand tokens and seed copy placeholder
 docs/            Architecture notes and ADRs
@@ -33,7 +33,7 @@ Copy the environment example only when local overrides are needed:
 cp .env.example .env
 ```
 
-Do not commit real secrets. Stripe, Printful, and database values in `.env.example` are placeholders for later sprints.
+Do not commit real secrets. `.env.example` lists variable names only; local values belong in `.env` or a secret vault.
 
 Run both app processes:
 
@@ -48,7 +48,40 @@ pnpm dev:web
 pnpm dev:api
 ```
 
-The API health endpoint is available at `/health` when `services/api` is running.
+The API exposes read-only archive endpoints when `services/api` is running:
+
+- `/health`
+- `/artists`
+- `/artists/:slug`
+- `/objects`
+- `/music`
+- `/music/:releaseCode`
+- `/fragments`
+- `/brand-intelligence`
+- `/brand-intelligence/rules`
+- `/brand-intelligence/visual-rules`
+- `/brand-intelligence/language-rules`
+- `/brand-intelligence/forbidden-energy`
+- `/brand-intelligence/audience-personas`
+- `/brand-intelligence/voice-profiles`
+- `/brand-intelligence/channel-rules`
+- `/brand-intelligence/scoring-rules`
+
+Start local Postgres:
+
+```bash
+cp .env.example .env
+# Fill DATABASE_URL, POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD, and POSTGRES_PORT locally.
+docker compose up -d postgres
+```
+
+Generate Prisma client, apply migrations, and seed local archive data:
+
+```bash
+pnpm --filter @schluesselkinder/db db:generate
+pnpm --filter @schluesselkinder/db db:migrate:dev --name backend_foundation
+pnpm --filter @schluesselkinder/db db:seed
+```
 
 ## Scripts
 
@@ -58,7 +91,42 @@ pnpm build
 pnpm test
 ```
 
+## Secret Scanning
+
+Install local guardrails:
+
+```bash
+brew install gitleaks pre-commit
+pre-commit install
+```
+
+Run a local scan:
+
+```bash
+gitleaks detect --redact --config .gitleaks.toml
+```
+
+See `docs/security/secret-management.md` for remediation and reusable setup snippets.
+
+Database package scripts:
+
+```bash
+pnpm --filter @schluesselkinder/db db:generate
+pnpm --filter @schluesselkinder/db db:migrate:dev
+pnpm --filter @schluesselkinder/db db:migrate:deploy
+pnpm --filter @schluesselkinder/db db:seed
+```
+
 ## Environment Contract
+
+Secret rules:
+
+- No secrets in Git, Markdown, screenshots, prompts, or handover docs.
+- Keep local values in `.env`.
+- Keep real keys in a vault such as 1Password or Infisical.
+- Keep `ROTATE.md` local only; it is gitignored.
+- Keep `.secrets/` local only; it is gitignored.
+- `HANDOVER.md`, if introduced later, must remain secret-free.
 
 Shared:
 
@@ -76,9 +144,13 @@ API:
 - `API_HOST`
 - `API_PORT`
 
-Database later:
+Database:
 
 - `DATABASE_URL`
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_PORT`
 
 Stripe later:
 
@@ -101,7 +173,11 @@ Implemented:
 - Fastify health endpoint
 - API environment loader and route separation
 - API health endpoint test
-- Placeholder packages for database, UI, and brand data
+- Prisma PostgreSQL schema, migration, client export, and seed setup
+- Read-only API routes for artists, objects, music, and fragments
+- Read-only Brand Intelligence routes and seed data
+- Zod response contracts for archive endpoints
+- Placeholder packages for UI and brand data
 - Architecture documentation
 - Hetzner and IONOS DNS planning notes
 
@@ -110,10 +186,14 @@ Not implemented yet:
 - Stripe
 - Printful
 - Auth
-- Database migrations
 - Real external APIs
 - Shopify
+- Checkout, carts, prices, stock, inventory, SKUs, fulfillment
 
 ## Next Sprint
 
-Recommended next sprint: define the database model and commerce state machine before adding Stripe or Printful SDKs. That should include orders, products, artists, releases, provider event logs, and webhook idempotency rules.
+Recommended next sprint: connect selected public pages to the read-only API or add admin authentication planning. Stripe, Printful, checkout, carts, inventory, and fulfillment remain separate future sprints.
+
+## Prisma Version
+
+`packages/db` pins Prisma and `@prisma/client` to `6.19.0`. This keeps the classic `DATABASE_URL` workflow stable for Sprint 4 and avoids Prisma 7 adapter/config churn until the backend foundation is committed and deployed cleanly.

@@ -1,3 +1,207 @@
-// Prisma schema placeholder for Sprint 1.
-// Add datasource, generator, and models when the database sprint is approved.
-// No migrations are defined yet.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ArtistStatus {
+  ACTIVE
+  ARCHIVED
+  HIDDEN
+}
+
+enum ReleaseStatus {
+  SIGNAL_PENDING
+  ACTIVE
+  CLOSED
+  ARCHIVED
+  HIDDEN
+}
+
+enum FragmentType {
+  HERO
+  MANIFEST
+  METADATA
+  ARTIST
+  MUSIC
+  OBJECT
+  SOCIAL
+}
+
+enum RuleSeverity {
+  REQUIRED
+  WARNING
+  DISCOURAGED
+}
+
+enum RuleCategory {
+  CORE
+  VISUAL
+  LANGUAGE
+  CHANNEL
+  VOICE
+  AUDIENCE
+  SCORING
+}
+
+enum Channel {
+  WEBSITE
+  TIKTOK
+  INSTAGRAM
+  SOUNDCLOUD
+  SPOTIFY
+}
+
+model Artist {
+  id          String       @id @default(cuid())
+  slug        String       @unique
+  name        String
+  symbol      String
+  status      ArtistStatus @default(ACTIVE)
+  bioFragment String?
+  createdAt   DateTime     @default(now())
+
+  musicReleases  MusicRelease[]
+  objectReleases ObjectRelease[]
+}
+
+model ObjectRelease {
+  id              String        @id @default(cuid())
+  releaseId       String        @unique
+  title           String
+  type            String
+  status          ReleaseStatus @default(SIGNAL_PENDING)
+  mark            String
+  artistId        String?
+  materialNote    String?
+  archiveFragment String?
+  createdAt       DateTime      @default(now())
+
+  artist Artist? @relation(fields: [artistId], references: [id])
+}
+
+model MusicRelease {
+  id          String        @id @default(cuid())
+  artistId    String
+  releaseCode String        @unique
+  title       String
+  status      ReleaseStatus @default(ACTIVE)
+  coverImage  String?
+  createdAt   DateTime      @default(now())
+
+  artist Artist @relation(fields: [artistId], references: [id])
+  tracks Track[]
+}
+
+model Track {
+  id           String  @id @default(cuid())
+  releaseId    String
+  title        String
+  duration     Int?
+  moodFragment String?
+
+  release MusicRelease @relation(fields: [releaseId], references: [id])
+}
+
+model Fragment {
+  id        String       @id @default(cuid())
+  type      FragmentType
+  language  String
+  content   String
+  weight    Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model BrandRule {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  category  RuleCategory
+  title     String
+  statement String
+  severity  RuleSeverity @default(REQUIRED)
+  weight    Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model VisualRule {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  title     String
+  rule      String
+  severity  RuleSeverity @default(REQUIRED)
+  weight    Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model LanguageRule {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  title     String
+  rule      String
+  severity  RuleSeverity @default(REQUIRED)
+  weight    Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model ForbiddenEnergy {
+  id        String       @id @default(cuid())
+  code      String       @unique
+  label     String
+  reason    String
+  severity  RuleSeverity @default(REQUIRED)
+  weight    Int          @default(100)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model VoiceProfile {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}
+
+model AudiencePersona {
+  id                  String   @id @default(cuid())
+  code                String   @unique
+  name                String
+  emotionalState      String
+  aestheticAttraction String
+  behavioralPattern   String
+  rejectionPattern    String
+  resonanceReason     String
+  active              Boolean  @default(true)
+  createdAt           DateTime @default(now())
+}
+
+model ChannelRule {
+  id        String       @id @default(cuid())
+  channel   Channel
+  code      String       @unique
+  title     String
+  rule      String
+  severity  RuleSeverity @default(REQUIRED)
+  weight    Int          @default(0)
+  active    Boolean      @default(true)
+  createdAt DateTime     @default(now())
+}
+
+model SignalScoringRule {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  title       String
+  description String
+  maxScore    Int      @default(10)
+  weight      Int      @default(1)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+}

@@ -7,9 +7,23 @@
     ".": "./src/index.ts"
   },
   "scripts": {
+    "db:generate": "prisma generate",
+    "db:migrate:deploy": "prisma migrate deploy",
+    "db:migrate:dev": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:validate": "prisma validate",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
+  "dependencies": {
+    "@prisma/client": "6.19.0"
+  },
   "devDependencies": {
+    "@types/node": "latest",
+    "prisma": "6.19.0",
+    "tsx": "latest",
     "typescript": "latest"
   }
 }

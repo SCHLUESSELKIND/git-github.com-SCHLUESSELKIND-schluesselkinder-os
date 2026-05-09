@@ -1,0 +1,16 @@
+title = "SCHLUESSELKINDER secret scanning"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Doppler placeholder references are intentionally not secret values"
+regexes = [
+  '''<SECRET:[A-Z0-9_]+_IN_DOPPLER>'''
+]
+
+[[allowlists]]
+description = "Local environment example file contains names only"
+paths = [
+  '''^\.env\.example$'''
+]
