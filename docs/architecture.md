@@ -239,6 +239,34 @@ Sprint 9 does not add Prisma models. Evaluator functions are pure TypeScript and
 
 Sprint 9 excludes AI generation, prompt execution, provider SDKs, workers, posting, scheduling, social APIs, admin UI, auth, commerce, engagement-first scoring, virality optimization, CTR optimization, and reach maximization.
 
+## Sprint 10 Internal Evaluation Console
+
+Sprint 10 adds a local/internal read-only inspection surface for the Evaluation Rule Engine.
+
+The console is an interpretability layer, not an admin dashboard, campaign manager, creator tool, AI studio, scheduler, or social dashboard.
+
+Routes:
+
+- `/admin/evaluation`
+- `/admin/evaluation/outputs/[outputKey]`
+- `/admin/evaluation/briefs/[briefKey]`
+- `/admin/evaluation/constraints/[bundleCode]`
+- `/admin/evaluation/red-team`
+
+The console reads existing API routes and renders:
+
+- evaluation traceability
+- constraint resolution
+- graph compatibility checks
+- forbidden-energy findings
+- signal score axes
+- raw JSON for inspection
+- static red-team fixture cases
+
+The console is gated by `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true`. This is a local visibility guard, not production authentication.
+
+Sprint 10 does not add backend schema changes, API mutations, auth, provider SDKs, execution, scheduling, posting, approval actions, social APIs, commerce, dashboard KPIs, engagement metrics, or write flows.
+
 ## Security Direction
 
 - No secrets in Git.

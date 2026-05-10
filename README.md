@@ -170,6 +170,7 @@ Web:
 - `NEXT_PUBLIC_APP_NAME`
 - `NEXT_PUBLIC_WEB_URL`
 - `NEXT_PUBLIC_API_URL`
+- `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED`
 
 API:
 
@@ -212,6 +213,7 @@ Implemented:
 - Read-only Approval Review routes for human gate records
 - Read-only Controlled Generation routes for constrained planning records
 - Read-only Evaluation routes for conservative rule-engine reports
+- Local/internal Evaluation Console gated by `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true`
 - Zod response contracts for archive endpoints
 - Placeholder packages for UI and brand data
 - Architecture documentation
@@ -237,6 +239,8 @@ Sprint 7 Approval Review deliberately does not include write routes, auth, admin
 Sprint 8 Controlled Generation deliberately does not include AI provider SDKs, real generation, prompt execution, uploads, file generation, media rendering, social APIs, schedulers, cron jobs, autopublish, admin UI, auth, commerce, workers, or execution logic. `GenerationOutput` must stay bound to a `ReviewItem`; approval truth remains only in `ReviewItem` and `ApprovalDecision`.
 
 Sprint 9 Evaluation Rule Engine deliberately does not include AI generation, prompt execution, provider SDKs, workers, posting, scheduling, social APIs, admin UI, auth, commerce, database mutation from evaluator execution, engagement-first scoring, or virality optimization. Evaluation reports have no approval authority: `reviewRequired` is always `true`, `usableWithoutReview` is always `false`, and `approvalAuthority` is always `false`.
+
+Sprint 10 Internal Evaluation Console is a local read-only interpretability surface. It is disabled unless `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true`. It has no approval controls, no mutation flows, no provider integration, no social operations, no scheduling, no posting, no commerce, and no engagement metrics.
 
 ## Prisma Version
 
