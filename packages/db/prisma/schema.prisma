@@ -132,6 +132,56 @@ enum RuleViolationSource {
   MANUAL
 }
 
+enum GenerationBriefType {
+  MOODBOARD
+  CONTENT
+  CHANNEL_COPY
+  SCHEDULE_PLAN
+}
+
+enum GenerationRequestStatus {
+  DRAFT
+  READY_FOR_REVIEW
+  REJECTED
+  REVIEW_ACCEPTED
+  ARCHIVED
+}
+
+enum GenerationOutputStatus {
+  GENERATED_PLACEHOLDER
+  REVIEW_REQUIRED
+  REVIEW_REJECTED
+  REVIEW_ARCHIVED
+}
+
+enum PromptSectionType {
+  CONTEXT
+  BRAND_CONSTRAINTS
+  CONTENT_GRAPH
+  CHANNEL_RULES
+  FORBIDDEN_ENERGY
+  OUTPUT_FORMAT
+  REVIEW_REQUIREMENTS
+}
+
+enum ConstraintSource {
+  BRAND_RULE
+  VISUAL_RULE
+  LANGUAGE_RULE
+  FORBIDDEN_ENERGY
+  CHANNEL_RULE
+  SIGNAL_SCORING_RULE
+  CONTENT_GRAPH_COMPATIBILITY
+  REVIEW_GOVERNANCE
+  MANUAL
+}
+
+enum EvaluationVerdict {
+  PASS
+  WARNING
+  FAIL
+}
+
 model Artist {
   id          String       @id @default(cuid())
   slug        String       @unique
@@ -176,6 +226,7 @@ model MusicRelease {
   campaignWorlds   MusicReleaseCampaignWorld[]
   releaseFragments ReleaseFragment[]
   reviewItems      ReviewItem[]
+  generationBriefs GenerationBrief[]
 }
 
 model Track {
@@ -190,6 +241,7 @@ model Track {
   moodReferences   TrackMoodReference[]
   releaseFragments ReleaseFragment[]
   reviewItems      ReviewItem[]
+  generationBriefs GenerationBrief[]
 }
 
 model Fragment {
@@ -311,6 +363,7 @@ model CampaignWorld {
   assets             CampaignWorldAsset[]
   channelFragments   ChannelFragment[]
   reviewItems        ReviewItem[]
+  generationBriefs   GenerationBrief[]
 }
 
 model VisualEnvironment {
@@ -490,10 +543,11 @@ model ChannelFragment {
   weight          Int               @default(0)
   active          Boolean           @default(true)
 
-  fragment      Fragment       @relation(fields: [fragmentId], references: [id])
-  campaignWorld CampaignWorld? @relation(fields: [campaignWorldId], references: [id])
-  moodReference MoodReference? @relation(fields: [moodReferenceId], references: [id])
-  reviewItems   ReviewItem[]
+  fragment         Fragment          @relation(fields: [fragmentId], references: [id])
+  campaignWorld    CampaignWorld?    @relation(fields: [campaignWorldId], references: [id])
+  moodReference    MoodReference?    @relation(fields: [moodReferenceId], references: [id])
+  reviewItems      ReviewItem[]
+  generationBriefs GenerationBrief[]
 
   @@index([channel])
   @@index([campaignWorldId])
@@ -518,15 +572,17 @@ model ReviewItem {
   releaseFragmentId String?
   channelFragmentId String?
 
-  musicRelease    MusicRelease?      @relation(fields: [musicReleaseId], references: [id])
-  track           Track?             @relation(fields: [trackId], references: [id])
-  campaignWorld   CampaignWorld?     @relation(fields: [campaignWorldId], references: [id])
-  asset           Asset?             @relation(fields: [assetId], references: [id])
-  releaseFragment ReleaseFragment?   @relation(fields: [releaseFragmentId], references: [id])
-  channelFragment ChannelFragment?   @relation(fields: [channelFragmentId], references: [id])
-  decisions       ApprovalDecision[]
-  comments        ApprovalComment[]
-  violations      RuleViolation[]
+  musicRelease      MusicRelease?      @relation(fields: [musicReleaseId], references: [id])
+  track             Track?             @relation(fields: [trackId], references: [id])
+  campaignWorld     CampaignWorld?     @relation(fields: [campaignWorldId], references: [id])
+  asset             Asset?             @relation(fields: [assetId], references: [id])
+  releaseFragment   ReleaseFragment?   @relation(fields: [releaseFragmentId], references: [id])
+  channelFragment   ChannelFragment?   @relation(fields: [channelFragmentId], references: [id])
+  decisions         ApprovalDecision[]
+  comments          ApprovalComment[]
+  violations        RuleViolation[]
+  generationBriefs  GenerationBrief[]
+  generationOutputs GenerationOutput[]
 
   @@index([stage, status])
   @@index([subjectType, subjectKey])
@@ -571,5 +627,136 @@ model RuleViolation {
   reviewItem ReviewItem @relation(fields: [reviewItemId], references: [id])
 
   @@index([reviewItemId])
+  @@index([source, ruleCode])
+}
+
+model ConstraintBundle {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  constraints GenerationBriefConstraint[]
+  briefs      GenerationBrief[]
+}
+
+model GenerationBriefConstraint {
+  id          String           @id @default(cuid())
+  bundleId    String
+  source      ConstraintSource
+  ruleCode    String?
+  title       String
+  instruction String
+  required    Boolean          @default(true)
+  weight      Int              @default(0)
+  active      Boolean          @default(true)
+
+  bundle ConstraintBundle @relation(fields: [bundleId], references: [id])
+
+  @@index([source, ruleCode])
+}
+
+model ChannelCompositionProfile {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  channel     Channel
+  name        String
+  description String
+  outputShape String
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  briefs GenerationBrief[]
+}
+
+model GenerationBrief {
+  id                          String              @id @default(cuid())
+  briefKey                    String              @unique
+  type                        GenerationBriefType
+  title                       String
+  objective                   String
+  subjectType                 ReviewSubjectType
+  subjectKey                  String
+  channel                     Channel?
+  constraintBundleId          String
+  reviewItemId                String?
+  musicReleaseId              String?
+  trackId                     String?
+  campaignWorldId             String?
+  channelFragmentId           String?
+  channelCompositionProfileId String?
+  createdAt                   DateTime            @default(now())
+
+  constraintBundle          ConstraintBundle           @relation(fields: [constraintBundleId], references: [id])
+  reviewItem                ReviewItem?                @relation(fields: [reviewItemId], references: [id])
+  musicRelease              MusicRelease?              @relation(fields: [musicReleaseId], references: [id])
+  track                     Track?                     @relation(fields: [trackId], references: [id])
+  campaignWorld             CampaignWorld?             @relation(fields: [campaignWorldId], references: [id])
+  channelFragment           ChannelFragment?           @relation(fields: [channelFragmentId], references: [id])
+  channelCompositionProfile ChannelCompositionProfile? @relation(fields: [channelCompositionProfileId], references: [id])
+  promptSections            PromptSection[]
+  requests                  GenerationRequest[]
+
+  @@index([subjectType, subjectKey])
+}
+
+model PromptSection {
+  id       String            @id @default(cuid())
+  briefId  String
+  type     PromptSectionType
+  title    String
+  body     String
+  position Int               @default(0)
+  locked   Boolean           @default(true)
+
+  brief GenerationBrief @relation(fields: [briefId], references: [id])
+
+  @@index([briefId, position])
+}
+
+model GenerationRequest {
+  id           String                  @id @default(cuid())
+  requestKey   String                  @unique
+  briefId      String
+  status       GenerationRequestStatus @default(DRAFT)
+  requestedFor String?
+  notes        String?
+  createdAt    DateTime                @default(now())
+
+  brief   GenerationBrief    @relation(fields: [briefId], references: [id])
+  outputs GenerationOutput[]
+}
+
+model GenerationOutput {
+  id           String                 @id @default(cuid())
+  outputKey    String                 @unique
+  requestId    String
+  reviewItemId String
+  status       GenerationOutputStatus @default(REVIEW_REQUIRED)
+  title        String
+  placeholder  String
+  createdAt    DateTime               @default(now())
+
+  request     GenerationRequest            @relation(fields: [requestId], references: [id])
+  reviewItem  ReviewItem                   @relation(fields: [reviewItemId], references: [id])
+  evaluations GenerationOutputEvaluation[]
+
+  @@index([reviewItemId])
+}
+
+model GenerationOutputEvaluation {
+  id        String            @id @default(cuid())
+  outputId  String
+  source    ConstraintSource
+  ruleCode  String?
+  verdict   EvaluationVerdict
+  title     String
+  detail    String
+  createdAt DateTime          @default(now())
+
+  output GenerationOutput @relation(fields: [outputId], references: [id])
+
   @@index([source, ruleCode])
 }

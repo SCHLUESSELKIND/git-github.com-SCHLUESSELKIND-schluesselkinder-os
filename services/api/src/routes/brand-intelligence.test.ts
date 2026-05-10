@@ -137,6 +137,17 @@ const repositories: ApiRepositories = {
     listComments: async () => null,
     listDecisions: async () => null,
     listViolations: async () => null
+  },
+  generation: {
+    findBriefByKey: async () => null,
+    findOutputByKey: async () => null,
+    findRequestByKey: async () => null,
+    listBriefs: async () => [],
+    listChannelCompositionProfiles: async () => [],
+    listConstraintBundles: async () => [],
+    listOutputEvaluations: async () => null,
+    listOutputs: async () => [],
+    listRequests: async () => []
   }
 };
 

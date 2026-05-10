@@ -4,10 +4,16 @@ import {
   ArtistStatus,
   Channel,
   CompatibilityVerdict,
+  ConstraintSource,
   DecisionType,
+  EvaluationVerdict,
   FragmentPlacement,
   FragmentType,
+  GenerationBriefType,
+  GenerationOutputStatus,
+  GenerationRequestStatus,
   PrismaClient,
+  PromptSectionType,
   ReleaseStatus,
   ReviewStage,
   ReviewStatus,
@@ -1262,6 +1268,258 @@ async function ensureApprovalDecision(seed: ApprovalDecisionSeed) {
   });
 }
 
+async function seedControlledGenerationLayer() {
+  const bundle = await prisma.constraintBundle.upsert({
+    where: { code: "CB-SK-CORE-GENERATION" },
+    update: {
+      active: true,
+      description: "Core constraints required for controlled generation planning. No execution allowed.",
+      name: "SCHLUESSELKINDER core generation constraints"
+    },
+    create: {
+      code: "CB-SK-CORE-GENERATION",
+      description: "Core constraints required for controlled generation planning. No execution allowed.",
+      name: "SCHLUESSELKINDER core generation constraints"
+    }
+  });
+
+  await prisma.generationBriefConstraint.deleteMany({
+    where: { bundleId: bundle.id }
+  });
+
+  await prisma.generationBriefConstraint.createMany({
+    data: [
+      {
+        bundleId: bundle.id,
+        instruction: "Inject core brand doctrine and keep all output cold, institutional, sparse, and review-bound.",
+        required: true,
+        ruleCode: "CORE_LABEL_SYSTEM",
+        source: ConstraintSource.BRAND_RULE,
+        title: "Core label system",
+        weight: 100
+      },
+      {
+        bundleId: bundle.id,
+        instruction: "Reject horror, cyberpunk overload, fetish decoration, meme irony, and AI moodboard drift.",
+        required: true,
+        ruleCode: "HORROR",
+        source: ConstraintSource.FORBIDDEN_ENERGY,
+        title: "Forbidden energy guard",
+        weight: 100
+      },
+      {
+        bundleId: bundle.id,
+        instruction: "Protect chair environment hierarchy and rune/key institutional language.",
+        required: true,
+        ruleCode: "VISUAL_CHAIR_PRIMARY",
+        source: ConstraintSource.VISUAL_RULE,
+        title: "Chair and rune/key hierarchy",
+        weight: 95
+      },
+      {
+        bundleId: bundle.id,
+        instruction: "Use German-first fragments and metadata. Do not add explanatory marketing language.",
+        required: true,
+        ruleCode: "LANG_GERMAN_FIRST",
+        source: ConstraintSource.LANGUAGE_RULE,
+        title: "German-first sparse language",
+        weight: 90
+      },
+      {
+        bundleId: bundle.id,
+        instruction: "Every output must remain bound to a ReviewItem and cannot be considered usable without human review.",
+        required: true,
+        ruleCode: "REVIEW_BINDING_REQUIRED",
+        source: ConstraintSource.REVIEW_GOVERNANCE,
+        title: "Review binding required",
+        weight: 100
+      }
+    ]
+  });
+
+  await seedChannelCompositionProfiles();
+  await seedGenerationBriefs(bundle.id);
+}
+
+async function seedChannelCompositionProfiles() {
+  const profiles = [
+    {
+      channel: Channel.WEBSITE,
+      code: "CCP-WEBSITE-INSTITUTIONAL",
+      description: "Website composition profile for sparse institutional sections and one dominant statement.",
+      name: "Website institutional",
+      outputShape: "One dominant statement, metadata fragments, no CTA pressure, no product language."
+    },
+    {
+      channel: Channel.INSTAGRAM,
+      code: "CCP-INSTAGRAM-FRAGMENT",
+      description: "Instagram composition profile for caption fragments and release-code clarity.",
+      name: "Instagram fragment",
+      outputShape: "Short caption fragment, release code, controlled image reference, no fake hype."
+    }
+  ] as const;
+
+  for (const profile of profiles) {
+    await prisma.channelCompositionProfile.upsert({
+      where: { code: profile.code },
+      update: {
+        active: true,
+        channel: profile.channel,
+        description: profile.description,
+        name: profile.name,
+        outputShape: profile.outputShape
+      },
+      create: profile
+    });
+  }
+}
+
+async function seedGenerationBriefs(constraintBundleId: string) {
+  const ropemaster = await prisma.musicRelease.findUniqueOrThrow({
+    where: { releaseCode: "SKM-003" }
+  });
+  const reviewItem = await prisma.reviewItem.findUniqueOrThrow({
+    where: { reviewKey: "SKR-MOODBOARD-SKM-003" }
+  });
+  const campaignWorld = await prisma.campaignWorld.findUniqueOrThrow({
+    where: { code: "ROOM_AFTER_LIGHT" }
+  });
+  const channelProfile = await prisma.channelCompositionProfile.findUniqueOrThrow({
+    where: { code: "CCP-WEBSITE-INSTITUTIONAL" }
+  });
+
+  const brief = await prisma.generationBrief.upsert({
+    where: { briefKey: "GB-MOODBOARD-SKM-003" },
+    update: {
+      campaignWorldId: campaignWorld.id,
+      channel: Channel.WEBSITE,
+      channelCompositionProfileId: channelProfile.id,
+      constraintBundleId,
+      musicReleaseId: ropemaster.id,
+      objective: "Compose a review-bound moodboard brief for ROPEMASTER without calling a generator.",
+      reviewItemId: reviewItem.id,
+      subjectKey: ropemaster.releaseCode,
+      subjectType: ReviewSubjectType.MUSIC_RELEASE,
+      title: "ROPEMASTER controlled moodboard brief",
+      type: GenerationBriefType.MOODBOARD
+    },
+    create: {
+      briefKey: "GB-MOODBOARD-SKM-003",
+      campaignWorldId: campaignWorld.id,
+      channel: Channel.WEBSITE,
+      channelCompositionProfileId: channelProfile.id,
+      constraintBundleId,
+      musicReleaseId: ropemaster.id,
+      objective: "Compose a review-bound moodboard brief for ROPEMASTER without calling a generator.",
+      reviewItemId: reviewItem.id,
+      subjectKey: ropemaster.releaseCode,
+      subjectType: ReviewSubjectType.MUSIC_RELEASE,
+      title: "ROPEMASTER controlled moodboard brief",
+      type: GenerationBriefType.MOODBOARD
+    }
+  });
+
+  await prisma.promptSection.deleteMany({
+    where: { briefId: brief.id }
+  });
+  await prisma.promptSection.createMany({
+    data: [
+      {
+        body: "Subject: SKM-003 ROPEMASTER. Artist: SHIBARI KAWAII. Campaign world: ROOM_AFTER_LIGHT.",
+        briefId: brief.id,
+        locked: true,
+        position: 10,
+        title: "Subject context",
+        type: PromptSectionType.CONTEXT
+      },
+      {
+        body: "Use only the core generation constraint bundle. Preserve chair and rune/key hierarchy.",
+        briefId: brief.id,
+        locked: true,
+        position: 20,
+        title: "Brand constraints",
+        type: PromptSectionType.BRAND_CONSTRAINTS
+      },
+      {
+        body: "Respect Content Graph requirements. Ropeface remains secondary and archival.",
+        briefId: brief.id,
+        locked: true,
+        position: 30,
+        title: "Content graph",
+        type: PromptSectionType.CONTENT_GRAPH
+      },
+      {
+        body: "Output must be a placeholder planning artifact only and must stay bound to ReviewItem SKR-MOODBOARD-SKM-003.",
+        briefId: brief.id,
+        locked: true,
+        position: 40,
+        title: "Review requirement",
+        type: PromptSectionType.REVIEW_REQUIREMENTS
+      }
+    ]
+  });
+
+  const request = await prisma.generationRequest.upsert({
+    where: { requestKey: "GR-MOODBOARD-SKM-003" },
+    update: {
+      briefId: brief.id,
+      notes: "Planning request only. No AI provider, prompt execution, worker, or scheduler exists.",
+      requestedFor: "moodboard_review",
+      status: GenerationRequestStatus.READY_FOR_REVIEW
+    },
+    create: {
+      briefId: brief.id,
+      notes: "Planning request only. No AI provider, prompt execution, worker, or scheduler exists.",
+      requestKey: "GR-MOODBOARD-SKM-003",
+      requestedFor: "moodboard_review",
+      status: GenerationRequestStatus.READY_FOR_REVIEW
+    }
+  });
+
+  const output = await prisma.generationOutput.upsert({
+    where: { outputKey: "GO-MOODBOARD-SKM-003-PLACEHOLDER" },
+    update: {
+      placeholder: "Placeholder only. No model output, media file, prompt execution, or publishable asset exists.",
+      requestId: request.id,
+      reviewItemId: reviewItem.id,
+      status: GenerationOutputStatus.REVIEW_REQUIRED,
+      title: "ROPEMASTER moodboard placeholder"
+    },
+    create: {
+      outputKey: "GO-MOODBOARD-SKM-003-PLACEHOLDER",
+      placeholder: "Placeholder only. No model output, media file, prompt execution, or publishable asset exists.",
+      requestId: request.id,
+      reviewItemId: reviewItem.id,
+      status: GenerationOutputStatus.REVIEW_REQUIRED,
+      title: "ROPEMASTER moodboard placeholder"
+    }
+  });
+
+  await prisma.generationOutputEvaluation.deleteMany({
+    where: { outputId: output.id }
+  });
+  await prisma.generationOutputEvaluation.createMany({
+    data: [
+      {
+        detail: "Chair environment is present as required campaign-world anchor.",
+        outputId: output.id,
+        ruleCode: "VISUAL_CHAIR_PRIMARY",
+        source: ConstraintSource.VISUAL_RULE,
+        title: "Chair environment present",
+        verdict: EvaluationVerdict.PASS
+      },
+      {
+        detail: "Ropeface must remain secondary and cannot become institutional identity.",
+        outputId: output.id,
+        ruleCode: "VISUAL_ROPEFACE_SECONDARY",
+        source: ConstraintSource.VISUAL_RULE,
+        title: "Ropeface hierarchy warning",
+        verdict: EvaluationVerdict.WARNING
+      }
+    ]
+  });
+}
+
 async function main() {
   const artist = await seedArtist();
 
@@ -1286,6 +1544,7 @@ async function main() {
   await seedReleaseFragments();
   await seedChannelFragments();
   await seedReviewItems();
+  await seedControlledGenerationLayer();
 }
 
 main()

@@ -116,3 +116,53 @@ export const ruleViolationSourceSchema = z.enum([
   "CONTENT_GRAPH_COMPATIBILITY",
   "MANUAL"
 ]);
+
+export const generationBriefTypeSchema = z.enum([
+  "MOODBOARD",
+  "CONTENT",
+  "CHANNEL_COPY",
+  "SCHEDULE_PLAN"
+]);
+
+export const generationRequestStatusSchema = z.enum([
+  "DRAFT",
+  "READY_FOR_REVIEW",
+  "REJECTED",
+  "REVIEW_ACCEPTED",
+  "ARCHIVED"
+]);
+
+export const generationOutputStatusSchema = z.enum([
+  "GENERATED_PLACEHOLDER",
+  "REVIEW_REQUIRED",
+  "REVIEW_REJECTED",
+  "REVIEW_ARCHIVED"
+]);
+
+export const promptSectionTypeSchema = z.enum([
+  "CONTEXT",
+  "BRAND_CONSTRAINTS",
+  "CONTENT_GRAPH",
+  "CHANNEL_RULES",
+  "FORBIDDEN_ENERGY",
+  "OUTPUT_FORMAT",
+  "REVIEW_REQUIREMENTS"
+]);
+
+export const constraintSourceSchema = z.enum([
+  "BRAND_RULE",
+  "VISUAL_RULE",
+  "LANGUAGE_RULE",
+  "FORBIDDEN_ENERGY",
+  "CHANNEL_RULE",
+  "SIGNAL_SCORING_RULE",
+  "CONTENT_GRAPH_COMPATIBILITY",
+  "REVIEW_GOVERNANCE",
+  "MANUAL"
+]);
+
+export const evaluationVerdictSchema = z.enum([
+  "PASS",
+  "WARNING",
+  "FAIL"
+]);

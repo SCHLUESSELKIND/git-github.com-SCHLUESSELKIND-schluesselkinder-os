@@ -169,6 +169,47 @@ Read-only API routes:
 
 Sprint 7 does not implement write routes, auth, admin UI, status transitions, processors, schedulers, posting, generation, prompts, or integrations.
 
+## Sprint 8 Controlled Generation
+
+Sprint 8 adds the planning layer for constrained AI-assisted generation without calling providers or executing prompts.
+
+Generation models:
+
+- `ConstraintBundle`
+- `GenerationBriefConstraint`
+- `ChannelCompositionProfile`
+- `GenerationBrief`
+- `PromptSection`
+- `GenerationRequest`
+- `GenerationOutput`
+- `GenerationOutputEvaluation`
+
+`GenerationOutput` is review-bound material only. Approval truth lives only in `ReviewItem` and `ApprovalDecision`.
+
+Generation output statuses:
+
+- `GENERATED_PLACEHOLDER`
+- `REVIEW_REQUIRED`
+- `REVIEW_REJECTED`
+- `REVIEW_ARCHIVED`
+
+There is no `APPROVED` output status.
+
+Read-only API routes:
+
+- `/generation`
+- `/generation/briefs`
+- `/generation/briefs/:briefKey`
+- `/generation/constraint-bundles`
+- `/generation/channel-composition-profiles`
+- `/generation/requests`
+- `/generation/requests/:requestKey`
+- `/generation/outputs`
+- `/generation/outputs/:outputKey`
+- `/generation/outputs/:outputKey/evaluations`
+
+Sprint 8 does not implement AI provider SDKs, prompt execution, real generation, uploads, file generation, media rendering, schedulers, posting, social APIs, workers, auth, admin UI, commerce, or execution logic.
+
 ## Security Direction
 
 - No secrets in Git.

@@ -12,15 +12,23 @@ import type {
   CampaignWorldAsset,
   CampaignWorldMoodReference,
   CampaignWorldVisualEnvironment,
+  ChannelCompositionProfile,
   ChannelFragment,
   ChannelRule,
+  ConstraintBundle,
   ForbiddenEnergy,
   Fragment,
+  GenerationBrief,
+  GenerationBriefConstraint,
+  GenerationOutput,
+  GenerationOutputEvaluation,
+  GenerationRequest,
   LanguageRule,
   MusicRelease,
   MusicReleaseCampaignWorld,
   MoodReference,
   ObjectRelease,
+  PromptSection,
   ReleaseFragment,
   ReviewItem,
   RuleViolation,
@@ -40,7 +48,9 @@ export type AssetTagRecord = AssetTag;
 export type AudiencePersonaRecord = AudiencePersona;
 export type BrandRuleRecord = BrandRule;
 export type CampaignWorldRecord = CampaignWorld;
+export type ChannelCompositionProfileRecord = ChannelCompositionProfile;
 export type ChannelRuleRecord = ChannelRule;
+export type GenerationOutputEvaluationRecord = GenerationOutputEvaluation;
 export type ForbiddenEnergyRecord = ForbiddenEnergy;
 export type LanguageRuleRecord = LanguageRule;
 export type MoodReferenceRecord = MoodReference;
@@ -132,6 +142,32 @@ export type ReviewItemRecord = ReviewItem & {
   violations: RuleViolation[];
 };
 
+export type ConstraintBundleRecord = ConstraintBundle & {
+  constraints: GenerationBriefConstraint[];
+};
+
+export type GenerationBriefRecord = GenerationBrief & {
+  campaignWorld: Pick<CampaignWorld, "code" | "id" | "name"> | null;
+  channelCompositionProfile: Pick<ChannelCompositionProfile, "channel" | "code" | "id" | "name"> | null;
+  channelFragment: Pick<ChannelFragment, "channel" | "id" | "placement"> | null;
+  constraintBundle: Pick<ConstraintBundle, "code" | "id" | "name">;
+  musicRelease: Pick<MusicRelease, "id" | "releaseCode" | "title"> | null;
+  promptSections: PromptSection[];
+  reviewItem: Pick<ReviewItem, "id" | "reviewKey" | "stage" | "status"> | null;
+  track: Pick<Track, "id" | "title"> | null;
+};
+
+export type GenerationRequestRecord = GenerationRequest & {
+  brief: Pick<GenerationBrief, "briefKey" | "id" | "title" | "type">;
+  outputs: Pick<GenerationOutput, "id" | "outputKey" | "reviewItemId" | "status" | "title">[];
+};
+
+export type GenerationOutputRecord = GenerationOutput & {
+  evaluations: GenerationOutputEvaluation[];
+  request: Pick<GenerationRequest, "id" | "requestKey" | "status">;
+  reviewItem: Pick<ReviewItem, "id" | "reviewKey" | "stage" | "status">;
+};
+
 export type ApiRepositories = Readonly<{
   artists: {
     findBySlug(slug: string): Promise<ArtistRecord | null>;
@@ -174,6 +210,17 @@ export type ApiRepositories = Readonly<{
     listComments(reviewKey: string): Promise<ApprovalCommentRecord[] | null>;
     listDecisions(reviewKey: string): Promise<ApprovalDecisionRecord[] | null>;
     listViolations(reviewKey: string): Promise<RuleViolationRecord[] | null>;
+  };
+  generation: {
+    findBriefByKey(briefKey: string): Promise<GenerationBriefRecord | null>;
+    findOutputByKey(outputKey: string): Promise<GenerationOutputRecord | null>;
+    findRequestByKey(requestKey: string): Promise<GenerationRequestRecord | null>;
+    listBriefs(): Promise<GenerationBriefRecord[]>;
+    listChannelCompositionProfiles(): Promise<ChannelCompositionProfileRecord[]>;
+    listConstraintBundles(): Promise<ConstraintBundleRecord[]>;
+    listOutputEvaluations(outputKey: string): Promise<GenerationOutputEvaluationRecord[] | null>;
+    listOutputs(): Promise<GenerationOutputRecord[]>;
+    listRequests(): Promise<GenerationRequestRecord[]>;
   };
 }>;
 
@@ -544,6 +591,68 @@ export function createPrismaRepositories(): ApiRepositories {
           where: { reviewItemId: reviewItem.id }
         });
       }
+    },
+    generation: {
+      findBriefByKey: (briefKey) =>
+        prisma.generationBrief.findUnique({
+          include: generationBriefIncludes,
+          where: { briefKey }
+        }),
+      findOutputByKey: (outputKey) =>
+        prisma.generationOutput.findUnique({
+          include: generationOutputIncludes,
+          where: { outputKey }
+        }),
+      findRequestByKey: (requestKey) =>
+        prisma.generationRequest.findUnique({
+          include: generationRequestIncludes,
+          where: { requestKey }
+        }),
+      listBriefs: () =>
+        prisma.generationBrief.findMany({
+          include: generationBriefIncludes,
+          orderBy: [{ createdAt: "asc" }]
+        }),
+      listChannelCompositionProfiles: () =>
+        prisma.channelCompositionProfile.findMany({
+          orderBy: [{ channel: "asc" }, { code: "asc" }],
+          where: { active: true }
+        }),
+      listConstraintBundles: () =>
+        prisma.constraintBundle.findMany({
+          include: {
+            constraints: {
+              orderBy: [{ weight: "desc" }]
+            }
+          },
+          orderBy: { code: "asc" },
+          where: { active: true }
+        }),
+      listOutputEvaluations: async (outputKey) => {
+        const output = await prisma.generationOutput.findUnique({
+          select: { id: true },
+          where: { outputKey }
+        });
+
+        if (!output) {
+          return null;
+        }
+
+        return prisma.generationOutputEvaluation.findMany({
+          orderBy: { createdAt: "asc" },
+          where: { outputId: output.id }
+        });
+      },
+      listOutputs: () =>
+        prisma.generationOutput.findMany({
+          include: generationOutputIncludes,
+          orderBy: [{ createdAt: "asc" }]
+        }),
+      listRequests: () =>
+        prisma.generationRequest.findMany({
+          include: generationRequestIncludes,
+          orderBy: [{ createdAt: "asc" }]
+        })
     }
   };
 }
@@ -651,6 +760,110 @@ const reviewItemIncludes = {
   violations: {
     orderBy: {
       createdAt: "asc"
+    }
+  }
+} as const;
+
+const generationBriefIncludes = {
+  campaignWorld: {
+    select: {
+      code: true,
+      id: true,
+      name: true
+    }
+  },
+  channelCompositionProfile: {
+    select: {
+      channel: true,
+      code: true,
+      id: true,
+      name: true
+    }
+  },
+  channelFragment: {
+    select: {
+      channel: true,
+      id: true,
+      placement: true
+    }
+  },
+  constraintBundle: {
+    select: {
+      code: true,
+      id: true,
+      name: true
+    }
+  },
+  musicRelease: {
+    select: {
+      id: true,
+      releaseCode: true,
+      title: true
+    }
+  },
+  promptSections: {
+    orderBy: {
+      position: "asc"
+    }
+  },
+  reviewItem: {
+    select: {
+      id: true,
+      reviewKey: true,
+      stage: true,
+      status: true
+    }
+  },
+  track: {
+    select: {
+      id: true,
+      title: true
+    }
+  }
+} as const;
+
+const generationRequestIncludes = {
+  brief: {
+    select: {
+      briefKey: true,
+      id: true,
+      title: true,
+      type: true
+    }
+  },
+  outputs: {
+    select: {
+      id: true,
+      outputKey: true,
+      reviewItemId: true,
+      status: true,
+      title: true
+    },
+    orderBy: {
+      createdAt: "asc"
+    }
+  }
+} as const;
+
+const generationOutputIncludes = {
+  evaluations: {
+    orderBy: {
+      createdAt: "asc"
+    }
+  },
+  request: {
+    select: {
+      id: true,
+      requestKey: true,
+      status: true
+    }
+  },
+  reviewItem: {
+    select: {
+      id: true,
+      reviewKey: true,
+      stage: true,
+      status: true
     }
   }
 } as const;

@@ -84,6 +84,16 @@ The API exposes read-only archive endpoints when `services/api` is running:
 - `/reviews/:reviewKey/decisions`
 - `/reviews/:reviewKey/comments`
 - `/reviews/:reviewKey/violations`
+- `/generation`
+- `/generation/briefs`
+- `/generation/briefs/:briefKey`
+- `/generation/constraint-bundles`
+- `/generation/channel-composition-profiles`
+- `/generation/requests`
+- `/generation/requests/:requestKey`
+- `/generation/outputs`
+- `/generation/outputs/:outputKey`
+- `/generation/outputs/:outputKey/evaluations`
 
 Start local Postgres:
 
@@ -196,6 +206,7 @@ Implemented:
 - Read-only Brand Intelligence routes and seed data
 - Read-only Content Graph routes for semantic asset orchestration
 - Read-only Approval Review routes for human gate records
+- Read-only Controlled Generation routes for constrained planning records
 - Zod response contracts for archive endpoints
 - Placeholder packages for UI and brand data
 - Architecture documentation
@@ -212,11 +223,13 @@ Not implemented yet:
 
 ## Next Sprint
 
-Recommended next sprint: plan the approval layer around content graph relationships, rule violations, and human review. Stripe, Printful, checkout, carts, inventory, auth, admin UI, and fulfillment remain separate future sprints.
+Recommended next sprint: review the controlled generation contracts and decide whether to add rule-resolution inspection before any provider integration. Stripe, Printful, checkout, carts, inventory, auth, admin UI, posting, scheduling, workers, and fulfillment remain separate future sprints.
 
 Sprint 6 Content Graph deliberately does not include uploads, CDN logic, AI generation, prompts, approval queues, posting, scheduling, automation, or admin UI.
 
 Sprint 7 Approval Review deliberately does not include write routes, auth, admin UI, state transitions, processors, AI generation, prompts, scheduling, posting, automation, or integrations. `ApprovalDecision` records are append-only history; `ReviewItem.status` is only the current materialized review state.
+
+Sprint 8 Controlled Generation deliberately does not include AI provider SDKs, real generation, prompt execution, uploads, file generation, media rendering, social APIs, schedulers, cron jobs, autopublish, admin UI, auth, commerce, workers, or execution logic. `GenerationOutput` must stay bound to a `ReviewItem`; approval truth remains only in `ReviewItem` and `ApprovalDecision`.
 
 ## Prisma Version
 

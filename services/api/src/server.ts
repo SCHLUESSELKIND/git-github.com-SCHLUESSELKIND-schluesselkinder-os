@@ -6,6 +6,7 @@ import { registerArtistRoutes } from "./routes/artists.js";
 import { registerBrandIntelligenceRoutes } from "./routes/brand-intelligence.js";
 import { registerContentGraphRoutes } from "./routes/content-graph.js";
 import { registerFragmentRoutes } from "./routes/fragments.js";
+import { registerGenerationRoutes } from "./routes/generation.js";
 import { registerHealthRoutes } from "./routes/health.js";
 import { registerMusicRoutes } from "./routes/music.js";
 import { registerObjectRoutes } from "./routes/objects.js";
@@ -52,6 +53,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerBrandIntelligenceRoutes(instance, repositories));
   void server.register(async (instance) => registerContentGraphRoutes(instance, repositories));
   void server.register(async (instance) => registerReviewRoutes(instance, repositories));
+  void server.register(async (instance) => registerGenerationRoutes(instance, repositories));
 
   return server;
 }

@@ -12,15 +12,23 @@ import type {
   CampaignWorldAsset,
   CampaignWorldMoodReference,
   CampaignWorldVisualEnvironment,
+  ChannelCompositionProfile,
   ChannelFragment,
   ChannelRule,
+  ConstraintBundle,
   ForbiddenEnergy,
   Fragment,
+  GenerationBrief,
+  GenerationBriefConstraint,
+  GenerationOutput,
+  GenerationOutputEvaluation,
+  GenerationRequest,
   LanguageRule,
   MusicRelease,
   MusicReleaseCampaignWorld,
   MoodReference,
   ObjectRelease,
+  PromptSection,
   ReleaseFragment,
   ReviewItem,
   RuleViolation,
@@ -45,10 +53,17 @@ export type CampaignWorldAssetRecord = CampaignWorldAsset;
 export type CampaignWorldMoodReferenceRecord = CampaignWorldMoodReference;
 export type CampaignWorldRecord = CampaignWorld;
 export type CampaignWorldVisualEnvironmentRecord = CampaignWorldVisualEnvironment;
+export type ChannelCompositionProfileRecord = ChannelCompositionProfile;
 export type ChannelFragmentRecord = ChannelFragment;
 export type ChannelRuleRecord = ChannelRule;
+export type ConstraintBundleRecord = ConstraintBundle;
 export type ForbiddenEnergyRecord = ForbiddenEnergy;
 export type FragmentRecord = Fragment;
+export type GenerationBriefConstraintRecord = GenerationBriefConstraint;
+export type GenerationBriefRecord = GenerationBrief;
+export type GenerationOutputEvaluationRecord = GenerationOutputEvaluation;
+export type GenerationOutputRecord = GenerationOutput;
+export type GenerationRequestRecord = GenerationRequest;
 export type LanguageRuleRecord = LanguageRule;
 export type MoodReferenceRecord = MoodReference;
 export type MusicReleaseCampaignWorldRecord = MusicReleaseCampaignWorld;
@@ -59,6 +74,7 @@ export type MusicReleaseRecord = MusicRelease & {
 export type ObjectReleaseRecord = ObjectRelease & {
   artist?: Artist | null;
 };
+export type PromptSectionRecord = PromptSection;
 export type ReleaseFragmentRecord = ReleaseFragment;
 export type ReviewItemRecord = ReviewItem;
 export type RuleViolationRecord = RuleViolation;

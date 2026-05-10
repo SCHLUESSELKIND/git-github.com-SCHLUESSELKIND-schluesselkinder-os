@@ -7,11 +7,17 @@ import type {
   ArtistRecord,
   BrandRuleRecord,
   CampaignWorldRecord,
+  ChannelCompositionProfileRecord,
   ChannelRuleRecord,
   ChannelFragmentRecord,
+  ConstraintBundleRecord,
   CompatibilityRecord,
   ForbiddenEnergyRecord,
   FragmentRecord,
+  GenerationBriefRecord,
+  GenerationOutputEvaluationRecord,
+  GenerationOutputRecord,
+  GenerationRequestRecord,
   LanguageRuleRecord,
   MusicReleaseRecord,
   MoodReferenceRecord,
@@ -417,5 +423,109 @@ export function mapReviewItem(reviewItem: ReviewItemRecord) {
     track: reviewItem.track,
     updatedAt: reviewItem.updatedAt.toISOString(),
     violations: reviewItem.violations.map(mapRuleViolation)
+  };
+}
+
+export function mapConstraintBundle(bundle: ConstraintBundleRecord) {
+  return {
+    active: bundle.active,
+    code: bundle.code,
+    constraints: bundle.constraints.map((constraint) => ({
+      active: constraint.active,
+      id: constraint.id,
+      instruction: constraint.instruction,
+      required: constraint.required,
+      ruleCode: constraint.ruleCode,
+      source: constraint.source,
+      title: constraint.title,
+      weight: constraint.weight
+    })),
+    createdAt: bundle.createdAt.toISOString(),
+    description: bundle.description,
+    id: bundle.id,
+    name: bundle.name
+  };
+}
+
+export function mapChannelCompositionProfile(profile: ChannelCompositionProfileRecord) {
+  return {
+    active: profile.active,
+    channel: profile.channel,
+    code: profile.code,
+    createdAt: profile.createdAt.toISOString(),
+    description: profile.description,
+    id: profile.id,
+    name: profile.name,
+    outputShape: profile.outputShape
+  };
+}
+
+export function mapGenerationBrief(brief: GenerationBriefRecord) {
+  return {
+    briefKey: brief.briefKey,
+    campaignWorld: brief.campaignWorld,
+    channel: brief.channel,
+    channelCompositionProfile: brief.channelCompositionProfile,
+    channelFragment: brief.channelFragment,
+    constraintBundle: brief.constraintBundle,
+    createdAt: brief.createdAt.toISOString(),
+    id: brief.id,
+    musicRelease: brief.musicRelease,
+    objective: brief.objective,
+    promptSections: brief.promptSections.map((section) => ({
+      body: section.body,
+      id: section.id,
+      locked: section.locked,
+      position: section.position,
+      title: section.title,
+      type: section.type
+    })),
+    reviewItem: brief.reviewItem,
+    subjectKey: brief.subjectKey,
+    subjectType: brief.subjectType,
+    title: brief.title,
+    track: brief.track,
+    type: brief.type
+  };
+}
+
+export function mapGenerationRequest(request: GenerationRequestRecord) {
+  return {
+    brief: request.brief,
+    createdAt: request.createdAt.toISOString(),
+    id: request.id,
+    notes: request.notes,
+    outputs: request.outputs,
+    requestedFor: request.requestedFor,
+    requestKey: request.requestKey,
+    status: request.status
+  };
+}
+
+export function mapGenerationOutputEvaluation(evaluation: GenerationOutputEvaluationRecord) {
+  return {
+    createdAt: evaluation.createdAt.toISOString(),
+    detail: evaluation.detail,
+    id: evaluation.id,
+    outputId: evaluation.outputId,
+    ruleCode: evaluation.ruleCode,
+    source: evaluation.source,
+    title: evaluation.title,
+    verdict: evaluation.verdict
+  };
+}
+
+export function mapGenerationOutput(output: GenerationOutputRecord) {
+  return {
+    createdAt: output.createdAt.toISOString(),
+    evaluations: output.evaluations.map(mapGenerationOutputEvaluation),
+    id: output.id,
+    outputKey: output.outputKey,
+    placeholder: output.placeholder,
+    request: output.request,
+    reviewItemId: output.reviewItemId,
+    reviewItem: output.reviewItem,
+    status: output.status,
+    title: output.title
   };
 }
