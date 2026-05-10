@@ -127,6 +127,13 @@ const repositories: ApiRepositories = {
     listMoodReferences: async () => [],
     listReleaseFragments: async () => [],
     listVisualEnvironments: async () => []
+  },
+  reviews: {
+    findByReviewKey: async () => null,
+    list: async () => [],
+    listComments: async () => null,
+    listDecisions: async () => null,
+    listViolations: async () => null
   }
 };
 

@@ -4,11 +4,16 @@ import {
   ArtistStatus,
   Channel,
   CompatibilityVerdict,
+  DecisionType,
   FragmentPlacement,
   FragmentType,
   PrismaClient,
   ReleaseStatus,
+  ReviewStage,
+  ReviewStatus,
+  ReviewSubjectType,
   RuleCategory,
+  RuleViolationSource,
   RuleSeverity
 } from "@prisma/client";
 
@@ -1076,6 +1081,187 @@ async function upsertCampaignWorldAsset(
   });
 }
 
+async function seedReviewItems() {
+  const ropemaster = await prisma.musicRelease.findUniqueOrThrow({
+    where: { releaseCode: "SKM-003" }
+  });
+  const coldArchive = await prisma.campaignWorld.findUniqueOrThrow({
+    where: { code: "COLD_ARCHIVE" }
+  });
+
+  const moodboardReview = await prisma.reviewItem.upsert({
+    where: { reviewKey: "SKR-MOODBOARD-SKM-003" },
+    update: {
+      musicReleaseId: ropemaster.id,
+      stage: ReviewStage.MOODBOARD_REVIEW,
+      status: ReviewStatus.PENDING,
+      subjectKey: ropemaster.releaseCode,
+      subjectType: ReviewSubjectType.MUSIC_RELEASE,
+      summary: "Moodboard review shell for ROPEMASTER. No generation or approval execution exists yet.",
+      title: "ROPEMASTER moodboard review"
+    },
+    create: {
+      musicReleaseId: ropemaster.id,
+      reviewKey: "SKR-MOODBOARD-SKM-003",
+      stage: ReviewStage.MOODBOARD_REVIEW,
+      status: ReviewStatus.PENDING,
+      subjectKey: ropemaster.releaseCode,
+      subjectType: ReviewSubjectType.MUSIC_RELEASE,
+      summary: "Moodboard review shell for ROPEMASTER. No generation or approval execution exists yet.",
+      title: "ROPEMASTER moodboard review"
+    }
+  });
+
+  await ensureRuleViolation({
+    detail: "Ropeface must remain an archival artist stamp and cannot become the hero identity for this review.",
+    reviewItemId: moodboardReview.id,
+    ruleCode: "VISUAL_ROPEFACE_SECONDARY",
+    severity: RuleSeverity.WARNING,
+    source: RuleViolationSource.VISUAL_RULE,
+    title: "Ropeface hierarchy check"
+  });
+  await ensureApprovalComment(
+    moodboardReview.id,
+    "Seed review item only. Human approval will be added by a future authenticated workflow.",
+    "SYSTEM_SEED"
+  );
+
+  const contentReview = await prisma.reviewItem.upsert({
+    where: { reviewKey: "SKR-CONTENT-COLD-ARCHIVE" },
+    update: {
+      campaignWorldId: coldArchive.id,
+      stage: ReviewStage.CONTENT_REVIEW,
+      status: ReviewStatus.NEEDS_REVISION,
+      subjectKey: coldArchive.code,
+      subjectType: ReviewSubjectType.CAMPAIGN_WORLD,
+      summary: "Content review shell for COLD_ARCHIVE. Stores review intent only.",
+      title: "COLD_ARCHIVE content review"
+    },
+    create: {
+      campaignWorldId: coldArchive.id,
+      reviewKey: "SKR-CONTENT-COLD-ARCHIVE",
+      stage: ReviewStage.CONTENT_REVIEW,
+      status: ReviewStatus.NEEDS_REVISION,
+      subjectKey: coldArchive.code,
+      subjectType: ReviewSubjectType.CAMPAIGN_WORLD,
+      summary: "Content review shell for COLD_ARCHIVE. Stores review intent only.",
+      title: "COLD_ARCHIVE content review"
+    }
+  });
+
+  await ensureRuleViolation({
+    detail: "Archive content must keep radical reduction and avoid adding motifs just because they are available.",
+    reviewItemId: contentReview.id,
+    ruleCode: "CORE_RADICAL_REDUCTION",
+    severity: RuleSeverity.REQUIRED,
+    source: RuleViolationSource.BRAND_RULE,
+    title: "Radical reduction required"
+  });
+  await ensureApprovalComment(
+    contentReview.id,
+    "Needs revision is represented as current materialized status; decision history remains append-only.",
+    "SYSTEM_SEED"
+  );
+  await ensureApprovalDecision({
+    decidedBy: "SYSTEM_SEED",
+    note: "Seeded historical decision to demonstrate append-only review history.",
+    reviewItemId: contentReview.id,
+    type: DecisionType.REQUEST_REVISION
+  });
+}
+
+type RuleViolationSeed = Readonly<{
+  detail: string;
+  reviewItemId: string;
+  ruleCode: string;
+  severity: RuleSeverity;
+  source: RuleViolationSource;
+  title: string;
+}>;
+
+async function ensureRuleViolation(seed: RuleViolationSeed) {
+  const existing = await prisma.ruleViolation.findFirst({
+    where: {
+      reviewItemId: seed.reviewItemId,
+      ruleCode: seed.ruleCode,
+      source: seed.source,
+      title: seed.title
+    }
+  });
+
+  if (existing) {
+    await prisma.ruleViolation.update({
+      where: { id: existing.id },
+      data: {
+        active: true,
+        detail: seed.detail,
+        severity: seed.severity
+      }
+    });
+    return;
+  }
+
+  await prisma.ruleViolation.create({
+    data: {
+      active: true,
+      detail: seed.detail,
+      reviewItemId: seed.reviewItemId,
+      ruleCode: seed.ruleCode,
+      severity: seed.severity,
+      source: seed.source,
+      title: seed.title
+    }
+  });
+}
+
+async function ensureApprovalComment(reviewItemId: string, body: string, author: string) {
+  const existing = await prisma.approvalComment.findFirst({
+    where: {
+      author,
+      body,
+      reviewItemId
+    }
+  });
+
+  if (existing) {
+    return;
+  }
+
+  await prisma.approvalComment.create({
+    data: {
+      author,
+      body,
+      reviewItemId
+    }
+  });
+}
+
+type ApprovalDecisionSeed = Readonly<{
+  decidedBy: string;
+  note: string;
+  reviewItemId: string;
+  type: DecisionType;
+}>;
+
+async function ensureApprovalDecision(seed: ApprovalDecisionSeed) {
+  const existing = await prisma.approvalDecision.findFirst({
+    where: {
+      decidedBy: seed.decidedBy,
+      note: seed.note,
+      reviewItemId: seed.reviewItemId,
+      type: seed.type
+    }
+  });
+
+  if (existing) {
+    return;
+  }
+
+  await prisma.approvalDecision.create({
+    data: seed
+  });
+}
+
 async function main() {
   const artist = await seedArtist();
 
@@ -1099,6 +1285,7 @@ async function main() {
   await seedCompatibilityGraph(artist.id);
   await seedReleaseFragments();
   await seedChannelFragments();
+  await seedReviewItems();
 }
 
 main()

@@ -1,5 +1,7 @@
 import { prisma } from "@schluesselkinder/db";
 import type {
+  ApprovalComment,
+  ApprovalDecision,
   Asset,
   AssetTag,
   ArtistCampaignWorld,
@@ -20,6 +22,8 @@ import type {
   MoodReference,
   ObjectRelease,
   ReleaseFragment,
+  ReviewItem,
+  RuleViolation,
   SignalScoringRule,
   Track,
   TrackMoodReference,
@@ -29,6 +33,8 @@ import type {
 } from "@schluesselkinder/db";
 
 export type ArtistRecord = Artist;
+export type ApprovalCommentRecord = ApprovalComment;
+export type ApprovalDecisionRecord = ApprovalDecision;
 export type AssetRecord = Asset;
 export type AssetTagRecord = AssetTag;
 export type AudiencePersonaRecord = AudiencePersona;
@@ -97,6 +103,7 @@ export type ReleaseFragmentRecord = ReleaseFragment & {
   musicRelease: Pick<MusicRelease, "id" | "releaseCode" | "title"> | null;
   track: Pick<Track, "id" | "title"> | null;
 };
+export type RuleViolationRecord = RuleViolation;
 
 export type ChannelFragmentRecord = ChannelFragment & {
   campaignWorld: Pick<CampaignWorld, "code" | "id" | "name"> | null;
@@ -112,6 +119,18 @@ export type ContentGraphMusicReleaseRecord = Readonly<{
   releaseFragments: ReleaseFragmentRecord[];
   trackMoodReferences: CompatibilityRecord[];
 }>;
+
+export type ReviewItemRecord = ReviewItem & {
+  asset: Pick<Asset, "code" | "id" | "title"> | null;
+  campaignWorld: Pick<CampaignWorld, "code" | "id" | "name"> | null;
+  channelFragment: Pick<ChannelFragment, "channel" | "id" | "placement"> | null;
+  comments: ApprovalComment[];
+  decisions: ApprovalDecision[];
+  musicRelease: Pick<MusicRelease, "id" | "releaseCode" | "title"> | null;
+  releaseFragment: Pick<ReleaseFragment, "id" | "placement"> | null;
+  track: Pick<Track, "id" | "title"> | null;
+  violations: RuleViolation[];
+};
 
 export type ApiRepositories = Readonly<{
   artists: {
@@ -148,6 +167,13 @@ export type ApiRepositories = Readonly<{
     listMoodReferences(): Promise<MoodReferenceRecord[]>;
     listReleaseFragments(): Promise<ReleaseFragmentRecord[]>;
     listVisualEnvironments(): Promise<VisualEnvironmentRecord[]>;
+  };
+  reviews: {
+    findByReviewKey(reviewKey: string): Promise<ReviewItemRecord | null>;
+    list(): Promise<ReviewItemRecord[]>;
+    listComments(reviewKey: string): Promise<ApprovalCommentRecord[] | null>;
+    listDecisions(reviewKey: string): Promise<ApprovalDecisionRecord[] | null>;
+    listViolations(reviewKey: string): Promise<RuleViolationRecord[] | null>;
   };
 }>;
 
@@ -461,6 +487,63 @@ export function createPrismaRepositories(): ApiRepositories {
           orderBy: [{ weight: "desc" }, { code: "asc" }],
           where: { active: true }
         })
+    },
+    reviews: {
+      findByReviewKey: (reviewKey) =>
+        prisma.reviewItem.findUnique({
+          include: reviewItemIncludes,
+          where: { reviewKey }
+        }),
+      list: () =>
+        prisma.reviewItem.findMany({
+          include: reviewItemIncludes,
+          orderBy: [{ createdAt: "asc" }]
+        }),
+      listComments: async (reviewKey) => {
+        const reviewItem = await prisma.reviewItem.findUnique({
+          select: { id: true },
+          where: { reviewKey }
+        });
+
+        if (!reviewItem) {
+          return null;
+        }
+
+        return prisma.approvalComment.findMany({
+          orderBy: { createdAt: "asc" },
+          where: { reviewItemId: reviewItem.id }
+        });
+      },
+      listDecisions: async (reviewKey) => {
+        const reviewItem = await prisma.reviewItem.findUnique({
+          select: { id: true },
+          where: { reviewKey }
+        });
+
+        if (!reviewItem) {
+          return null;
+        }
+
+        return prisma.approvalDecision.findMany({
+          orderBy: { createdAt: "asc" },
+          where: { reviewItemId: reviewItem.id }
+        });
+      },
+      listViolations: async (reviewKey) => {
+        const reviewItem = await prisma.reviewItem.findUnique({
+          select: { id: true },
+          where: { reviewKey }
+        });
+
+        if (!reviewItem) {
+          return null;
+        }
+
+        return prisma.ruleViolation.findMany({
+          orderBy: { createdAt: "asc" },
+          where: { reviewItemId: reviewItem.id }
+        });
+      }
     }
   };
 }
@@ -510,6 +593,64 @@ const channelFragmentIncludes = {
       code: true,
       id: true,
       name: true
+    }
+  }
+} as const;
+
+const reviewItemIncludes = {
+  asset: {
+    select: {
+      code: true,
+      id: true,
+      title: true
+    }
+  },
+  campaignWorld: {
+    select: {
+      code: true,
+      id: true,
+      name: true
+    }
+  },
+  channelFragment: {
+    select: {
+      channel: true,
+      id: true,
+      placement: true
+    }
+  },
+  comments: {
+    orderBy: {
+      createdAt: "asc"
+    }
+  },
+  decisions: {
+    orderBy: {
+      createdAt: "asc"
+    }
+  },
+  musicRelease: {
+    select: {
+      id: true,
+      releaseCode: true,
+      title: true
+    }
+  },
+  releaseFragment: {
+    select: {
+      id: true,
+      placement: true
+    }
+  },
+  track: {
+    select: {
+      id: true,
+      title: true
+    }
+  },
+  violations: {
+    orderBy: {
+      createdAt: "asc"
     }
   }
 } as const;

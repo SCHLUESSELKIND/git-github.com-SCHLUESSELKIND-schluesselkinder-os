@@ -87,6 +87,51 @@ enum FragmentPlacement {
   OBJECT_ARCHIVE
 }
 
+enum ReviewStage {
+  MOODBOARD_REVIEW
+  CONTENT_REVIEW
+  SCHEDULE_REVIEW
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  NEEDS_REVISION
+  ARCHIVED
+}
+
+enum DecisionType {
+  APPROVE
+  REJECT
+  REQUEST_REVISION
+  ARCHIVE
+}
+
+enum ReviewSubjectType {
+  MUSIC_RELEASE
+  TRACK
+  CAMPAIGN_WORLD
+  ASSET
+  RELEASE_FRAGMENT
+  CHANNEL_FRAGMENT
+  FUTURE_MOODBOARD
+  FUTURE_CONTENT_ASSET
+  FUTURE_SCHEDULE_PLAN
+  FUTURE_CAMPAIGN
+}
+
+enum RuleViolationSource {
+  BRAND_RULE
+  VISUAL_RULE
+  LANGUAGE_RULE
+  FORBIDDEN_ENERGY
+  CHANNEL_RULE
+  SIGNAL_SCORING_RULE
+  CONTENT_GRAPH_COMPATIBILITY
+  MANUAL
+}
+
 model Artist {
   id          String       @id @default(cuid())
   slug        String       @unique
@@ -130,6 +175,7 @@ model MusicRelease {
 
   campaignWorlds   MusicReleaseCampaignWorld[]
   releaseFragments ReleaseFragment[]
+  reviewItems      ReviewItem[]
 }
 
 model Track {
@@ -143,6 +189,7 @@ model Track {
 
   moodReferences   TrackMoodReference[]
   releaseFragments ReleaseFragment[]
+  reviewItems      ReviewItem[]
 }
 
 model Fragment {
@@ -263,6 +310,7 @@ model CampaignWorld {
   moodReferences     CampaignWorldMoodReference[]
   assets             CampaignWorldAsset[]
   channelFragments   ChannelFragment[]
+  reviewItems        ReviewItem[]
 }
 
 model VisualEnvironment {
@@ -305,6 +353,7 @@ model Asset {
 
   campaignWorlds CampaignWorldAsset[]
   tags           AssetTagAssignment[]
+  reviewItems    ReviewItem[]
 }
 
 model AssetTag {
@@ -425,6 +474,7 @@ model ReleaseFragment {
   fragment     Fragment      @relation(fields: [fragmentId], references: [id])
   musicRelease MusicRelease? @relation(fields: [musicReleaseId], references: [id])
   track        Track?        @relation(fields: [trackId], references: [id])
+  reviewItems  ReviewItem[]
 
   @@index([musicReleaseId])
   @@index([trackId])
@@ -443,8 +493,83 @@ model ChannelFragment {
   fragment      Fragment       @relation(fields: [fragmentId], references: [id])
   campaignWorld CampaignWorld? @relation(fields: [campaignWorldId], references: [id])
   moodReference MoodReference? @relation(fields: [moodReferenceId], references: [id])
+  reviewItems   ReviewItem[]
 
   @@index([channel])
   @@index([campaignWorldId])
   @@index([moodReferenceId])
+}
+
+model ReviewItem {
+  id                String            @id @default(cuid())
+  reviewKey         String            @unique
+  stage             ReviewStage
+  status            ReviewStatus      @default(PENDING)
+  subjectType       ReviewSubjectType
+  subjectKey        String
+  title             String
+  summary           String?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+  musicReleaseId    String?
+  trackId           String?
+  campaignWorldId   String?
+  assetId           String?
+  releaseFragmentId String?
+  channelFragmentId String?
+
+  musicRelease    MusicRelease?      @relation(fields: [musicReleaseId], references: [id])
+  track           Track?             @relation(fields: [trackId], references: [id])
+  campaignWorld   CampaignWorld?     @relation(fields: [campaignWorldId], references: [id])
+  asset           Asset?             @relation(fields: [assetId], references: [id])
+  releaseFragment ReleaseFragment?   @relation(fields: [releaseFragmentId], references: [id])
+  channelFragment ChannelFragment?   @relation(fields: [channelFragmentId], references: [id])
+  decisions       ApprovalDecision[]
+  comments        ApprovalComment[]
+  violations      RuleViolation[]
+
+  @@index([stage, status])
+  @@index([subjectType, subjectKey])
+}
+
+model ApprovalDecision {
+  id           String       @id @default(cuid())
+  reviewItemId String
+  type         DecisionType
+  note         String?
+  decidedBy    String?
+  createdAt    DateTime     @default(now())
+
+  reviewItem ReviewItem @relation(fields: [reviewItemId], references: [id])
+
+  @@index([reviewItemId, createdAt])
+}
+
+model ApprovalComment {
+  id           String   @id @default(cuid())
+  reviewItemId String
+  body         String
+  author       String?
+  createdAt    DateTime @default(now())
+
+  reviewItem ReviewItem @relation(fields: [reviewItemId], references: [id])
+
+  @@index([reviewItemId, createdAt])
+}
+
+model RuleViolation {
+  id           String              @id @default(cuid())
+  reviewItemId String
+  source       RuleViolationSource
+  ruleCode     String?
+  title        String
+  detail       String
+  severity     RuleSeverity        @default(WARNING)
+  active       Boolean             @default(true)
+  createdAt    DateTime            @default(now())
+
+  reviewItem ReviewItem @relation(fields: [reviewItemId], references: [id])
+
+  @@index([reviewItemId])
+  @@index([source, ruleCode])
 }

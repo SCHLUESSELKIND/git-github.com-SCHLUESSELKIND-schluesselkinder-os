@@ -71,3 +71,48 @@ export const fragmentPlacementSchema = z.enum([
   "CHANNEL_COPY",
   "OBJECT_ARCHIVE"
 ]);
+
+export const reviewStageSchema = z.enum([
+  "MOODBOARD_REVIEW",
+  "CONTENT_REVIEW",
+  "SCHEDULE_REVIEW"
+]);
+
+export const reviewStatusSchema = z.enum([
+  "PENDING",
+  "APPROVED",
+  "REJECTED",
+  "NEEDS_REVISION",
+  "ARCHIVED"
+]);
+
+export const decisionTypeSchema = z.enum([
+  "APPROVE",
+  "REJECT",
+  "REQUEST_REVISION",
+  "ARCHIVE"
+]);
+
+export const reviewSubjectTypeSchema = z.enum([
+  "MUSIC_RELEASE",
+  "TRACK",
+  "CAMPAIGN_WORLD",
+  "ASSET",
+  "RELEASE_FRAGMENT",
+  "CHANNEL_FRAGMENT",
+  "FUTURE_MOODBOARD",
+  "FUTURE_CONTENT_ASSET",
+  "FUTURE_SCHEDULE_PLAN",
+  "FUTURE_CAMPAIGN"
+]);
+
+export const ruleViolationSourceSchema = z.enum([
+  "BRAND_RULE",
+  "VISUAL_RULE",
+  "LANGUAGE_RULE",
+  "FORBIDDEN_ENERGY",
+  "CHANNEL_RULE",
+  "SIGNAL_SCORING_RULE",
+  "CONTENT_GRAPH_COMPATIBILITY",
+  "MANUAL"
+]);

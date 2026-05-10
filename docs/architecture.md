@@ -136,6 +136,39 @@ Read-only API routes:
 
 Sprint 6 is the data structure future moodboard generation, approval checks, channel adaptation, and brand-fit scoring will read from.
 
+## Sprint 7 Approval Review
+
+Sprint 7 adds human review data structures around the Content Graph before generation, posting, scheduling, automation, or campaign execution exists.
+
+Review models:
+
+- `ReviewItem`
+- `ApprovalDecision`
+- `ApprovalComment`
+- `RuleViolation`
+
+Review stages:
+
+- `MOODBOARD_REVIEW`
+- `CONTENT_REVIEW`
+- `SCHEDULE_REVIEW`
+
+`ReviewItem.status` is the current materialized review state. `ApprovalDecision` is the append-only historical decision log.
+
+Rule violations store `source` and `ruleCode` without hard foreign keys so they can reference Brand Intelligence rules, Content Graph compatibility, or manual findings without locking the schema too early.
+
+Read-only API routes:
+
+- `/reviews`
+- `/reviews/:reviewKey`
+- `/reviews/stages`
+- `/reviews/statuses`
+- `/reviews/:reviewKey/decisions`
+- `/reviews/:reviewKey/comments`
+- `/reviews/:reviewKey/violations`
+
+Sprint 7 does not implement write routes, auth, admin UI, status transitions, processors, schedulers, posting, generation, prompts, or integrations.
+
 ## Security Direction
 
 - No secrets in Git.

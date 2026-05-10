@@ -9,6 +9,7 @@ import { registerFragmentRoutes } from "./routes/fragments.js";
 import { registerHealthRoutes } from "./routes/health.js";
 import { registerMusicRoutes } from "./routes/music.js";
 import { registerObjectRoutes } from "./routes/objects.js";
+import { registerReviewRoutes } from "./routes/reviews.js";
 
 type BuildServerOptions = Readonly<{
   repositories?: ApiRepositories;
@@ -50,6 +51,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerFragmentRoutes(instance, repositories));
   void server.register(async (instance) => registerBrandIntelligenceRoutes(instance, repositories));
   void server.register(async (instance) => registerContentGraphRoutes(instance, repositories));
+  void server.register(async (instance) => registerReviewRoutes(instance, repositories));
 
   return server;
 }

@@ -77,6 +77,13 @@ The API exposes read-only archive endpoints when `services/api` is running:
 - `/content-graph/channel-fragments`
 - `/content-graph/compatibility`
 - `/content-graph/music/:releaseCode`
+- `/reviews`
+- `/reviews/:reviewKey`
+- `/reviews/stages`
+- `/reviews/statuses`
+- `/reviews/:reviewKey/decisions`
+- `/reviews/:reviewKey/comments`
+- `/reviews/:reviewKey/violations`
 
 Start local Postgres:
 
@@ -188,6 +195,7 @@ Implemented:
 - Read-only API routes for artists, objects, music, and fragments
 - Read-only Brand Intelligence routes and seed data
 - Read-only Content Graph routes for semantic asset orchestration
+- Read-only Approval Review routes for human gate records
 - Zod response contracts for archive endpoints
 - Placeholder packages for UI and brand data
 - Architecture documentation
@@ -207,6 +215,8 @@ Not implemented yet:
 Recommended next sprint: plan the approval layer around content graph relationships, rule violations, and human review. Stripe, Printful, checkout, carts, inventory, auth, admin UI, and fulfillment remain separate future sprints.
 
 Sprint 6 Content Graph deliberately does not include uploads, CDN logic, AI generation, prompts, approval queues, posting, scheduling, automation, or admin UI.
+
+Sprint 7 Approval Review deliberately does not include write routes, auth, admin UI, state transitions, processors, AI generation, prompts, scheduling, posting, automation, or integrations. `ApprovalDecision` records are append-only history; `ReviewItem.status` is only the current materialized review state.
 
 ## Prisma Version
 

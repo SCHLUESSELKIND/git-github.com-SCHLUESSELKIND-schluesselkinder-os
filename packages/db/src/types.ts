@@ -1,4 +1,6 @@
 import type {
+  ApprovalComment,
+  ApprovalDecision,
   Asset,
   AssetTag,
   AssetTagAssignment,
@@ -20,6 +22,8 @@ import type {
   MoodReference,
   ObjectRelease,
   ReleaseFragment,
+  ReviewItem,
+  RuleViolation,
   SignalScoringRule,
   Track,
   TrackMoodReference,
@@ -28,6 +32,8 @@ import type {
   VoiceProfile
 } from "@prisma/client";
 
+export type ApprovalCommentRecord = ApprovalComment;
+export type ApprovalDecisionRecord = ApprovalDecision;
 export type AssetRecord = Asset;
 export type AssetTagAssignmentRecord = AssetTagAssignment;
 export type AssetTagRecord = AssetTag;
@@ -54,6 +60,8 @@ export type ObjectReleaseRecord = ObjectRelease & {
   artist?: Artist | null;
 };
 export type ReleaseFragmentRecord = ReleaseFragment;
+export type ReviewItemRecord = ReviewItem;
+export type RuleViolationRecord = RuleViolation;
 export type SignalScoringRuleRecord = SignalScoringRule;
 export type TrackRecord = Track;
 export type TrackMoodReferenceRecord = TrackMoodReference;

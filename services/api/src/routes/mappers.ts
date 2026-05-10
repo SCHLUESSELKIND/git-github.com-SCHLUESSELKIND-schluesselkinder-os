@@ -1,4 +1,6 @@
 import type {
+  ApprovalCommentRecord,
+  ApprovalDecisionRecord,
   AssetRecord,
   AssetTagRecord,
   AudiencePersonaRecord,
@@ -15,6 +17,8 @@ import type {
   MoodReferenceRecord,
   ObjectReleaseRecord,
   ReleaseFragmentRecord,
+  ReviewItemRecord,
+  RuleViolationRecord,
   SignalScoringRuleRecord,
   VisualRuleRecord,
   VisualEnvironmentRecord,
@@ -354,5 +358,64 @@ export function mapChannelFragment(channelFragment: ChannelFragmentRecord) {
     moodReference: channelFragment.moodReference,
     placement: channelFragment.placement,
     weight: channelFragment.weight
+  };
+}
+
+export function mapApprovalDecision(decision: ApprovalDecisionRecord) {
+  return {
+    createdAt: decision.createdAt.toISOString(),
+    decidedBy: decision.decidedBy,
+    id: decision.id,
+    note: decision.note,
+    reviewItemId: decision.reviewItemId,
+    type: decision.type
+  };
+}
+
+export function mapApprovalComment(comment: ApprovalCommentRecord) {
+  return {
+    author: comment.author,
+    body: comment.body,
+    createdAt: comment.createdAt.toISOString(),
+    id: comment.id,
+    reviewItemId: comment.reviewItemId
+  };
+}
+
+export function mapRuleViolation(violation: RuleViolationRecord) {
+  return {
+    active: violation.active,
+    createdAt: violation.createdAt.toISOString(),
+    detail: violation.detail,
+    id: violation.id,
+    reviewItemId: violation.reviewItemId,
+    ruleCode: violation.ruleCode,
+    severity: violation.severity,
+    source: violation.source,
+    title: violation.title
+  };
+}
+
+export function mapReviewItem(reviewItem: ReviewItemRecord) {
+  return {
+    asset: reviewItem.asset,
+    campaignWorld: reviewItem.campaignWorld,
+    channelFragment: reviewItem.channelFragment,
+    comments: reviewItem.comments.map(mapApprovalComment),
+    createdAt: reviewItem.createdAt.toISOString(),
+    decisions: reviewItem.decisions.map(mapApprovalDecision),
+    id: reviewItem.id,
+    musicRelease: reviewItem.musicRelease,
+    releaseFragment: reviewItem.releaseFragment,
+    reviewKey: reviewItem.reviewKey,
+    stage: reviewItem.stage,
+    status: reviewItem.status,
+    subjectKey: reviewItem.subjectKey,
+    subjectType: reviewItem.subjectType,
+    summary: reviewItem.summary,
+    title: reviewItem.title,
+    track: reviewItem.track,
+    updatedAt: reviewItem.updatedAt.toISOString(),
+    violations: reviewItem.violations.map(mapRuleViolation)
   };
 }

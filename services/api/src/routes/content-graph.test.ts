@@ -227,6 +227,13 @@ const repositories: ApiRepositories = {
         weight: 100
       }
     ]
+  },
+  reviews: {
+    findByReviewKey: async () => null,
+    list: async () => [],
+    listComments: async () => null,
+    listDecisions: async () => null,
+    listViolations: async () => null
   }
 };
 
