@@ -5,6 +5,7 @@ import { createPrismaRepositories, type ApiRepositories } from "./repositories.j
 import { registerArtistRoutes } from "./routes/artists.js";
 import { registerBrandIntelligenceRoutes } from "./routes/brand-intelligence.js";
 import { registerContentGraphRoutes } from "./routes/content-graph.js";
+import { registerEvaluationRoutes } from "./routes/evaluation.js";
 import { registerFragmentRoutes } from "./routes/fragments.js";
 import { registerGenerationRoutes } from "./routes/generation.js";
 import { registerHealthRoutes } from "./routes/health.js";
@@ -54,6 +55,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerContentGraphRoutes(instance, repositories));
   void server.register(async (instance) => registerReviewRoutes(instance, repositories));
   void server.register(async (instance) => registerGenerationRoutes(instance, repositories));
+  void server.register(async (instance) => registerEvaluationRoutes(instance, repositories));
 
   return server;
 }

@@ -94,6 +94,10 @@ The API exposes read-only archive endpoints when `services/api` is running:
 - `/generation/outputs`
 - `/generation/outputs/:outputKey`
 - `/generation/outputs/:outputKey/evaluations`
+- `/evaluation/health`
+- `/evaluation/generation/outputs/:outputKey`
+- `/evaluation/generation/briefs/:briefKey`
+- `/evaluation/rules/constraints/:bundleCode`
 
 Start local Postgres:
 
@@ -207,6 +211,7 @@ Implemented:
 - Read-only Content Graph routes for semantic asset orchestration
 - Read-only Approval Review routes for human gate records
 - Read-only Controlled Generation routes for constrained planning records
+- Read-only Evaluation routes for conservative rule-engine reports
 - Zod response contracts for archive endpoints
 - Placeholder packages for UI and brand data
 - Architecture documentation
@@ -223,13 +228,15 @@ Not implemented yet:
 
 ## Next Sprint
 
-Recommended next sprint: review the controlled generation contracts and decide whether to add rule-resolution inspection before any provider integration. Stripe, Printful, checkout, carts, inventory, auth, admin UI, posting, scheduling, workers, and fulfillment remain separate future sprints.
+Recommended next sprint: review evaluation coverage and decide whether rule-resolution reports need persistence later. Stripe, Printful, checkout, carts, inventory, auth, admin UI, posting, scheduling, workers, and fulfillment remain separate future sprints.
 
 Sprint 6 Content Graph deliberately does not include uploads, CDN logic, AI generation, prompts, approval queues, posting, scheduling, automation, or admin UI.
 
 Sprint 7 Approval Review deliberately does not include write routes, auth, admin UI, state transitions, processors, AI generation, prompts, scheduling, posting, automation, or integrations. `ApprovalDecision` records are append-only history; `ReviewItem.status` is only the current materialized review state.
 
 Sprint 8 Controlled Generation deliberately does not include AI provider SDKs, real generation, prompt execution, uploads, file generation, media rendering, social APIs, schedulers, cron jobs, autopublish, admin UI, auth, commerce, workers, or execution logic. `GenerationOutput` must stay bound to a `ReviewItem`; approval truth remains only in `ReviewItem` and `ApprovalDecision`.
+
+Sprint 9 Evaluation Rule Engine deliberately does not include AI generation, prompt execution, provider SDKs, workers, posting, scheduling, social APIs, admin UI, auth, commerce, database mutation from evaluator execution, engagement-first scoring, or virality optimization. Evaluation reports have no approval authority: `reviewRequired` is always `true`, `usableWithoutReview` is always `false`, and `approvalAuthority` is always `false`.
 
 ## Prisma Version
 

@@ -210,6 +210,35 @@ Read-only API routes:
 
 Sprint 8 does not implement AI provider SDKs, prompt execution, real generation, uploads, file generation, media rendering, schedulers, posting, social APIs, workers, auth, admin UI, commerce, or execution logic.
 
+## Sprint 9 Evaluation Rule Engine
+
+Sprint 9 adds a conservative validation layer for generation briefs and outputs.
+
+The evaluator is not a creative agent and not an engagement optimizer. It resolves constraints, detects forbidden energy, validates Content Graph compatibility, computes brand-first signal scores, and returns machine-readable reports.
+
+Evaluation report constants:
+
+- `reviewRequired: true`
+- `usableWithoutReview: false`
+- `approvalAuthority: false`
+
+Verdicts are advisory validation results only:
+
+- `PASS`: no blocking findings; human review is still required.
+- `WARNING`: non-blocking concerns; human review is still required.
+- `FAIL`: blocked before approval review.
+
+Read-only API routes:
+
+- `/evaluation/health`
+- `/evaluation/generation/outputs/:outputKey`
+- `/evaluation/generation/briefs/:briefKey`
+- `/evaluation/rules/constraints/:bundleCode`
+
+Sprint 9 does not add Prisma models. Evaluator functions are pure TypeScript and do not mutate the database. The evaluator does not create `RuleViolation`, `ApprovalDecision`, `ReviewItem`, or `GenerationOutputEvaluation` rows.
+
+Sprint 9 excludes AI generation, prompt execution, provider SDKs, workers, posting, scheduling, social APIs, admin UI, auth, commerce, engagement-first scoring, virality optimization, CTR optimization, and reach maximization.
+
 ## Security Direction
 
 - No secrets in Git.
