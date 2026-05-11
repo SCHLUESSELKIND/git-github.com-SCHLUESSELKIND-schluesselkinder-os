@@ -5,29 +5,29 @@ import { SectionFrame } from "../_components/SectionFrame";
 
 export const metadata: Metadata = {
   title: `Impressum | ${masterbrand}`,
-  description: "Impressumsplatzhalter fuer SCHLUESSELKINDER."
+  description: "Impressum fuer SCHLUESSELKINDER."
 };
 
 const rows = [
-  ["Verantwortlich", "[NAME / FIRMA EINTRAGEN]"],
-  ["Anschrift", "[ANSCHRIFT EINTRAGEN]"],
-  ["E-Mail", "[E-MAIL-ADRESSE EINTRAGEN]"],
-  ["Vertretungsberechtigte Person", "[PERSON EINTRAGEN]"],
-  ["Register / Umsatzsteuer", "[FALLS ERFORDERLICH EINTRAGEN]"]
+  ["Anbieter", "Frerich United Ventures GmbH"],
+  ["Marke", "SCHLUESSELKINDER"],
+  ["Anschrift", "An der Ronne 48, 50859 Koeln"],
+  ["Telefon", "016094642266"],
+  ["E-Mail", "ai@tomfrerich.de"],
+  ["Vertreten durch", "Geschaeftsfuehrer Thomas Frerich"],
+  ["Handelsregister", "Amtsgericht Koeln, HRB 112376"],
+  ["Umsatzsteuer-ID", "DE 356752511"]
 ] as const;
 
 export default function ImpressumPage() {
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <EditorialHero eyebrow="legal" title="Impressum.">
-        <p>Public legal record.</p>
-        <p>Manual verification required.</p>
+        <p>Angaben gemaess § 5 TMG.</p>
+        <p>Operator record.</p>
       </EditorialHero>
-      <SectionFrame kicker="impressum" title="Platzhalter.">
+      <SectionFrame kicker="impressum" title="Frerich United Ventures GmbH.">
         <div className="border-y border-stone-800">
-          <p className="border-b border-stone-800 py-5 text-sm font-black uppercase text-red-600">
-            Platzhalter vor Veröffentlichung ersetzen.
-          </p>
           {rows.map(([label, value]) => (
             <div className="grid gap-3 border-b border-stone-800 py-5 last:border-b-0 md:grid-cols-[0.35fr_1fr]" key={label}>
               <p className="text-xs font-black uppercase text-stone-500">{label}</p>

@@ -5,15 +5,17 @@ import { SectionFrame } from "../_components/SectionFrame";
 
 export const metadata: Metadata = {
   title: `Datenschutz | ${masterbrand}`,
-  description: "Datenschutzplatzhalter fuer SCHLUESSELKINDER."
+  description: "Datenschutzhinweise fuer SCHLUESSELKINDER."
 };
 
 const sections = [
-  ["Verantwortliche Stelle", "[NAME / FIRMA / KONTAKT EINTRAGEN]"],
-  ["Hosting", "[HOSTING-ANBIETER UND SERVERSTANDORT EINTRAGEN]"],
-  ["Server-Logs", "[LOG-UMFANG UND SPEICHERDAUER EINTRAGEN]"],
-  ["Kontaktaufnahme", "[E-MAIL-VERARBEITUNG UND SPEICHERDAUER EINTRAGEN]"],
-  ["Analyse", "In der Öffnungsphase keine Marketing-Pixel und keine Werbeprofile."]
+  ["Verantwortliche Stelle", "Frerich United Ventures GmbH, SCHLUESSELKINDER, An der Ronne 48, 50859 Koeln. Kontakt: ai@tomfrerich.de."],
+  ["Hosting", "Hosting-Anbieter: Hetzner Online GmbH. Serverstandort: Deutschland / Europaeische Union."],
+  ["Server-Logs", "Server-Logs koennen IP-Adresse, Zeitpunkt, angefragte URL, Referrer, User-Agent und technischen Status enthalten. Die Verarbeitung dient Stabilitaet, Sicherheit und Fehleranalyse. Speicherdauer: in der Regel bis zu 14 Tage, sofern kein Sicherheitsvorfall eine laengere Aufbewahrung erfordert."],
+  ["Kontaktaufnahme", "Wenn per E-Mail Kontakt aufgenommen wird, werden die uebermittelten Angaben zur Bearbeitung der Anfrage verarbeitet. Die Kommunikation bleibt manuell. Daten werden nach Abschluss der Anfrage geloescht, sofern keine gesetzlichen Aufbewahrungspflichten entgegenstehen."],
+  ["Technische Daten", "Es werden nur technische Daten verarbeitet, die fuer Betrieb, Sicherheit und Auslieferung der Website erforderlich sind."],
+  ["Keine Marketing-Systeme", "In der Oeffnungsphase gibt es kein Marketing-Tracking, kein Retargeting, keine Werbeprofile und keine Advertising-Optimierungssysteme."],
+  ["Keine Profilbildung", "Es gibt keine automatisierte Profilbildung, keine automatisierten Entscheidungen und keine verhaltensbasierte Optimierung."]
 ] as const;
 
 export default function DatenschutzPage() {
@@ -21,13 +23,10 @@ export default function DatenschutzPage() {
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <EditorialHero eyebrow="legal" title="Datenschutz.">
         <p>Minimal record.</p>
-        <p>No marketing profile.</p>
+        <p>No marketing tracking.</p>
       </EditorialHero>
-      <SectionFrame kicker="datenschutz" title="Vor Veröffentlichung prüfen.">
+      <SectionFrame kicker="datenschutz" title="Technical only.">
         <div className="border-y border-stone-800">
-          <p className="border-b border-stone-800 py-5 text-sm font-black uppercase text-red-600">
-            Platzhalter vor Veröffentlichung ersetzen.
-          </p>
           {sections.map(([label, value]) => (
             <div className="grid gap-3 border-b border-stone-800 py-5 last:border-b-0 md:grid-cols-[0.35fr_1fr]" key={label}>
               <p className="text-xs font-black uppercase text-stone-500">{label}</p>
