@@ -7,6 +7,7 @@ import { registerBrandIntelligenceRoutes } from "./routes/brand-intelligence.js"
 import { registerContentGraphRoutes } from "./routes/content-graph.js";
 import { registerDraftRoutes } from "./routes/drafts.js";
 import { registerEvaluationRoutes } from "./routes/evaluation.js";
+import { registerExportRoutes } from "./routes/exports.js";
 import { registerFragmentRoutes } from "./routes/fragments.js";
 import { registerGenerationRoutes } from "./routes/generation.js";
 import { registerHealthRoutes } from "./routes/health.js";
@@ -58,6 +59,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerGenerationRoutes(instance, repositories));
   void server.register(async (instance) => registerEvaluationRoutes(instance, repositories));
   void server.register(async (instance) => registerDraftRoutes(instance, repositories));
+  void server.register(async (instance) => registerExportRoutes(instance, repositories));
 
   return server;
 }
