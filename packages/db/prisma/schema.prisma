@@ -55,6 +55,42 @@ enum Channel {
   SPOTIFY
 }
 
+enum Platform {
+  SOUNDCLOUD
+  SPOTIFY
+  TIKTOK
+  INSTAGRAM
+  APPLE_MUSIC
+  YOUTUBE
+  MANUAL
+  OTHER
+}
+
+enum VerificationState {
+  UNVERIFIED
+  MANUALLY_VERIFIED
+  EXTERNALLY_OBSERVED
+  STALE
+  UNAVAILABLE
+}
+
+enum ChannelVisibility {
+  INTERNAL
+  PUBLIC
+  HIDDEN
+}
+
+enum LineageType {
+  ORIGINAL
+  VARIANT
+  EDIT
+  MIX
+  REMIX
+  REMASTER
+  FRAGMENT
+  RELATED
+}
+
 enum AssetType {
   IMAGE
   VIDEO
@@ -184,6 +220,7 @@ enum EvaluationVerdict {
 
 model Artist {
   id          String       @id @default(cuid())
+  artistKey   String?      @unique
   slug        String       @unique
   name        String
   symbol      String
@@ -194,6 +231,8 @@ model Artist {
   musicReleases  MusicRelease[]
   objectReleases ObjectRelease[]
   campaignWorlds ArtistCampaignWorld[]
+  channelPresences ChannelPresence[]
+  externalReferences ExternalReference[]
 }
 
 model ObjectRelease {
@@ -209,6 +248,8 @@ model ObjectRelease {
   createdAt       DateTime      @default(now())
 
   artist Artist? @relation(fields: [artistId], references: [id])
+
+  externalReferences ExternalReference[]
 }
 
 model MusicRelease {
@@ -224,6 +265,10 @@ model MusicRelease {
   tracks Track[]
 
   campaignWorlds   MusicReleaseCampaignWorld[]
+  distributionReferences DistributionReference[]
+  externalReferences ExternalReference[]
+  parentLineage MusicReleaseLineage[] @relation("ParentMusicReleaseLineage")
+  childLineage MusicReleaseLineage[] @relation("ChildMusicReleaseLineage")
   releaseFragments ReleaseFragment[]
   reviewItems      ReviewItem[]
   generationBriefs GenerationBrief[]
@@ -231,6 +276,7 @@ model MusicRelease {
 
 model Track {
   id           String  @id @default(cuid())
+  trackKey     String? @unique
   releaseId    String
   title        String
   duration     Int?
@@ -238,10 +284,112 @@ model Track {
 
   release MusicRelease @relation(fields: [releaseId], references: [id])
 
+  distributionReferences DistributionReference[]
+  externalReferences ExternalReference[]
+  parentLineage TrackLineage[] @relation("ParentTrackLineage")
+  childLineage TrackLineage[] @relation("ChildTrackLineage")
   moodReferences   TrackMoodReference[]
   releaseFragments ReleaseFragment[]
   reviewItems      ReviewItem[]
   generationBriefs GenerationBrief[]
+}
+
+model ChannelPresence {
+  id            String            @id @default(cuid())
+  presenceKey   String            @unique
+  platform      Platform
+  handle        String?
+  profileUrl    String?
+  verifiedState VerificationState @default(UNVERIFIED)
+  visibility    ChannelVisibility @default(INTERNAL)
+  artistId      String?
+  createdAt     DateTime          @default(now())
+
+  artist Artist? @relation(fields: [artistId], references: [id])
+
+  externalReferences ExternalReference[]
+
+  @@index([artistId])
+  @@index([platform])
+}
+
+model ExternalReference {
+  id                String            @id @default(cuid())
+  referenceKey      String            @unique
+  platform          Platform
+  url               String
+  externalId        String?
+  verifiedState     VerificationState @default(UNVERIFIED)
+  sourceAuthority   Boolean           @default(false)
+  artistId          String?
+  musicReleaseId    String?
+  trackId           String?
+  objectReleaseId   String?
+  channelPresenceId String?
+  createdAt         DateTime          @default(now())
+
+  artist          Artist?          @relation(fields: [artistId], references: [id])
+  musicRelease    MusicRelease?    @relation(fields: [musicReleaseId], references: [id])
+  track           Track?           @relation(fields: [trackId], references: [id])
+  objectRelease   ObjectRelease?   @relation(fields: [objectReleaseId], references: [id])
+  channelPresence ChannelPresence? @relation(fields: [channelPresenceId], references: [id])
+
+  @@index([platform])
+  @@index([artistId])
+  @@index([musicReleaseId])
+  @@index([trackId])
+  @@index([objectReleaseId])
+  @@index([channelPresenceId])
+}
+
+model DistributionReference {
+  id              String            @id @default(cuid())
+  distributionKey String            @unique
+  platform        Platform
+  url             String?
+  externalId      String?
+  verifiedState   VerificationState @default(UNVERIFIED)
+  sourceAuthority Boolean           @default(false)
+  musicReleaseId  String?
+  trackId         String?
+  createdAt       DateTime          @default(now())
+
+  musicRelease MusicRelease? @relation(fields: [musicReleaseId], references: [id])
+  track        Track?        @relation(fields: [trackId], references: [id])
+
+  @@index([platform])
+  @@index([musicReleaseId])
+  @@index([trackId])
+}
+
+model MusicReleaseLineage {
+  id              String      @id @default(cuid())
+  lineageKey      String      @unique
+  parentReleaseId String
+  childReleaseId  String
+  relationType    LineageType
+  note            String?
+  createdAt       DateTime    @default(now())
+
+  parentRelease MusicRelease @relation("ParentMusicReleaseLineage", fields: [parentReleaseId], references: [id])
+  childRelease  MusicRelease @relation("ChildMusicReleaseLineage", fields: [childReleaseId], references: [id])
+
+  @@unique([parentReleaseId, childReleaseId, relationType])
+}
+
+model TrackLineage {
+  id            String      @id @default(cuid())
+  lineageKey    String      @unique
+  parentTrackId String
+  childTrackId  String
+  relationType  LineageType
+  note          String?
+  createdAt     DateTime    @default(now())
+
+  parentTrack Track @relation("ParentTrackLineage", fields: [parentTrackId], references: [id])
+  childTrack  Track @relation("ChildTrackLineage", fields: [childTrackId], references: [id])
+
+  @@unique([parentTrackId, childTrackId, relationType])
 }
 
 model Fragment {
