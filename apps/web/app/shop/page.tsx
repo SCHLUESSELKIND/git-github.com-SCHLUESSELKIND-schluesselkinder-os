@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { masterbrand, seedCopy } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../_components/BrandSymbol";
 import { SectionFrame } from "../_components/SectionFrame";
@@ -51,6 +52,23 @@ export default function ShopPage() {
         </div>
       </section>
       <SymbolRail labels={["NO CART", "NO STOCK", "NO SALE", "OBJECT", "LATER"]} />
+      <SectionFrame kicker="archive record" title="SK-001.">
+        <Link
+          className="grid gap-8 border-y border-stone-800 py-8 transition-colors hover:border-red-950 md:grid-cols-[0.3fr_1fr_0.5fr]"
+          href="/objects/sk-001"
+        >
+          <p className="text-xs font-black uppercase text-red-600">SK-001</p>
+          <div>
+            <h2 className="text-5xl font-black uppercase leading-none text-stone-100 md:text-7xl">
+              BLACK HOODIE / KEY
+            </h2>
+            <p className="mt-5 max-w-xl text-lg leading-7 text-stone-400">
+              Signal zuerst. Ware später.
+            </p>
+          </div>
+          <p className="self-end text-xs font-black uppercase text-stone-500">view archive record</p>
+        </Link>
+      </SectionFrame>
       <SectionFrame kicker="object archive" title="Object studies.">
         <ShopPreview />
       </SectionFrame>

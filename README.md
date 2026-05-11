@@ -172,6 +172,11 @@ Web:
 - `NEXT_PUBLIC_API_URL`
 - `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED`
 
+Production public opening requirement:
+
+- Set `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=false` for public deployments.
+- Internal evaluation routes are local inspection surfaces only and must not be exposed as public product surfaces.
+
 API:
 
 - `API_HOST`
