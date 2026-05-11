@@ -1,0 +1,19 @@
+name: schluesselkinder_web
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        NEXT_PUBLIC_APP_NAME: SCHLUESSELKINDER
+        NEXT_PUBLIC_WEB_URL: https://schluesselkinder.de
+        NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED: "false"
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_APP_NAME: SCHLUESSELKINDER
+      NEXT_PUBLIC_WEB_URL: https://schluesselkinder.de
+      NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED: "false"
+    ports:
+      - "127.0.0.1:3091:3000"
+    restart: unless-stopped

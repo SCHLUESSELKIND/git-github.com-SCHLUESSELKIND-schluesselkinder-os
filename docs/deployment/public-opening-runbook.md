@@ -15,9 +15,16 @@ The deployment is web-only:
 - no Printful
 - no social automation
 
+Two production modes are supported:
+
+- dedicated VPS mode: this repo runs both the Next.js web container and its own Caddy container
+- existing-server mode: an existing host Caddy reverse-proxies to a localhost-only Next.js web container
+
+Use exactly one mode. Do not run the dedicated Caddy container on a server where host Caddy already owns `80` and `443`.
+
 ## 1. Server Prerequisites
 
-Provision one Hetzner VPS.
+Use either one dedicated Hetzner VPS or one approved existing Hetzner server.
 
 Required server basics:
 
@@ -29,6 +36,16 @@ Required server basics:
 - enough disk space for one current and one rollback image
 
 Do not expose database ports.
+
+Existing-server mode additionally requires:
+
+- existing host Caddy already owns public `80` and `443`
+- localhost port `3091` is unused
+- SCHLUESSELKINDER app path is isolated at `/opt/schluesselkinder/schluesselkinder-os`
+- SCHLUESSELKINDER env file, if introduced later, is isolated from every other brand
+- SCHLUESSELKINDER compose project name remains isolated as `schluesselkinder_web`
+
+Never share env files between brands.
 
 ## 2. Clone From Clean Git Commit
 
@@ -51,7 +68,7 @@ Do not copy local untracked files such as `newsroom_connector.py` to the server.
 
 ## 3. Production Environment
 
-The first web-only deployment uses the environment values embedded in `docker-compose.prod.yml`.
+The first web-only deployment uses explicit public environment values.
 
 Required production boundary:
 
@@ -64,32 +81,93 @@ NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=false
 
 Do not set `NEXT_PUBLIC_API_URL` for the first silent live.
 
-## 4. Build
+In existing-server mode, keep these values on the `web` service in `docker-compose.existing-server.yml`. If a server-side env file is introduced later, keep it under a SCHLUESSELKINDER-only path such as `/opt/schluesselkinder/env/web.env`.
+
+## 4. Dedicated VPS Mode
+
+Use this mode only when SCHLUESSELKINDER owns the server Caddy surface.
 
 From the repo root:
 
 ```bash
 docker compose -f docker-compose.prod.yml build web
-```
-
-This builds only the Next.js public web app.
-
-## 5. Start
-
-```bash
 docker compose -f docker-compose.prod.yml up -d
 docker compose -f docker-compose.prod.yml ps
 ```
 
-Only `web` and `caddy` should be running.
+Expected:
+
+- `web` is running
+- `caddy` is running
+- public ports exposed by compose are only `80` and `443`
+- no API, database, Redis, worker, or scheduler services exist
+
+Inspect logs:
+
+```bash
+docker compose -f docker-compose.prod.yml logs --tail=100 web
+docker compose -f docker-compose.prod.yml logs --tail=100 caddy
+```
+
+## 5. Existing-Server Mode
+
+Use this mode when the server already runs shared host Caddy for multiple brands.
+
+The existing-server compose file runs only the Next.js web container:
+
+```bash
+docker compose -f docker-compose.existing-server.yml build web
+docker compose -f docker-compose.existing-server.yml up -d
+docker compose -f docker-compose.existing-server.yml ps
+```
+
+Expected:
+
+- only the `web` service is created by this compose file
+- the container binds `127.0.0.1:3091:3000`
+- port `3091` is not exposed publicly
+- host Caddy, not a container Caddy, handles public `80` and `443`
+
+Verify the localhost-only binding:
+
+```bash
+sudo ss -tulpn | grep ':3091'
+```
+
+Expected binding:
+
+```text
+127.0.0.1:3091
+```
+
+Stop if the binding is `0.0.0.0:3091` or `[::]:3091`.
+
+Install the SCHLUESSELKINDER Caddy site block only after backing up and validating the existing host Caddy configuration:
+
+```bash
+sudo cp /etc/caddy/Caddyfile /etc/caddy/Caddyfile.bak.$(date +%Y%m%d%H%M%S)
+sudo grep -R "schluesselkinder.de" -n /etc/caddy || true
+sudo caddy validate --config /etc/caddy/Caddyfile
+```
+
+Then add the contents of `deploy/schluesselkinder.caddy` to the host Caddy configuration using the server's existing Caddy pattern.
+
+Validate before reload:
+
+```bash
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+sudo systemctl status caddy --no-pager
+```
+
+Never restart shared Caddy blindly. Use `caddy validate`, then `systemctl reload caddy`.
 
 ## 6. Local Server IP Check
 
 Before DNS cutover, verify the site from the server:
 
 ```bash
-docker compose -f docker-compose.prod.yml logs --tail=100 web
-docker compose -f docker-compose.prod.yml logs --tail=100 caddy
+curl -I http://127.0.0.1:3091
 ```
 
 If DNS is not pointed yet, use a local hosts-file override from a test machine:
@@ -124,7 +202,6 @@ Verify:
 ```bash
 curl -I https://schluesselkinder.de
 curl -I https://www.schluesselkinder.de
-docker compose -f docker-compose.prod.yml logs --tail=100 caddy
 ```
 
 Expected:
@@ -132,6 +209,18 @@ Expected:
 - valid HTTPS
 - no certificate errors
 - responses come from Caddy
+
+For dedicated VPS mode, inspect Caddy logs with:
+
+```bash
+docker compose -f docker-compose.prod.yml logs --tail=100 caddy
+```
+
+For existing-server mode, inspect host Caddy logs with:
+
+```bash
+sudo journalctl -u caddy -n 100 --no-pager
+```
 
 ## 9. Public Route Checklist
 
@@ -166,6 +255,8 @@ Verify:
 
 ## 11. Rollback
 
+### Dedicated VPS Mode
+
 Rollback by returning to the previous known-good Git commit and rebuilding the web container:
 
 ```bash
@@ -182,16 +273,49 @@ docker compose -f docker-compose.prod.yml restart caddy
 docker compose -f docker-compose.prod.yml logs --tail=100 caddy
 ```
 
+### Existing-Server Mode
+
+Rollback the web container:
+
+```bash
+git checkout <PREVIOUS_COMMIT_HASH>
+docker compose -f docker-compose.existing-server.yml build web
+docker compose -f docker-compose.existing-server.yml up -d web
+docker compose -f docker-compose.existing-server.yml ps
+docker compose -f docker-compose.existing-server.yml logs --tail=100 web
+```
+
+Rollback shared Caddy configuration only from the backup made before mutation:
+
+```bash
+sudo cp /etc/caddy/Caddyfile.bak.<TIMESTAMP> /etc/caddy/Caddyfile
+sudo caddy validate --config /etc/caddy/Caddyfile
+sudo systemctl reload caddy
+sudo systemctl status caddy --no-pager
+```
+
+Do not restart shared Caddy unless explicitly approved.
+
 If DNS is the issue, restore the previous IONOS records.
 
 ## 12. Logs
 
 Use only the minimal logs needed for silent-live stability:
 
+Dedicated VPS mode:
+
 ```bash
 docker compose -f docker-compose.prod.yml ps
 docker compose -f docker-compose.prod.yml logs --tail=100 web
 docker compose -f docker-compose.prod.yml logs --tail=100 caddy
+```
+
+Existing-server mode:
+
+```bash
+docker compose -f docker-compose.existing-server.yml ps
+docker compose -f docker-compose.existing-server.yml logs --tail=100 web
+sudo journalctl -u caddy -n 100 --no-pager
 ```
 
 Do not add analytics, growth dashboards, session replay, ad pixels, or social tracking for the first opening.
