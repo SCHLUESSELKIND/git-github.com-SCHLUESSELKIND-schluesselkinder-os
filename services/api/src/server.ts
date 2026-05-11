@@ -1,6 +1,8 @@
 import Fastify from "fastify";
 import { pathToFileURL } from "node:url";
 import { loadApiEnv } from "./config/env.js";
+import { createRegistryRepository } from "./registry/registry-repository.js";
+import type { RegistryRepository } from "./registry/registry-types.js";
 import { createPrismaRepositories, type ApiRepositories } from "./repositories.js";
 import { registerArtistRoutes } from "./routes/artists.js";
 import { registerBrandIntelligenceRoutes } from "./routes/brand-intelligence.js";
@@ -13,15 +15,18 @@ import { registerGenerationRoutes } from "./routes/generation.js";
 import { registerHealthRoutes } from "./routes/health.js";
 import { registerMusicRoutes } from "./routes/music.js";
 import { registerObjectRoutes } from "./routes/objects.js";
+import { registerRegistryRoutes } from "./routes/registry.js";
 import { registerReviewRoutes } from "./routes/reviews.js";
 
 type BuildServerOptions = Readonly<{
+  registryRepository?: RegistryRepository;
   repositories?: ApiRepositories;
 }>;
 
 export function buildServer(options: BuildServerOptions = {}) {
   const env = loadApiEnv();
   const repositories = options.repositories ?? createPrismaRepositories();
+  const registryRepository = options.registryRepository ?? createRegistryRepository();
   const server = Fastify({
     logger: {
       level: env.logLevel,
@@ -60,6 +65,7 @@ export function buildServer(options: BuildServerOptions = {}) {
   void server.register(async (instance) => registerEvaluationRoutes(instance, repositories));
   void server.register(async (instance) => registerDraftRoutes(instance, repositories));
   void server.register(async (instance) => registerExportRoutes(instance, repositories));
+  void server.register(async (instance) => registerRegistryRoutes(instance, registryRepository));
 
   return server;
 }
