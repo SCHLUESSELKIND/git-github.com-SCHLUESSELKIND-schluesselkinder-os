@@ -7,13 +7,20 @@ import { RotatedMeta } from "../../_components/RotatedMeta";
 import { SectionFrame } from "../../_components/SectionFrame";
 import { SymbolRail } from "../../_components/SymbolRail";
 import { TrackList } from "../../_components/TrackList";
+import { getCatalogArtist } from "../../../lib/catalog/catalog-queries";
+import type { CatalogArtistProjection } from "../../../lib/catalog/catalog-types";
+
+const artistKey = "artist_shibari_kawaii";
 
 export const metadata: Metadata = {
   title: `${firstArtist.name} | ${masterbrand}`,
   description: "SHIBARI KAWAII artist signal for SCHLUESSELKINDER."
 };
 
-export default function ShibariKawaiiPage() {
+export default async function ShibariKawaiiPage() {
+  const artistProjection = await readArtistProjection();
+  const displayName = artistProjection?.displayName ?? firstArtist.name;
+
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <section className="relative min-h-[calc(100vh-57px)] border-b border-stone-800">
@@ -24,7 +31,7 @@ export default function ShibariKawaiiPage() {
                 <p className="text-xs font-black uppercase text-red-600">{firstArtist.archiveCode}</p>
                 <BrandSymbol
                   className="h-48 w-36 opacity-60 md:h-[22rem] md:w-64"
-                  label={`${firstArtist.name} archival stamp`}
+                  label={`${displayName} archival stamp`}
                   variant="ropeface"
                 />
               </div>
@@ -32,7 +39,7 @@ export default function ShibariKawaiiPage() {
             </div>
             <div className="max-w-5xl pb-4 text-xl leading-8 text-stone-300">
               <h1 className="mb-8 text-xs font-black uppercase tracking-[0.45em] text-stone-500">
-                {firstArtist.name}
+                {displayName}
               </h1>
               <p
                 className="font-black uppercase text-stone-100"
@@ -97,4 +104,12 @@ export default function ShibariKawaiiPage() {
       </section>
     </main>
   );
+}
+
+async function readArtistProjection(): Promise<CatalogArtistProjection | null> {
+  try {
+    return await getCatalogArtist(artistKey);
+  } catch {
+    return null;
+  }
 }
