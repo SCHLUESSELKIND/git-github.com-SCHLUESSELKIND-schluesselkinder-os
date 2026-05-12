@@ -48,7 +48,7 @@ const musicRelease = {
   createdAt: now,
   id: "release-1",
   releaseCode: "SKM-003",
-  status: "ACTIVE",
+  status: "ACTIVE" as const,
   title: "ROPEMASTER",
   tracks: [
     {
@@ -56,7 +56,7 @@ const musicRelease = {
       release: null
     }
   ]
-} as const;
+};
 
 const channelPresence = {
   artist: {

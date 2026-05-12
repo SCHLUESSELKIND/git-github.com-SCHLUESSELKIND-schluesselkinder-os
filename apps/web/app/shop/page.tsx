@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { masterbrand, seedCopy } from "@schluesselkinder/brand";
+import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../_components/BrandSymbol";
 import { SectionFrame } from "../_components/SectionFrame";
-import { ShopPreview } from "../_components/ShopPreview";
 import { SymbolRail } from "../_components/SymbolRail";
 
 export const metadata: Metadata = {
@@ -22,36 +21,38 @@ export default function ShopPage() {
               <BrandSymbol className="h-14 w-14 text-stone-100/70" />
             </div>
             <div>
-              <h1 className="max-w-5xl font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 10vw, 9rem)", lineHeight: 0.82 }}>
-                {seedCopy.shopSignal.en}
+              <h1 className="max-w-5xl break-words font-black uppercase text-stone-100" style={{ fontSize: "clamp(3rem, 9vw, 8.25rem)", lineHeight: 0.82 }}>
+                Archiv offen. Store geschlossen.
               </h1>
-              <p className="mt-8 text-xl leading-8 text-stone-300">{seedCopy.shopSignal.de}</p>
+              <p className="mt-8 text-xl leading-8 text-stone-300">Signal zuerst. Ware später.</p>
             </div>
-            <div className="grid gap-0 border-y border-stone-800 text-xs font-black uppercase text-stone-100 md:grid-cols-3">
-              {seedCopy.commerceBoundary.map((line) => (
-                <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0" key={line}>
-                  {line}
-                </p>
-              ))}
+            <div className="grid gap-0 border-y border-stone-800 text-xs font-black uppercase text-stone-500 md:grid-cols-3">
+              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">SK-001</p>
+              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">BLACK HOODIE / KEY</p>
+              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">TRANSACTION CLOSED</p>
             </div>
           </div>
-          <div className="flex min-h-[560px] flex-col justify-between border border-stone-800 bg-[#0b0a08] p-5 md:p-8">
-            <p className="text-xs font-black uppercase text-red-600">future object system</p>
-            <div className="grid gap-4">
-              <div className="h-px bg-stone-800" />
-              <div className="h-24 border-x border-stone-800" />
-              <div className="h-px bg-stone-800" />
+          <Link
+            className="flex min-h-[560px] flex-col justify-between border border-stone-800 bg-[#0b0a08] p-5 transition-colors hover:border-red-950 md:p-8"
+            href="/objects/sk-001"
+          >
+            <div className="flex items-start justify-between gap-8">
+              <p className="text-xs font-black uppercase text-red-600">archive record</p>
+              <BrandSymbol className="h-16 w-16 text-stone-500" />
             </div>
-            <div className="grid gap-8 md:grid-cols-[120px_1fr]">
-              <BrandSymbol className="h-24 w-24 text-stone-600" />
-              <p className="max-w-md text-3xl font-black uppercase leading-none text-stone-100">
-                {seedCopy.shopArchive.de}
-              </p>
+            <div>
+              <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-600">SK-001</p>
+              <h2 className="mt-8 max-w-xl break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
+                BLACK HOODIE / KEY
+              </h2>
             </div>
-          </div>
+            <p className="max-w-sm text-xs font-black uppercase leading-5 text-stone-500">
+              Object type: hoodie. Status: archive record. Transaction: closed.
+            </p>
+          </Link>
         </div>
       </section>
-      <SymbolRail labels={["NO CART", "NO STOCK", "NO SALE", "OBJECT", "LATER"]} />
+      <SymbolRail labels={["SK-001", "KEY", "BLACK", "COTTON", "CLOSED"]} />
       <SectionFrame kicker="archive record" title="SK-001.">
         <Link
           className="grid gap-8 border-y border-stone-800 py-8 transition-colors hover:border-red-950 md:grid-cols-[0.3fr_1fr_0.5fr]"
@@ -59,18 +60,31 @@ export default function ShopPage() {
         >
           <p className="text-xs font-black uppercase text-red-600">SK-001</p>
           <div>
-            <h2 className="text-5xl font-black uppercase leading-none text-stone-100 md:text-7xl">
+            <h2 className="break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
               BLACK HOODIE / KEY
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-7 text-stone-400">
               Signal zuerst. Ware später.
             </p>
           </div>
-          <p className="self-end text-xs font-black uppercase text-stone-500">view archive record</p>
+          <p className="self-end text-xs font-black uppercase text-stone-500">archive record</p>
         </Link>
       </SectionFrame>
-      <SectionFrame kicker="object archive" title="Object studies.">
-        <ShopPreview />
+      <SectionFrame kicker="object boundary" title="No storefront.">
+        <div className="border-y border-stone-800">
+          <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
+            <p className="text-xs font-black uppercase text-stone-500">archive</p>
+            <p className="text-sm font-black uppercase leading-7 text-stone-200">SCHLUESSELKINDER OBJECTS</p>
+          </div>
+          <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
+            <p className="text-xs font-black uppercase text-stone-500">visible record</p>
+            <p className="text-sm font-black uppercase leading-7 text-stone-200">SK-001</p>
+          </div>
+          <div className="grid gap-3 py-5 md:grid-cols-[0.35fr_1fr]">
+            <p className="text-xs font-black uppercase text-stone-500">public state</p>
+            <p className="text-sm font-black uppercase leading-7 text-stone-200">Archive open. Transaction closed.</p>
+          </div>
+        </div>
       </SectionFrame>
     </main>
   );

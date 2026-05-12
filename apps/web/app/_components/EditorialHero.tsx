@@ -14,7 +14,10 @@ export function EditorialHero({ eyebrow, title, aside, children }: EditorialHero
       <div className="relative flex flex-col justify-between border-l border-stone-800 pl-5 md:pl-8">
         <p className="text-xs font-black uppercase text-red-600">{eyebrow}</p>
         <div className="py-20 md:py-28">
-          <h1 className="max-w-5xl break-words text-6xl font-black uppercase leading-[0.86] text-stone-100 md:text-9xl">
+          <h1
+            className="max-w-5xl break-words font-black uppercase text-stone-100"
+            style={{ fontSize: "clamp(3.35rem, 16vw, 8rem)", lineHeight: 0.86 }}
+          >
             {title}
           </h1>
           {children ? <div className="mt-10 max-w-2xl text-xl leading-8 text-stone-300">{children}</div> : null}

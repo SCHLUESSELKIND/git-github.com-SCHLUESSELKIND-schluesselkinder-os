@@ -14,9 +14,12 @@ export const metadata: Metadata = {
 const metadataRows = [
   ["record", "SK-001"],
   ["object", "BLACK HOODIE / KEY"],
+  ["object type", "HOODIE"],
+  ["status", "ARCHIVE RECORD"],
   ["mark", "KEY"],
   ["material note", "Key mark. Cotton study."],
-  ["boundary", "Kein Checkout. Keine Verfügbarkeitserzählung."]
+  ["transaction", "CLOSED"],
+  ["boundary", "Keine Transaktion. Keine Verfügbarkeitserzählung."]
 ] as const;
 
 export default function Sk001Page() {
@@ -31,7 +34,7 @@ export default function Sk001Page() {
             </div>
             <div>
               <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-500">SK-001</p>
-              <h1 className="mt-8 max-w-5xl font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.6rem, 9vw, 8.5rem)", lineHeight: 0.82 }}>
+              <h1 className="mt-8 max-w-5xl break-words font-black uppercase text-stone-100" style={{ fontSize: "clamp(3rem, 9vw, 8.5rem)", lineHeight: 0.82 }}>
                 BLACK HOODIE / KEY
               </h1>
               <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">
@@ -39,9 +42,9 @@ export default function Sk001Page() {
                 <p>Schwarz. Schwer. Spät.</p>
               </div>
             </div>
-            <Link className="w-fit border border-stone-800 px-4 py-3 text-xs font-black uppercase text-stone-400 hover:border-red-950 hover:text-red-700" href="/kontakt">
-              Manual inquiry only.
-            </Link>
+            <p className="max-w-sm text-xs font-black uppercase leading-5 text-stone-600">
+              Manual inquiry only. <Link className="text-stone-400 hover:text-red-700" href="/kontakt">Kontakt</Link>.
+            </p>
           </div>
           <EditorialImage
             alt="Dungeon concrete campaign environment for SK-001"
@@ -55,7 +58,7 @@ export default function Sk001Page() {
         </div>
       </section>
       <SymbolRail labels={["SK-001", "KEY", "BLACK", "COTTON", "ARCHIVE"]} />
-      <SectionFrame kicker="archive metadata" title="No storefront.">
+      <SectionFrame kicker="archive metadata" title="Archive record.">
         <div className="border-y border-stone-800">
           {metadataRows.map(([label, value]) => (
             <div className="grid gap-3 border-b border-stone-800 py-5 last:border-b-0 md:grid-cols-[0.35fr_1fr]" key={label}>

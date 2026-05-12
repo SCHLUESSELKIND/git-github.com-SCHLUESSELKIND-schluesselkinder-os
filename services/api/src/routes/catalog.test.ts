@@ -14,20 +14,20 @@ const artistProjection = {
 
 const releaseProjection = {
   canonicalArtwork: null,
-  publicFragments: [],
+  publicFragments: [] as string[],
   releaseCode: "SKM-003",
   releaseType: null,
-  state: "ACTIVE",
+  state: "ACTIVE" as const,
   title: "ROPEMASTER"
-} as const;
+};
 
 const trackProjection = {
-  moods: [],
+  moods: [] as string[],
   runtime: 188,
   title: "ROPEMASTER",
   trackKey: "track_sk_0001_01",
-  worlds: []
-} as const;
+  worlds: [] as string[]
+};
 
 function createCatalogServiceStub(): CatalogService {
   return {

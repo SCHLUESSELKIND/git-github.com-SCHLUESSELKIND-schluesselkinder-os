@@ -12,30 +12,42 @@ export const firstArtist = {
   },
   tracks: [
     {
-      title: "PICK ME UP",
-      code: "SK-001",
+      title: "D-DATE",
+      code: "SND-001",
       mood: "static pulse",
+      duration: "3:28",
+      platform: "SoundCloud",
+      status: "ARCHIVE SIGNAL",
+      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/d-date-shibari-kawaii",
       fragment: {
-        de: "Ein heller Griff im dunklen Raum.",
-        en: "A bright hand in a dark room."
-      }
-    },
-    {
-      title: "TUESDAY MORNING COMEDOWN",
-      code: "SK-002",
-      mood: "concrete dawn",
-      fragment: {
-        de: "Beton, Kaffee, Restlicht.",
-        en: "Concrete, coffee, remaining light."
+        de: "Datum ohne Morgen.",
+        en: "Date without morning."
       }
     },
     {
       title: "ROPEMASTER",
-      code: "SK-003",
-      mood: "ritual force",
+      code: "SND-002",
+      mood: "concrete dawn",
+      duration: "4:08",
+      platform: "SoundCloud",
+      status: "ARCHIVE SIGNAL",
+      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/ropemaster-shibari-kawaii-1",
       fragment: {
         de: "Kontrolle ohne Wärme.",
         en: "Control without warmth."
+      }
+    },
+    {
+      title: "PICK ME",
+      code: "SND-003",
+      mood: "ritual force",
+      duration: "3:57",
+      platform: "SoundCloud",
+      status: "ARCHIVE SIGNAL",
+      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/pick-me-shibari-kawaii",
+      fragment: {
+        de: "Ein heller Griff im dunklen Raum.",
+        en: "A bright hand in a dark room."
       }
     }
   ]
@@ -80,8 +92,8 @@ export const seedCopy = {
     }
   ],
   musicSignal: {
-    de: "Drei Stücke. Kein Versprechen.",
-    en: "Three tracks. No promise."
+    de: "Drei Signale im Raum.",
+    en: "Three signals in the room."
   },
   shopSignal: {
     de: "Archiv offen. Store geschlossen.",

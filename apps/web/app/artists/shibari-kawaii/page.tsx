@@ -7,20 +7,13 @@ import { RotatedMeta } from "../../_components/RotatedMeta";
 import { SectionFrame } from "../../_components/SectionFrame";
 import { SymbolRail } from "../../_components/SymbolRail";
 import { TrackList } from "../../_components/TrackList";
-import { getCatalogArtist } from "../../../lib/catalog/catalog-queries";
-import type { CatalogArtistProjection } from "../../../lib/catalog/catalog-types";
-
-const artistKey = "artist_shibari_kawaii";
 
 export const metadata: Metadata = {
   title: `${firstArtist.name} | ${masterbrand}`,
   description: "SHIBARI KAWAII artist signal for SCHLUESSELKINDER."
 };
 
-export default async function ShibariKawaiiPage() {
-  const artistProjection = await readArtistProjection();
-  const displayName = artistProjection?.displayName ?? firstArtist.name;
-
+export default function ShibariKawaiiPage() {
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <section className="relative min-h-[calc(100vh-57px)] border-b border-stone-800">
@@ -31,7 +24,7 @@ export default async function ShibariKawaiiPage() {
                 <p className="text-xs font-black uppercase text-red-600">{firstArtist.archiveCode}</p>
                 <BrandSymbol
                   className="h-48 w-36 opacity-60 md:h-[22rem] md:w-64"
-                  label={`${displayName} archival stamp`}
+                  label={`${firstArtist.name} archival stamp`}
                   variant="ropeface"
                 />
               </div>
@@ -39,7 +32,7 @@ export default async function ShibariKawaiiPage() {
             </div>
             <div className="max-w-5xl pb-4 text-xl leading-8 text-stone-300">
               <h1 className="mb-8 text-xs font-black uppercase tracking-[0.45em] text-stone-500">
-                {displayName}
+                {firstArtist.name}
               </h1>
               <p
                 className="font-black uppercase text-stone-100"
@@ -86,8 +79,8 @@ export default async function ShibariKawaiiPage() {
           ))}
         </div>
       </SectionFrame>
-      <SectionFrame kicker="release artifacts" title="Release pressure.">
-        <TrackList />
+      <SectionFrame kicker="sound records" title="Three public signals.">
+        <TrackList mode="archive" />
       </SectionFrame>
       <section className="border-t border-stone-800">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[0.85fr_1.15fr] md:px-8 md:py-24">
@@ -104,12 +97,4 @@ export default async function ShibariKawaiiPage() {
       </section>
     </main>
   );
-}
-
-async function readArtistProjection(): Promise<CatalogArtistProjection | null> {
-  try {
-    return await getCatalogArtist(artistKey);
-  } catch {
-    return null;
-  }
 }

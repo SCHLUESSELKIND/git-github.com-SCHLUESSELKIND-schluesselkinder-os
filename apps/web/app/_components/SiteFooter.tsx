@@ -7,7 +7,9 @@ const legalLinks = [
   { href: "/datenschutz", label: "Datenschutz" }
 ] as const;
 
-const signalPlaceholders = ["TikTok", "Instagram", "SoundCloud"] as const;
+const externalSignals = [
+  { href: "https://soundcloud.com/thomas-frerich-681624781", label: "SoundCloud" }
+] as const;
 
 export function SiteFooter() {
   return (
@@ -16,7 +18,7 @@ export function SiteFooter() {
         <div>
           <p className="text-xs font-black uppercase text-stone-300">{masterbrand}</p>
           <p className="mt-3 max-w-sm text-xs uppercase leading-5 text-stone-600">
-            Archive contact. External signals remain manually maintained.
+            Archive contact. External signals remain manual.
           </p>
         </div>
         <nav aria-label="Legal" className="flex flex-wrap gap-x-5 gap-y-3 text-xs font-black uppercase">
@@ -26,11 +28,11 @@ export function SiteFooter() {
             </Link>
           ))}
         </nav>
-        <div aria-label="External signal placeholders" className="flex flex-wrap gap-x-5 gap-y-3 text-xs font-black uppercase">
-          {signalPlaceholders.map((label) => (
-            <span className="text-stone-700" key={label}>
-              {label}
-            </span>
+        <div aria-label="External signals" className="flex flex-wrap gap-x-5 gap-y-3 text-xs font-black uppercase">
+          {externalSignals.map((signal) => (
+            <a className="text-stone-700 hover:text-red-700" href={signal.href} key={signal.href} rel="noreferrer" target="_blank">
+              {signal.label}
+            </a>
           ))}
         </div>
       </div>

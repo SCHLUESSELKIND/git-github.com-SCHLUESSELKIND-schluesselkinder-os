@@ -10,6 +10,7 @@ const repositories: ApiRepositories = {
     findBySlug: async (slug) =>
       slug === "shibari-kawaii"
         ? {
+            artistKey: "artist_shibari_kawaii",
             bioFragment: "Kalte Nähe.",
             createdAt: now,
             id: "artist-1",
@@ -21,6 +22,7 @@ const repositories: ApiRepositories = {
         : null,
     list: async () => [
       {
+        artistKey: "artist_shibari_kawaii",
         bioFragment: "Kalte Nähe.",
         createdAt: now,
         id: "artist-1",
@@ -65,7 +67,8 @@ const repositories: ApiRepositories = {
                 id: "track-3",
                 moodFragment: "ritual force",
                 releaseId: "music-3",
-                title: "ROPEMASTER"
+                title: "ROPEMASTER",
+                trackKey: null
               }
             ]
           }
