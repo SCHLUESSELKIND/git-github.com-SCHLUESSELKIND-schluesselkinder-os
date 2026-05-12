@@ -6,6 +6,9 @@ const appDir = dirname(fileURLToPath(import.meta.url));
 const workspaceRoot = join(appDir, "../..");
 
 const nextConfig: NextConfig = {
+  images: {
+    qualities: [75, 95]
+  },
   turbopack: {
     root: workspaceRoot
   },

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../_components/BrandSymbol";
@@ -10,7 +11,20 @@ export const metadata: Metadata = {
   description: "Closed object archive for future SCHLUESSELKINDER forms."
 };
 
-const sk001Front = "/objects/sk-001/front.png";
+const archiveRecords = [
+  {
+    href: "/objects/sk-001",
+    id: "SK-001",
+    state: "SEALED",
+    title: "BLACK HOODIE / KEY"
+  },
+  {
+    href: "/objects/sk-002",
+    id: "SK-002",
+    state: "ACTIVE ARCHIVE",
+    title: "ROPEMASTER HOODIE"
+  }
+] as const;
 
 export default function ShopPage() {
   return (
@@ -42,11 +56,13 @@ export default function ShopPage() {
             href="/objects/sk-001"
           >
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_26%,rgba(120,120,110,0.14),rgba(0,0,0,0)_48%)]" />
-            <img
+            <Image
               alt=""
+              fill
               className="absolute inset-0 h-full w-full object-contain object-bottom opacity-70 brightness-[0.68] contrast-[1.1] saturate-0"
-              loading="eager"
-              src={sk001Front}
+              priority
+              sizes="(min-width: 768px) 54vw, 100vw"
+              src="/objects/sk-001/archive-board.png"
             />
             <div className="absolute inset-0 bg-black/48" />
             <div className="flex items-start justify-between gap-8">
@@ -66,24 +82,23 @@ export default function ShopPage() {
           </Link>
         </div>
       </section>
-      <SymbolRail labels={["SK-001", "KEY", "BLACK", "COTTON", "CLOSED"]} />
-      <SectionFrame kicker="archive record" title="SK-001.">
-        <Link
-          className="grid gap-8 border-y border-stone-800 py-8 transition-colors hover:border-red-950 md:grid-cols-[0.3fr_1fr_0.5fr]"
-          href="/objects/sk-001"
-        >
-          <p className="text-xs font-black uppercase text-red-600">SK-001</p>
-          <div>
-            <h2 className="break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
-              <span className="block">BLACK</span>
-              <span className="block">HOODIE / KEY</span>
-            </h2>
-            <p className="mt-5 max-w-xl text-lg leading-7 text-stone-400">
-              Signal zuerst. Ware später.
-            </p>
-          </div>
-          <p className="self-end text-xs font-black uppercase text-stone-500">archive record</p>
-        </Link>
+      <SymbolRail labels={["SK-001", "SK-002", "BLACK-ON-BLACK", "CLOSED", "ARCHIVE"]} />
+      <SectionFrame kicker="archive records" title="Object index.">
+        <div className="border-y border-stone-800">
+          {archiveRecords.map((record) => (
+            <Link
+              className="grid gap-6 border-b border-stone-800 py-8 transition-colors last:border-b-0 hover:border-red-950 md:grid-cols-[0.22fr_1fr_0.3fr]"
+              href={record.href}
+              key={record.id}
+            >
+              <p className="text-xs font-black uppercase text-red-600">{record.id}</p>
+              <h2 className="break-words text-3xl font-black uppercase leading-none text-stone-100 md:text-6xl">
+                {record.title}
+              </h2>
+              <p className="self-end text-xs font-black uppercase text-stone-500">{record.state}</p>
+            </Link>
+          ))}
+        </div>
       </SectionFrame>
       <SectionFrame kicker="object boundary" title="Archive state.">
         <div className="border-y border-stone-800">
@@ -92,8 +107,8 @@ export default function ShopPage() {
             <p className="text-sm font-black uppercase leading-7 text-stone-200">SCHLUESSELKINDER OBJECTS</p>
           </div>
           <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
-            <p className="text-xs font-black uppercase text-stone-500">visible record</p>
-            <p className="text-sm font-black uppercase leading-7 text-stone-200">SK-001</p>
+            <p className="text-xs font-black uppercase text-stone-500">visible records</p>
+            <p className="text-sm font-black uppercase leading-7 text-stone-200">SK-001 / SK-002</p>
           </div>
           <div className="grid gap-3 py-5 md:grid-cols-[0.35fr_1fr]">
             <p className="text-xs font-black uppercase text-stone-500">public state</p>
