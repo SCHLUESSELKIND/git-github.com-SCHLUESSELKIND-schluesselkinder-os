@@ -12,7 +12,7 @@ type EditorialImageProps = Readonly<{
 
 export function EditorialImage({ alt, caption, className = "", imageClassName = "", priority = false, src, symbol = "key" }: EditorialImageProps) {
   return (
-    <figure className={`relative overflow-hidden border border-stone-800 bg-black ${className}`}>
+    <figure className={`relative min-w-0 max-w-full overflow-hidden border border-stone-800 bg-black ${className}`}>
       <img
         alt={alt}
         className={`h-full w-full object-cover ${imageClassName}`}
