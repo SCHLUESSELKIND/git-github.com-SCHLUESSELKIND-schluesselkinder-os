@@ -10,6 +10,8 @@ export const metadata: Metadata = {
   description: "Closed object archive for future SCHLUESSELKINDER forms."
 };
 
+const sk001Front = "/objects/sk-001/front.png";
+
 export default function ShopPage() {
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
@@ -36,22 +38,30 @@ export default function ShopPage() {
             </div>
           </div>
           <Link
-            className="flex min-h-[560px] flex-col justify-between border border-stone-800 bg-[#0b0a08] p-5 transition-colors hover:border-red-950 md:p-8"
+            className="relative flex min-h-[560px] flex-col justify-between overflow-hidden border border-stone-800 bg-black p-5 transition-colors hover:border-red-950 md:p-8"
             href="/objects/sk-001"
           >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_26%,rgba(120,120,110,0.14),rgba(0,0,0,0)_48%)]" />
+            <img
+              alt=""
+              className="absolute inset-0 h-full w-full object-contain object-bottom opacity-70 brightness-[0.68] contrast-[1.1] saturate-0"
+              loading="eager"
+              src={sk001Front}
+            />
+            <div className="absolute inset-0 bg-black/48" />
             <div className="flex items-start justify-between gap-8">
-              <p className="text-xs font-black uppercase text-red-600">archive record</p>
-              <BrandSymbol className="h-16 w-16 text-stone-500" />
+              <p className="relative z-10 text-xs font-black uppercase text-red-600">archive record</p>
+              <BrandSymbol className="relative z-10 h-16 w-16 text-stone-500" />
             </div>
-            <div>
+            <div className="relative z-10">
               <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-600">SK-001</p>
               <h2 className="mt-8 max-w-xl break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
                 <span className="block">BLACK</span>
                 <span className="block">HOODIE / KEY</span>
               </h2>
             </div>
-            <p className="max-w-sm text-xs font-black uppercase leading-5 text-stone-500">
-              Object type: hoodie. Status: archive record. Transaction: closed.
+            <p className="relative z-10 max-w-sm text-xs font-black uppercase leading-5 text-stone-500">
+              Object type: hoodie. Surface: black-on-black. Transaction: closed.
             </p>
           </Link>
         </div>
@@ -75,7 +85,7 @@ export default function ShopPage() {
           <p className="self-end text-xs font-black uppercase text-stone-500">archive record</p>
         </Link>
       </SectionFrame>
-      <SectionFrame kicker="object boundary" title="No storefront.">
+      <SectionFrame kicker="object boundary" title="Archive state.">
         <div className="border-y border-stone-800">
           <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
             <p className="text-xs font-black uppercase text-stone-500">archive</p>
@@ -87,7 +97,7 @@ export default function ShopPage() {
           </div>
           <div className="grid gap-3 py-5 md:grid-cols-[0.35fr_1fr]">
             <p className="text-xs font-black uppercase text-stone-500">public state</p>
-            <p className="text-sm font-black uppercase leading-7 text-stone-200">Archive open. Transaction closed.</p>
+            <p className="text-sm font-black uppercase leading-7 text-stone-200">Archiv offen. Transaction closed.</p>
           </div>
         </div>
       </SectionFrame>
