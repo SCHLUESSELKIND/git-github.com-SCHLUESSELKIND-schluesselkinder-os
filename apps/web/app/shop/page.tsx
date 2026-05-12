@@ -46,7 +46,8 @@ export default function ShopPage() {
             <div>
               <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-600">SK-001</p>
               <h2 className="mt-8 max-w-xl break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
-                BLACK HOODIE / KEY
+                <span className="block">BLACK</span>
+                <span className="block">HOODIE / KEY</span>
               </h2>
             </div>
             <p className="max-w-sm text-xs font-black uppercase leading-5 text-stone-500">
@@ -64,7 +65,8 @@ export default function ShopPage() {
           <p className="text-xs font-black uppercase text-red-600">SK-001</p>
           <div>
             <h2 className="break-words text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl">
-              BLACK HOODIE / KEY
+              <span className="block">BLACK</span>
+              <span className="block">HOODIE / KEY</span>
             </h2>
             <p className="mt-5 max-w-xl text-lg leading-7 text-stone-400">
               Signal zuerst. Ware später.

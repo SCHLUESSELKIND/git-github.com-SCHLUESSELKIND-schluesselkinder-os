@@ -38,7 +38,9 @@ export default function Sk001Page() {
                 className="mt-8 max-w-5xl break-words font-black uppercase text-stone-100"
                 style={{ fontSize: "clamp(2.35rem, 10.5vw, 8.5rem)", lineHeight: 0.84, overflowWrap: "anywhere" }}
               >
-                BLACK HOODIE / KEY
+                <span className="block">BLACK</span>
+                <span className="block">HOODIE</span>
+                <span className="block">/ KEY</span>
               </h1>
               <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">
                 <p>Signal zuerst. Ware später.</p>
