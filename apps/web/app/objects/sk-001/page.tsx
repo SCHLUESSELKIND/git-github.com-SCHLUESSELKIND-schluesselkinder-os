@@ -53,7 +53,7 @@ export default function Sk001Page() {
           </div>
           <EditorialImage
             alt="Dungeon concrete campaign environment for SK-001"
-            caption="archive environment"
+            caption="archive"
             className="min-h-[560px]"
             imageClassName="image-noir object-[58%_48%]"
             priority

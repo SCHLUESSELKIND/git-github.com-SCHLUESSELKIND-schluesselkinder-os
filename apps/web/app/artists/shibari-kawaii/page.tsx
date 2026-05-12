@@ -60,7 +60,7 @@ export default function ShibariKawaiiPage() {
           <div className="grid gap-8 md:grid-rows-[1fr_auto]">
             <EditorialImage
               alt="Cropped dungeon room campaign environment"
-              caption="campaign environment"
+              caption="campaign"
               className="min-h-[420px]"
               imageClassName="image-noir object-[55%_48%]"
               priority
@@ -87,7 +87,7 @@ export default function ShibariKawaiiPage() {
           <p className="self-end font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 10vw, 9rem)", lineHeight: 0.82 }}>The room keeps the mark.</p>
           <EditorialImage
             alt="Dungeon room campaign image for SHIBARI KAWAII"
-            caption="campaign room"
+            caption="room"
             className="h-[680px]"
             imageClassName="image-noir"
             src={brandAssets.campaignDungeonChair}

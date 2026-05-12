@@ -70,7 +70,7 @@ export default function Home() {
           </div>
           <EditorialImage
             alt="Cropped dungeon room wall and chair"
-            caption="campaign environment"
+            caption="campaign"
             className="h-[620px]"
             imageClassName="image-noir object-[58%_48%]"
             src={brandAssets.campaignDungeonChair}
