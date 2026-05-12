@@ -21,7 +21,10 @@ export default function ShopPage() {
               <BrandSymbol className="h-14 w-14 text-stone-100/70" />
             </div>
             <div>
-              <h1 className="max-w-5xl break-words font-black uppercase text-stone-100" style={{ fontSize: "clamp(3rem, 9vw, 8.25rem)", lineHeight: 0.82 }}>
+              <h1
+                className="max-w-5xl break-words font-black uppercase text-stone-100"
+                style={{ fontSize: "clamp(2.55rem, 10.5vw, 8.25rem)", lineHeight: 0.84, overflowWrap: "anywhere" }}
+              >
                 Archiv offen. Store geschlossen.
               </h1>
               <p className="mt-8 text-xl leading-8 text-stone-300">Signal zuerst. Ware später.</p>

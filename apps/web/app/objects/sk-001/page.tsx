@@ -34,7 +34,10 @@ export default function Sk001Page() {
             </div>
             <div>
               <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-500">SK-001</p>
-              <h1 className="mt-8 max-w-5xl break-words font-black uppercase text-stone-100" style={{ fontSize: "clamp(3rem, 9vw, 8.5rem)", lineHeight: 0.82 }}>
+              <h1
+                className="mt-8 max-w-5xl break-words font-black uppercase text-stone-100"
+                style={{ fontSize: "clamp(2.35rem, 10.5vw, 8.5rem)", lineHeight: 0.84, overflowWrap: "anywhere" }}
+              >
                 BLACK HOODIE / KEY
               </h1>
               <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">

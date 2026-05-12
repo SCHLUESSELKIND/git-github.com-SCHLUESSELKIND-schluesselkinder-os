@@ -16,7 +16,7 @@ export function EditorialHero({ eyebrow, title, aside, children }: EditorialHero
         <div className="py-20 md:py-28">
           <h1
             className="max-w-5xl break-words font-black uppercase text-stone-100"
-            style={{ fontSize: "clamp(3.35rem, 16vw, 8rem)", lineHeight: 0.86 }}
+            style={{ fontSize: "clamp(2.75rem, 14vw, 8rem)", lineHeight: 0.86, overflowWrap: "anywhere" }}
           >
             {title}
           </h1>

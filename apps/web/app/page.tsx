@@ -31,7 +31,10 @@ export default function Home() {
           </div>
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr_120px]">
             <div>
-              <h1 className="max-w-5xl break-words font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 14vw, 13rem)", lineHeight: 0.78 }}>
+              <h1
+                className="max-w-5xl break-words font-black uppercase text-stone-100"
+                style={{ fontSize: "clamp(3rem, 14vw, 13rem)", lineHeight: 0.8, overflowWrap: "anywhere" }}
+              >
                 {seedCopy.hero.de}
               </h1>
               <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">
