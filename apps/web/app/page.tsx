@@ -22,7 +22,7 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
-      <section className="relative min-h-[calc(100vh-57px)] overflow-hidden border-b border-stone-800">
+      <section className="relative min-h-[calc(100svh-57px)] overflow-hidden border-b border-stone-800">
         <EditorialImage
           alt="Dungeon concrete room with a rope-bound chair"
           className="!absolute inset-0 h-full w-full border-0"
@@ -32,8 +32,9 @@ export default function Home() {
           symbol="none"
         />
         <div className="absolute inset-0 bg-black/62" />
+        <div className="ambient-pulse pointer-events-none absolute -right-24 top-16 h-96 w-96 rounded-full bg-red-950/18 blur-3xl" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#070605] to-transparent" />
-        <div className="relative mx-auto grid min-h-[calc(100vh-57px)] max-w-7xl grid-rows-[1fr_auto] px-5 py-8 md:px-8">
+        <div className="relative mx-auto grid min-h-[calc(100svh-57px)] max-w-7xl grid-rows-[1fr_auto] px-5 py-8 md:px-8">
           <div className="flex items-start justify-between gap-8">
             <p className="text-xs font-black uppercase text-red-600">{music.artist.canonicalName}</p>
             <BrandSymbol className="h-16 w-16 text-stone-100/80" />
@@ -116,7 +117,7 @@ export default function Home() {
             </article>
           ))}
         </div>
-        <Link className="mt-8 inline-block border border-red-950 px-5 py-3 text-sm font-black uppercase text-stone-100 transition-colors hover:text-red-700 focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-900" href="/music">
+        <Link className="mt-8 inline-block border border-red-950 px-5 py-3 text-sm font-black uppercase text-stone-100 transition-colors duration-300 hover:border-red-800 hover:bg-red-950/10 hover:text-red-600 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900" href="/music">
           Sound archive
         </Link>
       </SectionFrame>

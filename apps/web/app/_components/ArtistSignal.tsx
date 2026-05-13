@@ -8,8 +8,9 @@ export function ArtistSignal() {
   const signalTitles = release.signals.map((signal) => signal.title).join(" / ");
 
   return (
-    <Link className="group grid overflow-hidden border border-stone-800 bg-[#090806] transition-colors hover:border-red-900 md:grid-cols-[0.85fr_1.15fr]" href={`/artists/${dossier.artist.slug}`}>
+    <Link className="group grid overflow-hidden border border-stone-800 bg-[#090806] transition-colors duration-300 hover:border-red-900 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[0.85fr_1.15fr]" href={`/artists/${dossier.artist.slug}`}>
       <div className="relative flex min-h-80 items-center justify-center border-b border-stone-800 bg-black md:border-b-0 md:border-r">
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_42%,rgba(143,17,23,0.12),transparent_54%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
         <BrandSymbol
           className="h-48 w-36 text-stone-100/85 transition-transform duration-500 group-hover:scale-105 md:h-64 md:w-44"
           label={`${dossier.artist.canonicalName} ropeface mark`}

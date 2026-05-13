@@ -52,11 +52,11 @@ export function ObjectArchiveRecordView({ record }: { record: ObjectArchiveRecor
       </section>
 
       <section className="border-b border-stone-800 bg-black">
-        <div className="mx-auto max-w-[1600px] px-0 py-0 md:px-8 md:py-8">
-          <figure className="bg-[#030302]">
+        <div className="mx-auto max-w-[1600px] px-0 py-0 md:px-8 md:py-10">
+          <figure className="bg-[#030302] md:border md:border-stone-900">
             <Image
               alt={record.board.alt}
-              className="h-auto w-full object-contain"
+              className="h-auto max-h-[82svh] w-full object-contain"
               height={record.board.height}
               priority
               quality={95}
@@ -73,7 +73,7 @@ export function ObjectArchiveRecordView({ record }: { record: ObjectArchiveRecor
       <SectionFrame kicker="archive metadata" title="Object index.">
         <div className="border-y border-stone-800">
           {record.metadata.map(([label, value]) => (
-            <div className="grid gap-3 border-b border-stone-800 py-5 transition-colors last:border-b-0 hover:border-stone-700 md:grid-cols-[0.35fr_1fr]" key={label}>
+            <div className="grid gap-3 border-b border-stone-800 py-5 transition-colors duration-300 last:border-b-0 hover:border-stone-700 hover:bg-stone-950/20 md:grid-cols-[0.35fr_1fr]" key={label}>
               <p className="text-xs font-black uppercase text-stone-500">{label}</p>
               <p className="text-sm font-black uppercase leading-7 text-stone-200">{value}</p>
             </div>

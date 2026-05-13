@@ -18,7 +18,7 @@ export function TrackList({ mode = "full" }: TrackListProps) {
     <div className="border-y border-stone-800">
       {signalRows.map((track) => (
         <article
-          className="grid gap-5 border-b border-stone-800 py-7 transition-colors last:border-b-0 hover:border-stone-700 md:grid-cols-[104px_1fr_0.7fr]"
+          className="grid gap-5 border-b border-stone-800 py-7 transition-colors duration-300 last:border-b-0 hover:border-stone-700 hover:bg-stone-950/20 md:grid-cols-[104px_1fr_0.7fr]"
           key={track.trackKey}
         >
           <div className="text-xs font-black uppercase md:pt-2">
