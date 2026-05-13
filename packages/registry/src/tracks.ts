@@ -1,4 +1,4 @@
-import type { TrackSignalRecord } from "./types.js";
+import type { TrackSignalRecord } from "./types";
 
 export const trackSignals = [
   {

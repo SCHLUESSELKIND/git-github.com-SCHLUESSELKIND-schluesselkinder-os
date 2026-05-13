@@ -1,4 +1,4 @@
-import type { DistributionReferenceRecord, ExternalReferenceRecord } from "./types.js";
+import type { DistributionReferenceRecord, ExternalReferenceRecord } from "./types";
 
 export const externalReferences = [] as const satisfies readonly ExternalReferenceRecord[];
 

@@ -1,4 +1,4 @@
-import type { ReleaseRecord } from "./types.js";
+import type { ReleaseRecord } from "./types";
 
 export const releases = [
   {

@@ -1,4 +1,4 @@
-import type { ObjectRecord } from "./types.js";
+import type { ObjectRecord } from "./types";
 
 export const objects: readonly ObjectRecord[] = [
   {

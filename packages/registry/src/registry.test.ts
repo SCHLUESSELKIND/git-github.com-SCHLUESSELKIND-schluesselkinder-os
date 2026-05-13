@@ -12,7 +12,7 @@ import {
   getPublicReleaseSignals,
   releases,
   trackSignals
-} from "./index.js";
+} from "./index";
 
 const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 

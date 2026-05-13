@@ -1,13 +1,13 @@
-import { artists } from "./artists.js";
-import { objects } from "./objects.js";
-import { releases } from "./releases.js";
-import { trackSignals } from "./tracks.js";
+import { artists } from "./artists";
+import { objects } from "./objects";
+import { releases } from "./releases";
+import { trackSignals } from "./tracks";
 import type {
   PublicArtistDossier,
   PublicObjectProjection,
   PublicReleaseProjection,
   PublicTrackSignalProjection
-} from "./types.js";
+} from "./types";
 
 function isPublic<T extends { visibility: "public" | "internal" }>(record: T) {
   return record.visibility === "public";

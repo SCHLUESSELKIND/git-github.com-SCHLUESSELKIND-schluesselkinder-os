@@ -1,4 +1,4 @@
-import type { LineageRecord } from "./types.js";
+import type { LineageRecord } from "./types";
 
 export const lineage = [
   {

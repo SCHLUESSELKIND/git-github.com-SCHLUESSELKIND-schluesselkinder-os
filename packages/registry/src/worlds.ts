@@ -1,4 +1,4 @@
-import type { WorldRecord } from "./types.js";
+import type { WorldRecord } from "./types";
 
 export const worlds = [
   {

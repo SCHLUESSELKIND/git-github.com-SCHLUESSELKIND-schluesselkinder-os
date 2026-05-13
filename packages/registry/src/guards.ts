@@ -1,7 +1,7 @@
-import { artists } from "./artists.js";
-import { objects } from "./objects.js";
-import { releases } from "./releases.js";
-import { trackSignals } from "./tracks.js";
+import { artists } from "./artists";
+import { objects } from "./objects";
+import { releases } from "./releases";
+import { trackSignals } from "./tracks";
 
 type KeyedRecord = Readonly<{
   code?: string;

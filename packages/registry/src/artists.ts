@@ -1,4 +1,4 @@
-import type { ArtistRecord } from "./types.js";
+import type { ArtistRecord } from "./types";
 
 export const artists = [
   {
