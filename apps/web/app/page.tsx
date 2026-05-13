@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { brandAssets, firstArtist, masterbrand, seedCopy } from "@schluesselkinder/brand";
+import { brandAssets, seedCopy } from "@schluesselkinder/brand";
 import { ArtistSignal } from "./_components/ArtistSignal";
 import { BrandSymbol } from "./_components/BrandSymbol";
 import { EditorialImage } from "./_components/EditorialImage";
@@ -8,9 +8,18 @@ import { RotatedMeta } from "./_components/RotatedMeta";
 import { SectionFrame } from "./_components/SectionFrame";
 import { ShopPreview } from "./_components/ShopPreview";
 import { SymbolRail } from "./_components/SymbolRail";
-import { TrackList } from "./_components/TrackList";
+import { getStaticMusicPageProjection } from "../lib/registry/music-page";
 
 export default function Home() {
+  const music = getStaticMusicPageProjection();
+  const publicSignals = music.releases.flatMap((release) => release.signals);
+  const railLabels = [
+    music.releases[0]?.releaseCode ?? "SKR-LP-001",
+    ...publicSignals.map((signal) => signal.trackCode),
+    ...music.objects.map((object) => object.objectCode),
+    "ARCHIVE"
+  ];
+
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <section className="relative min-h-[calc(100vh-57px)] overflow-hidden border-b border-stone-800">
@@ -22,11 +31,11 @@ export default function Home() {
           src={brandAssets.campaignDungeonChair}
           symbol="none"
         />
-        <div className="absolute inset-0 bg-black/55" />
+        <div className="absolute inset-0 bg-black/62" />
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#070605] to-transparent" />
         <div className="relative mx-auto grid min-h-[calc(100vh-57px)] max-w-7xl grid-rows-[1fr_auto] px-5 py-8 md:px-8">
-          <div className="flex items-start justify-between">
-            <p className="text-xs font-black uppercase text-red-600">{masterbrand}</p>
+          <div className="flex items-start justify-between gap-8">
+            <p className="text-xs font-black uppercase text-red-600">{music.artist.canonicalName}</p>
             <BrandSymbol className="h-16 w-16 text-stone-100/80" />
           </div>
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr_120px]">
@@ -37,18 +46,18 @@ export default function Home() {
               >
                 {seedCopy.hero.de}
               </h1>
-              <div className="mt-8 max-w-xl text-xl leading-8 text-stone-300">
+              <div className="mt-8 grid max-w-2xl gap-3 border-l border-stone-700 pl-5 text-lg leading-8 text-stone-300 md:text-xl">
                 <p>{seedCopy.systemFragments.afterhours}</p>
                 <p>{seedCopy.hero.en}</p>
               </div>
             </div>
             <div className="hidden md:block" />
-            <RotatedMeta>{firstArtist.archiveCode} / rune index</RotatedMeta>
+            <RotatedMeta>{music.releases[0]?.releaseCode ?? "SKR-LP-001"} / rune index</RotatedMeta>
           </div>
         </div>
       </section>
 
-      <SymbolRail labels={["KEY", "CHAIR", "ROPE", "ROOM", "AFTER"]} />
+      <SymbolRail labels={railLabels} />
 
       <SectionFrame kicker="system identity" title="Cold room. Red trace.">
         <div className="border-t border-stone-800">
@@ -79,9 +88,35 @@ export default function Home() {
         </div>
       </section>
 
-      <SectionFrame kicker="release artifacts" title="Three artifacts.">
-        <TrackList mode="compact" />
-        <Link className="mt-8 inline-block border border-red-950 px-5 py-3 text-sm font-black uppercase text-stone-100 hover:text-red-700" href="/music">
+      <SectionFrame kicker="release artifacts" title="Public signals.">
+        <div className="border-y border-stone-800">
+          {music.releases.map((release) => (
+            <article className="grid gap-6 border-b border-stone-800 py-7 last:border-b-0 md:grid-cols-[0.22fr_1fr_0.3fr]" key={release.releaseKey}>
+              <div className="text-xs font-black uppercase">
+                <p className="text-red-600">{release.releaseCode}</p>
+                <p className="mt-3 text-stone-600">{release.role}</p>
+              </div>
+              <div>
+                <h3 className="break-words text-4xl font-black uppercase leading-[0.9] text-stone-100 md:text-6xl">
+                  {release.displayTitle}
+                </h3>
+                <div className="mt-6 grid gap-3">
+                  {release.signals.map((signal) => (
+                    <p className="border-t border-stone-800 pt-3 text-sm font-black uppercase text-stone-400" key={signal.trackKey}>
+                      <span className="text-red-600">{signal.trackCode}</span>
+                      <span className="px-3 text-stone-700">/</span>
+                      {signal.title}
+                    </p>
+                  ))}
+                </div>
+              </div>
+              <p className="self-end text-xs font-black uppercase leading-5 text-stone-500">
+                {music.artist.canonicalName}
+              </p>
+            </article>
+          ))}
+        </div>
+        <Link className="mt-8 inline-block border border-red-950 px-5 py-3 text-sm font-black uppercase text-stone-100 transition-colors hover:text-red-700 focus-visible:outline focus-visible:outline-1 focus-visible:outline-red-900" href="/music">
           Sound archive
         </Link>
       </SectionFrame>
