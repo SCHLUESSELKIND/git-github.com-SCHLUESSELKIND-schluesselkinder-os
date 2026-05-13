@@ -12,17 +12,17 @@ type EditorialImageProps = Readonly<{
 
 export function EditorialImage({ alt, caption, className = "", imageClassName = "", priority = false, src, symbol = "key" }: EditorialImageProps) {
   return (
-    <figure className={`relative min-w-0 max-w-full overflow-hidden border border-stone-800 bg-black ${className}`}>
+    <figure className={`group relative min-w-0 max-w-full overflow-hidden border border-stone-800 bg-black ${className}`}>
       <img
         alt={alt}
-        className={`h-full w-full object-cover ${imageClassName}`}
+        className={`h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.012] motion-reduce:transition-none motion-reduce:group-hover:scale-100 ${imageClassName}`}
         decoding={priority ? "sync" : "async"}
         loading={priority ? "eager" : "lazy"}
         src={src}
       />
       <div className="pointer-events-none absolute inset-0 bg-black/25 mix-blend-multiply" />
       {symbol !== "none" ? (
-        <div className="absolute bottom-5 left-5 text-stone-100/80">
+        <div className="absolute bottom-5 left-5 text-stone-100/80 transition-colors duration-500 group-hover:text-stone-100 motion-reduce:transition-none">
           <BrandSymbol className="h-14 w-14" variant={symbol} />
         </div>
       ) : null}
