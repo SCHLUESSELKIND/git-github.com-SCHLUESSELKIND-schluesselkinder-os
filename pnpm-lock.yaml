@@ -13,6 +13,9 @@ importers:
       '@schluesselkinder/brand':
         specifier: workspace:*
         version: link:../../packages/brand
+      '@schluesselkinder/registry':
+        specifier: workspace:*
+        version: link:../../packages/registry
       '@schluesselkinder/ui':
         specifier: workspace:*
         version: link:../../packages/ui

@@ -1,4 +1,4 @@
-import { getArtistDossier, getPublicObjects, getPublicReleaseSignals } from "../../../../packages/registry/src/index";
+import { getArtistDossier, getPublicObjects, getPublicReleaseSignals } from "@schluesselkinder/registry";
 
 type StaticArtistPageProjection = Readonly<{
   artist: ReturnType<typeof getArtistDossier>;

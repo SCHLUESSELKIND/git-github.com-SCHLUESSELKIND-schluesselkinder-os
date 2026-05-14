@@ -1,4 +1,4 @@
-import { getObjectByCode, getPublicObjects, getPublicReleaseSignals } from "../../../../packages/registry/src/index";
+import { getObjectByCode, getPublicObjects, getPublicReleaseSignals } from "@schluesselkinder/registry";
 
 type MetadataRow = readonly [label: string, value: string];
 

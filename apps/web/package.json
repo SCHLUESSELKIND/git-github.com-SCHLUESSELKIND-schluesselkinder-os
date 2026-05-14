@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@schluesselkinder/brand": "workspace:*",
+    "@schluesselkinder/registry": "workspace:*",
     "@schluesselkinder/ui": "workspace:*",
     "next": "latest",
     "react": "latest",
