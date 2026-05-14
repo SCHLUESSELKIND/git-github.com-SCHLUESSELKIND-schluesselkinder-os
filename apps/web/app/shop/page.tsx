@@ -15,13 +15,12 @@ export const metadata: Metadata = {
 
 export default function ShopPage() {
   const shop = getStaticShopProjection();
-  const heroObject = shop.objects[0];
   const railLabels = [...shop.objects.map((object) => object.id), ...shop.releaseCodes, "ARCHIVE", "CLOSED"];
 
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       <section className="border-b border-stone-800">
-        <div className="mx-auto grid min-h-[calc(100svh-57px)] max-w-7xl gap-8 px-5 py-10 md:grid-cols-[0.9fr_1.1fr] md:px-8 md:py-14">
+        <div className="mx-auto grid min-h-[calc(100svh-57px)] max-w-7xl gap-8 px-5 py-10 md:grid-cols-[0.82fr_1.18fr] md:px-8 md:py-14">
           <div className="flex flex-col justify-between border-l border-stone-800 pl-5 md:pl-8">
             <div className="flex items-start justify-between gap-8">
               <p className="text-xs font-black uppercase text-red-600">object archive</p>
@@ -38,39 +37,49 @@ export default function ShopPage() {
               <p className="mt-8 text-xl leading-8 text-stone-300">Signal zuerst. Ware später.</p>
             </div>
             <div className="grid gap-0 border-y border-stone-800 text-xs font-black uppercase text-stone-500 md:grid-cols-3">
-              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">{heroObject.id}</p>
-              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">{heroObject.title}</p>
+              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">{shop.objects.length} records</p>
+              <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">{shop.objects.map((object) => object.id).join(" / ")}</p>
               <p className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:last:border-r-0">TRANSACTION CLOSED</p>
             </div>
           </div>
-          <Link
-            className="group relative flex min-h-[560px] flex-col justify-between overflow-hidden border border-stone-800 bg-black p-5 transition-colors duration-300 hover:border-red-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:p-8"
-            href={heroObject.href}
-          >
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_26%,rgba(120,120,110,0.14),rgba(0,0,0,0)_48%)]" />
-            <Image
-              alt=""
-              fill
-              className="absolute inset-0 h-full w-full object-contain object-bottom opacity-70 brightness-[0.68] contrast-[1.1] saturate-0 transition-transform duration-700 group-hover:scale-[1.015] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-              priority
-              sizes="(min-width: 768px) 54vw, 100vw"
-              src={heroObject.boardSrc}
-            />
-            <div className="absolute inset-0 bg-black/48" />
-            <div className="flex items-start justify-between gap-8">
-              <p className="relative z-10 text-xs font-black uppercase text-red-600">archive record</p>
-              <BrandSymbol className="relative z-10 h-16 w-16 text-stone-500" />
-            </div>
-            <div className="relative z-10">
-              <p className="text-xs font-black uppercase tracking-[0.45em] text-stone-600">{heroObject.id}</p>
-              <h2 className="mt-8 max-w-xl break-words text-4xl font-black uppercase leading-[0.9] text-stone-100 transition-colors duration-300 group-hover:text-stone-200 md:text-5xl lg:text-6xl">
-                {heroObject.title}
-              </h2>
-            </div>
-            <p className="relative z-10 max-w-sm text-xs font-black uppercase leading-5 text-stone-500">
-              Object class: {heroObject.objectClass}. Archive class: {heroObject.archiveClass}. Transaction: closed.
-            </p>
-          </Link>
+          <div className="grid gap-4 md:grid-cols-2">
+            {shop.objects.map((record, index) => (
+              <Link
+                className="group grid min-h-[540px] grid-rows-[1fr_auto] overflow-hidden border border-stone-800 bg-black transition-colors duration-300 hover:border-red-950 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900"
+                href={record.href}
+                key={record.id}
+              >
+                <figure className="relative min-h-[360px] overflow-hidden bg-[#030302]">
+                  <Image
+                    alt={record.boardAlt}
+                    className="object-contain opacity-82 brightness-[0.72] contrast-[1.12] saturate-0 transition-transform duration-700 group-hover:scale-[1.012] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                    fill
+                    priority={index === 0}
+                    sizes="(min-width: 768px) 30vw, 100vw"
+                    src={record.boardSrc}
+                  />
+                  <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(0,0,0,0.05),rgba(0,0,0,0.46))]" />
+                </figure>
+                <div className="grid gap-8 border-t border-stone-800 p-5 md:p-6">
+                  <div className="flex items-start justify-between gap-6">
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-[0.42em] text-red-600">{record.id}</p>
+                      <h2 className="mt-5 break-words text-3xl font-black uppercase leading-[0.9] text-stone-100 md:text-4xl">
+                        {record.title}
+                      </h2>
+                    </div>
+                    <p className="text-right text-xs font-black uppercase text-stone-600">{record.year}</p>
+                  </div>
+                  <div className="grid gap-2 border-t border-stone-800 pt-4 text-xs font-black uppercase text-stone-500">
+                    <p>archive class: <span className="text-stone-300">{record.archiveClass}</span></p>
+                    <p>surface: <span className="text-stone-300">{record.surface}</span></p>
+                    <p>status: <span className="text-stone-300">{record.state}</span></p>
+                    <p>transaction: <span className="text-stone-300">{record.transaction}</span></p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
       <SymbolRail labels={railLabels} />
@@ -78,14 +87,31 @@ export default function ShopPage() {
         <div className="border-y border-stone-800">
           {shop.objects.map((record) => (
             <Link
-              className="grid gap-6 border-b border-stone-800 py-8 transition-colors duration-300 last:border-b-0 hover:border-red-950 hover:bg-stone-950/20 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[0.22fr_1fr_0.3fr]"
+              className="grid gap-6 border-b border-stone-800 py-8 transition-colors duration-300 last:border-b-0 hover:border-red-950 hover:bg-stone-950/20 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[0.18fr_0.34fr_1fr_0.22fr] md:items-end"
               href={record.href}
               key={record.id}
             >
-              <p className="text-xs font-black uppercase text-red-600">{record.id}</p>
-              <h2 className="break-words text-3xl font-black uppercase leading-none text-stone-100 md:text-6xl">
-                {record.title}
-              </h2>
+              <div>
+                <p className="text-xs font-black uppercase text-red-600">{record.id}</p>
+                <p className="mt-3 text-xs font-black uppercase text-stone-600">{record.archiveClass}</p>
+              </div>
+              <figure className="relative aspect-[16/10] overflow-hidden border border-stone-900 bg-black md:aspect-[4/3]">
+                <Image
+                  alt=""
+                  className="object-cover opacity-70 brightness-[0.72] contrast-[1.15] saturate-0"
+                  fill
+                  sizes="(min-width: 768px) 22vw, 100vw"
+                  src={record.boardSrc}
+                />
+              </figure>
+              <div>
+                <h2 className="break-words text-3xl font-black uppercase leading-none text-stone-100 md:text-5xl">
+                  {record.title}
+                </h2>
+                <p className="mt-5 text-xs font-black uppercase leading-5 text-stone-500">
+                  {record.objectClass} / {record.surface} / {record.releaseCode ?? "NO RELEASE REFERENCE"}
+                </p>
+              </div>
               <p className="self-end text-xs font-black uppercase text-stone-500">{record.state}</p>
             </Link>
           ))}
