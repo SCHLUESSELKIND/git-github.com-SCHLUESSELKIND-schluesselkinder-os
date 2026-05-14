@@ -12,8 +12,10 @@ type StaticObjectArchiveRecord = Readonly<{
   }>;
   id: string;
   metadata: readonly MetadataRow[];
+  releaseReference: string;
   status: string;
   surface: string;
+  summary: readonly string[];
   title: string;
   transaction: string;
   year: string;
@@ -21,13 +23,17 @@ type StaticObjectArchiveRecord = Readonly<{
 
 type StaticShopObject = Readonly<{
   archiveClass: string;
+  boardAlt: string;
   boardSrc: string;
   href: string;
   id: string;
   objectClass: string;
   releaseCode: string | null;
   state: string;
+  surface: string;
   title: string;
+  transaction: string;
+  year: string;
 }>;
 
 type StaticShopProjection = Readonly<{
@@ -46,6 +52,7 @@ const objectPresentation = {
     },
     mark: "KEY",
     status: "SEALED",
+    summary: ["first registered object", "key mark", "closed transaction"],
     surface: "BLACK-ON-BLACK",
     transaction: "CLOSED",
     year: "2026"
@@ -60,6 +67,7 @@ const objectPresentation = {
     },
     mark: "ROPEMASTER",
     status: "ACTIVE ARCHIVE",
+    summary: ["release-linked object", "ropemaster mark", "closed transaction"],
     surface: "BLACK-ON-BLACK",
     transaction: "CLOSED",
     year: "2026"
@@ -114,8 +122,10 @@ export function getStaticObjectArchiveRecord(objectCode: PublicObjectCode): Stat
       ["archive class", presentation.archiveClass],
       ["year", presentation.year]
     ],
+    releaseReference: formatNullableReference(releaseReference),
     status: presentation.status,
     surface: presentation.surface,
+    summary: presentation.summary,
     title: object.title,
     transaction: presentation.transaction,
     year: presentation.year
@@ -133,13 +143,17 @@ export function getStaticShopProjection(): StaticShopProjection {
 
     return {
       archiveClass: presentation.archiveClass,
+      boardAlt: presentation.board.alt,
       boardSrc: presentation.board.src,
       href: `/objects/${object.objectCode.toLowerCase()}`,
       id: object.objectCode,
       objectClass: object.objectClass,
       releaseCode,
       state: presentation.status,
-      title: object.title
+      surface: presentation.surface,
+      title: object.title,
+      transaction: presentation.transaction,
+      year: presentation.year
     };
   });
 

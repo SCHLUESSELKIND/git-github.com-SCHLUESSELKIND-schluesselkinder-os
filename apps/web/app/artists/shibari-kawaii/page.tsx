@@ -46,8 +46,8 @@ export default function ShibariKawaiiPage() {
                 {dossier.artist.canonicalName}
               </h1>
               <p
-                className="font-black uppercase text-stone-100"
-                style={{ fontSize: "clamp(4.75rem, 11vw, 10.5rem)", lineHeight: 0.78 }}
+                className="whitespace-nowrap font-black uppercase text-stone-100"
+                style={{ fontSize: "clamp(2.25rem, 10vw, 10.5rem)", lineHeight: 0.84 }}
               >
                 ROPEMASTER
               </p>
