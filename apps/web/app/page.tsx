@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { brandAssets, seedCopy } from "@schluesselkinder/brand";
 import { ArtistSignal } from "./_components/ArtistSignal";
@@ -9,6 +10,30 @@ import { SectionFrame } from "./_components/SectionFrame";
 import { ShopPreview } from "./_components/ShopPreview";
 import { SymbolRail } from "./_components/SymbolRail";
 import { getStaticMusicPageProjection } from "../lib/registry/music-page";
+
+const collectiveName = "SCHLUESSELKINDER";
+const description = "Dark premium underground archive for SHIBARI KAWAII, ROPEMASTER, and SCHLUESSELKINDER objects.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title: collectiveName,
+    url: "/"
+  },
+  title: collectiveName,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title: collectiveName
+  }
+};
 
 export default function Home() {
   const music = getStaticMusicPageProjection();

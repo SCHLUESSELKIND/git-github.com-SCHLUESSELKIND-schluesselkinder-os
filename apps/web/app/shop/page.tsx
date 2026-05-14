@@ -7,10 +7,27 @@ import { SymbolRail } from "../_components/SymbolRail";
 import { getStaticShopProjection } from "../../lib/registry/object-pages";
 
 const collectiveName = "SCHLUESSELKINDER";
+const description = "Closed SCHLUESSELKINDER object archive. Public records only, transactions closed.";
+const title = `Objects | ${collectiveName}`;
 
 export const metadata: Metadata = {
-  title: `Objects | ${collectiveName}`,
-  description: "Closed object archive for future SCHLUESSELKINDER forms."
+  alternates: {
+    canonical: "/shop"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER object archive board", height: 1024, url: "/objects/sk-002/archive-board.png", width: 1536 }],
+    title,
+    url: "/shop"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: ["/objects/sk-002/archive-board.png"],
+    title
+  }
 };
 
 export default function ShopPage() {

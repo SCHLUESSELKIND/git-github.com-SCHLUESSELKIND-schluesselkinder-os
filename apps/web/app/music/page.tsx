@@ -6,10 +6,28 @@ import { SectionFrame } from "../_components/SectionFrame";
 import { getStaticMusicPageProjection } from "../../lib/registry/music-page";
 
 const collectiveName = "SCHLUESSELKINDER";
+const description = "Static sound archive for SHIBARI KAWAII, ROPEMASTER LP, and public release signals.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+const title = `Sound Archive | ${collectiveName}`;
 
 export const metadata: Metadata = {
-  title: `Sound Archive | ${collectiveName}`,
-  description: "SCHLUESSELKINDER sound archive."
+  alternates: {
+    canonical: "/music"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER sound archive campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title,
+    url: "/music"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title
+  }
 };
 
 export default function MusicPage() {

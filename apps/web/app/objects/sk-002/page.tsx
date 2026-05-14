@@ -3,10 +3,28 @@ import { ObjectArchiveRecordView } from "../_components/ObjectArchiveRecordView"
 import { getStaticObjectArchiveRecord } from "../../../lib/registry/object-pages";
 
 const collectiveName = "SCHLUESSELKINDER";
+const description = "Archive record for SK-002 SHIBARI KAWAII ROPEMASTER HOODIE.";
+const image = "/objects/sk-002/archive-board.png";
+const title = `SK-002 ROPEMASTER HOODIE | ${collectiveName}`;
 
 export const metadata: Metadata = {
-  title: `SK-002 ROPEMASTER HOODIE | ${collectiveName}`,
-  description: "SCHLUESSELKINDER object archive record SK-002."
+  alternates: {
+    canonical: "/objects/sk-002"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SK-002 SHIBARI KAWAII ROPEMASTER HOODIE archive board", height: 1024, url: image, width: 1536 }],
+    title,
+    url: "/objects/sk-002"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [image],
+    title
+  }
 };
 
 export default function Sk002Page() {

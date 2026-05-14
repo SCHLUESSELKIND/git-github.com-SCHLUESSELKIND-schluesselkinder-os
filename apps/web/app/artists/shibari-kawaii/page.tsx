@@ -9,10 +9,27 @@ import { getStaticArtistPageProjection } from "../../../lib/registry/artist-page
 
 const collectiveName = "SCHLUESSELKINDER";
 const campaignImage = "/brand/campaign-dungeon-chair.png";
+const description = "SHIBARI KAWAII artist dossier for the controlled SCHLUESSELKINDER release archive.";
+const title = `SHIBARI KAWAII | ${collectiveName}`;
 
 export const metadata: Metadata = {
-  title: `SHIBARI KAWAII | ${collectiveName}`,
-  description: "SHIBARI KAWAII artist signal for SCHLUESSELKINDER."
+  alternates: {
+    canonical: "/artists/shibari-kawaii"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SHIBARI KAWAII campaign environment", height: 1400, url: campaignImage, width: 1400 }],
+    title,
+    url: "/artists/shibari-kawaii"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [campaignImage],
+    title
+  }
 };
 
 export default function ShibariKawaiiPage() {
