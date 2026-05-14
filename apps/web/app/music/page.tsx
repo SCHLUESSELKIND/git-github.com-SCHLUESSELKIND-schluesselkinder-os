@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
+import { masterbrand } from "@schluesselkinder/brand";
 import { EditorialHero } from "../_components/EditorialHero";
 import { GlyphRail } from "../_components/GlyphRail";
 import { ManifestLine } from "../_components/ManifestLine";
 import { SectionFrame } from "../_components/SectionFrame";
 import { getStaticMusicPageProjection } from "../../lib/registry/music-page";
 
-const collectiveName = "SCHLUESSELKINDER";
 const description = "Static sound archive for SHIBARI KAWAII, ROPEMASTER LP, and public release signals.";
 const previewImage = "/brand/campaign-dungeon-chair.png";
-const title = `Sound Archive | ${collectiveName}`;
+const title = `Sound Archive | ${masterbrand}`;
 
 export const metadata: Metadata = {
   alternates: {

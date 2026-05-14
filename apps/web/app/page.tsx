@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { brandAssets, seedCopy } from "@schluesselkinder/brand";
+import { brandAssets, masterbrand, seedCopy } from "@schluesselkinder/brand";
 import { ArtistSignal } from "./_components/ArtistSignal";
 import { BrandSymbol } from "./_components/BrandSymbol";
 import { EditorialImage } from "./_components/EditorialImage";
@@ -11,7 +11,6 @@ import { ShopPreview } from "./_components/ShopPreview";
 import { SymbolRail } from "./_components/SymbolRail";
 import { getStaticMusicPageProjection } from "../lib/registry/music-page";
 
-const collectiveName = "SCHLUESSELKINDER";
 const description = "Dark premium underground archive for SHIBARI KAWAII, ROPEMASTER, and SCHLUESSELKINDER objects.";
 const previewImage = "/brand/campaign-dungeon-chair.png";
 
@@ -23,15 +22,15 @@ export const metadata: Metadata = {
   openGraph: {
     description,
     images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
-    title: collectiveName,
+    title: masterbrand,
     url: "/"
   },
-  title: collectiveName,
+  title: masterbrand,
   twitter: {
     card: "summary_large_image",
     description,
     images: [previewImage],
-    title: collectiveName
+    title: masterbrand
   }
 };
 

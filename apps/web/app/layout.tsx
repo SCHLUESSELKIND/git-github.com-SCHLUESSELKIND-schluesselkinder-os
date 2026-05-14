@@ -1,11 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
 import { masterbrand, seedCopy } from "@schluesselkinder/brand";
 import { SiteFooter } from "./_components/SiteFooter";
 import { SiteHeader } from "./_components/SiteHeader";
 import "./globals.css";
 
-const collectiveName = "SCHLUESSELKINDER";
 const siteDescription = seedCopy.shortDescription;
 const previewImage = {
   alt: "SCHLUESSELKINDER dark campaign room",
@@ -15,9 +14,9 @@ const previewImage = {
 };
 
 export const metadata: Metadata = {
-  applicationName: collectiveName,
-  authors: [{ name: collectiveName }],
-  creator: collectiveName,
+  applicationName: masterbrand,
+  authors: [{ name: masterbrand }],
+  creator: masterbrand,
   description: siteDescription,
   formatDetection: {
     address: false,
@@ -33,12 +32,12 @@ export const metadata: Metadata = {
     description: siteDescription,
     images: [previewImage],
     locale: "de_DE",
-    siteName: collectiveName,
+    siteName: masterbrand,
     title: masterbrand,
     type: "website",
     url: "/"
   },
-  publisher: collectiveName,
+  publisher: masterbrand,
   robots: {
     follow: true,
     index: true
@@ -50,6 +49,11 @@ export const metadata: Metadata = {
     images: [previewImage.url],
     title: masterbrand
   }
+};
+
+export const viewport: Viewport = {
+  colorScheme: "dark",
+  themeColor: "#070605"
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {

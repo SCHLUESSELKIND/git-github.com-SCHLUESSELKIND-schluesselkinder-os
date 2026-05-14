@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { masterbrand } from "@schluesselkinder/brand";
 import { ObjectArchiveRecordView } from "../_components/ObjectArchiveRecordView";
 import { getStaticObjectArchiveRecord } from "../../../lib/registry/object-pages";
 
-const collectiveName = "SCHLUESSELKINDER";
 const description = "Archive record for SK-001 BLACK HOODIE / KEY.";
 const image = "/objects/sk-001/archive-board.png";
-const title = `SK-001 BLACK HOODIE / KEY | ${collectiveName}`;
+const title = `SK-001 BLACK HOODIE / KEY | ${masterbrand}`;
 
 export const metadata: Metadata = {
   alternates: {

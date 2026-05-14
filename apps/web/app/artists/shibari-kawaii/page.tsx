@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../../_components/BrandSymbol";
 import { EditorialImage } from "../../_components/EditorialImage";
 import { ManifestLine } from "../../_components/ManifestLine";
@@ -7,10 +8,9 @@ import { SectionFrame } from "../../_components/SectionFrame";
 import { SymbolRail } from "../../_components/SymbolRail";
 import { getStaticArtistPageProjection } from "../../../lib/registry/artist-page";
 
-const collectiveName = "SCHLUESSELKINDER";
 const campaignImage = "/brand/campaign-dungeon-chair.png";
 const description = "SHIBARI KAWAII artist dossier for the controlled SCHLUESSELKINDER release archive.";
-const title = `SHIBARI KAWAII | ${collectiveName}`;
+const title = `SHIBARI KAWAII | ${masterbrand}`;
 
 export const metadata: Metadata = {
   alternates: {
@@ -77,7 +77,7 @@ export default function ShibariKawaiiPage() {
               </div>
               <div className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:px-5">
                 <dt>label</dt>
-                <dd className="mt-2 text-stone-100">{collectiveName}</dd>
+                <dd className="mt-2 text-stone-100">{masterbrand}</dd>
               </div>
               <div className="py-4 md:px-5">
                 <dt>public signals</dt>
@@ -95,7 +95,7 @@ export default function ShibariKawaiiPage() {
               src={campaignImage}
               symbol="none"
             />
-            <RotatedMeta>{collectiveName} / release dossier</RotatedMeta>
+            <RotatedMeta>{masterbrand} / release dossier</RotatedMeta>
           </div>
         </div>
       </section>

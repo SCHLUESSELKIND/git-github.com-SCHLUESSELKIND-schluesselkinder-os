@@ -3,9 +3,28 @@ import { masterbrand } from "@schluesselkinder/brand";
 import { EditorialHero } from "../_components/EditorialHero";
 import { SectionFrame } from "../_components/SectionFrame";
 
+const description = "Impressum fuer SCHLUESSELKINDER.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+const title = `Impressum | ${masterbrand}`;
+
 export const metadata: Metadata = {
-  title: `Impressum | ${masterbrand}`,
-  description: "Impressum fuer SCHLUESSELKINDER."
+  alternates: {
+    canonical: "/impressum"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title,
+    url: "/impressum"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title
+  }
 };
 
 const rows = [

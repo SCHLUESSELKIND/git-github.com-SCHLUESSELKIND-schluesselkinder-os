@@ -5,9 +5,28 @@ import { EditorialHero } from "../_components/EditorialHero";
 import { GlyphRail } from "../_components/GlyphRail";
 import { SectionFrame } from "../_components/SectionFrame";
 
+const description = "SCHLUESSELKINDER artist archive.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+const title = `Artists | ${masterbrand}`;
+
 export const metadata: Metadata = {
-  title: `Artists | ${masterbrand}`,
-  description: "SCHLUESSELKINDER artist archive."
+  alternates: {
+    canonical: "/artists"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title,
+    url: "/artists"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title
+  }
 };
 
 export default function ArtistsPage() {

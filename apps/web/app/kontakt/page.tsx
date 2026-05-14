@@ -3,9 +3,28 @@ import { masterbrand } from "@schluesselkinder/brand";
 import { EditorialHero } from "../_components/EditorialHero";
 import { SectionFrame } from "../_components/SectionFrame";
 
+const description = "Kontakt fuer SCHLUESSELKINDER.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+const title = `Kontakt | ${masterbrand}`;
+
 export const metadata: Metadata = {
-  title: `Kontakt | ${masterbrand}`,
-  description: "Kontakt fuer SCHLUESSELKINDER."
+  alternates: {
+    canonical: "/kontakt"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title,
+    url: "/kontakt"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title
+  }
 };
 
 export default function KontaktPage() {

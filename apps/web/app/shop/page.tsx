@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../_components/BrandSymbol";
 import { SectionFrame } from "../_components/SectionFrame";
 import { SymbolRail } from "../_components/SymbolRail";
 import { getStaticShopProjection } from "../../lib/registry/object-pages";
 
-const collectiveName = "SCHLUESSELKINDER";
 const description = "Closed SCHLUESSELKINDER object archive. Public records only, transactions closed.";
-const title = `Objects | ${collectiveName}`;
+const title = `Objects | ${masterbrand}`;
 
 export const metadata: Metadata = {
   alternates: {

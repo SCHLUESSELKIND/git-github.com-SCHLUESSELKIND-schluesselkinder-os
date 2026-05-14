@@ -5,9 +5,28 @@ import { GlyphRail } from "../_components/GlyphRail";
 import { ManifestLine } from "../_components/ManifestLine";
 import { SectionFrame } from "../_components/SectionFrame";
 
+const description = "SCHLUESSELKINDER manifesto.";
+const previewImage = "/brand/campaign-dungeon-chair.png";
+const title = `About | ${masterbrand}`;
+
 export const metadata: Metadata = {
-  title: `About | ${masterbrand}`,
-  description: "SCHLUESSELKINDER manifesto."
+  alternates: {
+    canonical: "/about"
+  },
+  description,
+  openGraph: {
+    description,
+    images: [{ alt: "SCHLUESSELKINDER dark campaign room", height: 1400, url: previewImage, width: 1400 }],
+    title,
+    url: "/about"
+  },
+  title,
+  twitter: {
+    card: "summary_large_image",
+    description,
+    images: [previewImage],
+    title
+  }
 };
 
 export default function AboutPage() {
