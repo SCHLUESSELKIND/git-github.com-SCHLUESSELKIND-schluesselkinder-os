@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { masterbrand } from "@schluesselkinder/brand";
 import { EditorialHero } from "../_components/EditorialHero";
 import { GlyphRail } from "../_components/GlyphRail";
-import { ManifestLine } from "../_components/ManifestLine";
 import { SectionFrame } from "../_components/SectionFrame";
 import { getStaticMusicPageProjection } from "../../lib/registry/music-page";
 
@@ -30,12 +29,21 @@ export const metadata: Metadata = {
   }
 };
 
+function formatRole(role: string) {
+  return role.replace(/-/g, " ");
+}
+
+function formatSignals(count: number) {
+  return count === 1 ? "1 signal" : `${count} signals`;
+}
+
 export default function MusicPage() {
   const music = getStaticMusicPageProjection();
   const glyphItems = [
     ...music.releases.map((release) => release.releaseCode),
     ...music.releases.flatMap((release) => release.signals.map((signal) => signal.trackCode)),
-    ...music.objects.map((object) => object.objectCode)
+    ...music.objects.map((object) => object.objectCode),
+    "ARCHIVE"
   ];
 
   return (
@@ -52,48 +60,58 @@ export default function MusicPage() {
       <SectionFrame kicker="sound records" title="Public signals.">
         <div className="border-y border-stone-800">
           {music.releases.map((release) => (
-            <article className="border-b border-stone-800 py-7 last:border-b-0" key={release.releaseKey}>
-              <div className="grid gap-5 md:grid-cols-[104px_1fr_0.7fr]">
-                <div className="text-xs font-black uppercase md:pt-2">
+            <article
+              className="border-b border-stone-800 py-12 last:border-b-0 md:py-16"
+              key={release.releaseKey}
+            >
+              <div className="grid gap-6 md:grid-cols-[120px_1fr_0.6fr] md:gap-5">
+                <div className="text-xs font-black uppercase md:pt-1">
                   <p className="text-red-600">{release.releaseCode}</p>
-                  <p className="mt-3 text-stone-600">{release.role}</p>
+                  <p className="mt-3 text-stone-600">{formatRole(release.role)}</p>
                 </div>
                 <div>
-                  <h3 className="break-words text-5xl font-black uppercase leading-[0.88] text-stone-100 md:text-6xl">
+                  <h3 className="break-words text-6xl font-black uppercase leading-[0.85] tracking-tight text-stone-100 md:text-7xl">
                     {release.displayTitle}
                   </h3>
-                  <p className="mt-4 text-sm font-black uppercase text-stone-500">{music.artist.canonicalName}</p>
+                  <p className="mt-6 text-sm font-black uppercase text-stone-500 md:mt-8">
+                    {music.artist.canonicalName}
+                  </p>
                 </div>
-                <div className="text-lg leading-7 text-stone-400 md:self-end">
-                  <p className="text-sm font-black uppercase text-stone-500">signals</p>
-                  <p className="mt-2 text-sm font-black uppercase text-stone-200">{release.signals.length}</p>
+                <div className="text-xs font-black uppercase text-stone-500 md:self-end md:text-right">
+                  <p>{formatSignals(release.signals.length)}</p>
                 </div>
               </div>
-              <div className="mt-8 border-t border-stone-800">
+              <ol className="mt-10 list-none border-t border-stone-900 md:mt-14">
                 {release.signals.map((signal) => (
-                  <div className="grid gap-5 border-b border-stone-800 py-6 last:border-b-0 md:grid-cols-[104px_1fr_0.7fr]" key={signal.trackKey}>
-                    <div className="text-xs font-black uppercase md:pt-2">
-                      <p className="text-red-600">{signal.trackCode}</p>
-                    </div>
-                    <div>
-                      <h4 className="break-words text-4xl font-black uppercase leading-[0.9] text-stone-100 md:text-5xl">
-                        {signal.title}
-                      </h4>
-                    </div>
-                    <div className="text-lg leading-7 text-stone-400 md:self-end">
-                      <p className="text-sm font-black uppercase text-stone-500">{release.displayTitle}</p>
-                    </div>
-                  </div>
+                  <li
+                    className="grid gap-4 border-b border-stone-900 py-5 last:border-b-0 md:grid-cols-[120px_1fr] md:gap-6 md:py-6"
+                    key={signal.trackKey}
+                  >
+                    <p className="text-xs font-black uppercase text-red-600 md:pt-2">{signal.trackCode}</p>
+                    <h4 className="break-words text-3xl font-black uppercase leading-[0.95] text-stone-200 md:text-4xl">
+                      {signal.title}
+                    </h4>
+                  </li>
                 ))}
-              </div>
+              </ol>
             </article>
           ))}
         </div>
       </SectionFrame>
-      <SectionFrame kicker={music.artist.canonicalName} title="No feed. No noise.">
-        <div className="border-t border-stone-800">
-          <ManifestLine de="LP bleibt Anker." en="The LP remains the anchor." />
-          <ManifestLine de="Signale bleiben Signale." en="Signals remain signals." />
+      <SectionFrame kicker="archive stance" title="No feed. No noise.">
+        <div className="space-y-10 md:space-y-12">
+          <div>
+            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
+              LP bleibt Anker.
+            </p>
+            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">The LP remains the anchor.</p>
+          </div>
+          <div>
+            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
+              Signale bleiben Signale.
+            </p>
+            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">Signals remain signals.</p>
+          </div>
         </div>
       </SectionFrame>
     </main>
