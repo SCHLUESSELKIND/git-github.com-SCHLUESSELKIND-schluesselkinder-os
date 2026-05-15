@@ -1,6 +1,5 @@
 import Link from "next/link";
-
-const collectiveName = "SCHLUESSELKINDER";
+import { masterbrand } from "@schluesselkinder/brand";
 
 const legalLinks = [
   { href: "/kontakt", label: "Kontakt" },
@@ -13,7 +12,7 @@ export function SiteFooter() {
     <footer className="border-t border-stone-800 bg-[#070605] text-stone-500">
       <div className="mx-auto grid max-w-7xl gap-10 px-5 py-10 md:grid-cols-[1fr_auto] md:items-end md:px-8">
         <div>
-          <p className="text-xs font-black uppercase text-stone-300">{collectiveName}</p>
+          <p className="text-xs font-black uppercase text-stone-300">{masterbrand}</p>
           <p className="mt-3 max-w-sm text-xs uppercase leading-5 text-stone-600">
             Archive contact. Public pages remain static, manual, and controlled.
           </p>
