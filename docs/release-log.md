@@ -39,3 +39,27 @@ No section is ever rewritten. Corrections are appended, not edited.
   DistroKid account check + upload. (3) Listmonk SMTP wired (blocks newsletter
   sequence dispatch). (4) Cover art commission or in-house production. T-3 hard
   slip-rule applies — Tue 2026-06-09 is the no-go-no-go decision day.
+- **2026-05-24 · PRIORITY LOCK** — operator directive: P1 Shopify live · P2
+  Cover system · P3 Ditto Music upload · P4 Newsletter (deprio) · P5 Automation
+  (irrelevant until real signals). Reality test focus: real product → real
+  checkout → real payment. Infrastructure expansion paused until real-signal
+  loop closes.
+- **2026-05-24 · DISTRIBUTOR CHANGE** — DistroKid replaced with **Ditto Music**.
+  Closer to independent-label workflow, less creator-economy tooling, cleaner
+  for the underground posture. Upload deadline tightens slightly to Tue
+  2026-06-02 for Ditto's editorial-pitch lead time. DistroKid references in
+  README + checklist updated; logged here as the audit truth.
+- **2026-05-24 · NEWSLETTER DEPRIO** — Listmonk SMTP no longer blocks T-0.
+  Newsletter sequence (T-7, T-1, T+0, T+3, T+7) stays archived in
+  `newsletter/` as drafts. Dispatch deferred to post-launch, when real
+  subscribers exist. Audience = 0 means newsletter = zero leverage right now.
+- **2026-05-24 · PHASE S1 OPENED** — Shopify go-live runbook landed at
+  `docs/runbooks/shopify-golive.md`. Theme push + 2 product drafts +
+  end-to-end checkout test. Definition of done: payment step reached on the
+  preview theme, abandoned cart logged in Shopify Admin.
+- **2026-05-24 · DATE-DISPLAY BUG FIX (commit ecbb832)** — first prerender
+  shipped "11.06.2026 · 00:00 CET" instead of "12.06.2026 · 00:00 CEST" due
+  to `getUTCDate()` shifting a midnight-CEST moment back into UTC. Fixed by
+  parsing ISO components directly. Lesson: server-rendered date strings MUST
+  be parsed component-wise from the ISO source. Never use `Date.getUTC*()`
+  for display.
