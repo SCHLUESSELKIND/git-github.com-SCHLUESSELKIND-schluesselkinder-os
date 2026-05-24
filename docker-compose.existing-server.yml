@@ -1,5 +1,27 @@
 name: schluesselkinder_web
 
+# ---------------------------------------------------------------------------
+# Production compose for the schluesselkinder.de Hetzner box.
+# Caddy runs on the HOST (systemd) and reverse-proxies the loopback ports:
+#   127.0.0.1:3091 → web      (Next.js, public site)
+#   127.0.0.1:3092 → api      (FastAPI, inference + commerce + newsletter)
+#   127.0.0.1:3093 → listmonk (admin UI + subscribe API)
+#
+# Required `.env` (next to this file) — NEVER commit:
+#   LISTMONK_DB_PASSWORD=<random>
+#   LISTMONK_ADMIN_USERNAME=admin
+#   LISTMONK_ADMIN_PASSWORD=<random>
+#   LISTMONK_API_USERNAME=<listmonk api user, created in admin after install>
+#   LISTMONK_API_PASSWORD=<listmonk api token>
+#   LISTMONK_API_LIST_ID=<numeric id of the snuffragga list>
+#
+# First-time bring-up of Listmonk (one-off, NOT in CI):
+#   docker compose -f docker-compose.existing-server.yml up -d listmonk-db
+#   docker compose -f docker-compose.existing-server.yml run --rm listmonk \
+#     ./listmonk --install --yes
+#   docker compose -f docker-compose.existing-server.yml up -d listmonk
+# ---------------------------------------------------------------------------
+
 services:
   web:
     build:
@@ -25,3 +47,57 @@ services:
     ports:
       - "127.0.0.1:3091:3000"
     restart: unless-stopped
+
+  api:
+    build:
+      context: ./services/soundsystem-inference
+      dockerfile: Dockerfile
+    environment:
+      SOUNDSYSTEM_CORS_ALLOWED_ORIGINS: "https://schluesselkinder.de,https://www.schluesselkinder.de"
+      SOUNDSYSTEM_LISTMONK_BASE_URL: "http://listmonk:9000"
+      SOUNDSYSTEM_LISTMONK_USERNAME: ${LISTMONK_API_USERNAME:-}
+      SOUNDSYSTEM_LISTMONK_PASSWORD: ${LISTMONK_API_PASSWORD:-}
+      SOUNDSYSTEM_LISTMONK_LIST_ID: ${LISTMONK_API_LIST_ID:-}
+    ports:
+      - "127.0.0.1:3092:8010"
+    restart: unless-stopped
+    depends_on:
+      - listmonk
+
+  listmonk-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: listmonk
+      POSTGRES_PASSWORD: ${LISTMONK_DB_PASSWORD:?LISTMONK_DB_PASSWORD must be set in .env}
+      POSTGRES_DB: listmonk
+    volumes:
+      - listmonk-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U listmonk -d listmonk"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+
+  listmonk:
+    image: listmonk/listmonk:v3.0.0
+    depends_on:
+      listmonk-db:
+        condition: service_healthy
+    environment:
+      LISTMONK_app__address: "0.0.0.0:9000"
+      LISTMONK_db__host: listmonk-db
+      LISTMONK_db__port: "5432"
+      LISTMONK_db__user: listmonk
+      LISTMONK_db__password: ${LISTMONK_DB_PASSWORD:?LISTMONK_DB_PASSWORD must be set in .env}
+      LISTMONK_db__database: listmonk
+      LISTMONK_db__ssl_mode: disable
+      LISTMONK_app__admin_username: ${LISTMONK_ADMIN_USERNAME:-admin}
+      LISTMONK_app__admin_password: ${LISTMONK_ADMIN_PASSWORD:?LISTMONK_ADMIN_PASSWORD must be set in .env}
+    ports:
+      - "127.0.0.1:3093:9000"
+    restart: unless-stopped
+
+volumes:
+  listmonk-db-data:
