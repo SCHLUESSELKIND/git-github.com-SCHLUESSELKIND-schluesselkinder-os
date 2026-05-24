@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { COMMAND_INTENTS } from "../_lib/operators";
+import { COMMAND_INTENTS, intentHref } from "../_lib/operators";
 import { OperatorModeSwitcher } from "./OperatorModeSwitcher";
 
 type SoundsystemShellProps = Readonly<{
@@ -56,11 +56,20 @@ function SideRail() {
         {COMMAND_INTENTS.map((intent) => (
           <Link
             key={intent.slug}
-            href={`/admin/soundsystem/${intent.slug}`}
-            className="border-b border-[color:var(--ss-border)] px-4 py-3 font-mono text-[0.68rem] uppercase tracking-widest text-[color:var(--ss-text-secondary)] hover:bg-[color:var(--ss-panel-elevated)] hover:text-[color:var(--ss-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[color:var(--ss-accent)]"
+            href={intentHref(intent)}
+            className="flex items-center justify-between border-b border-[color:var(--ss-border)] px-4 py-3 font-mono text-[0.68rem] uppercase tracking-widest text-[color:var(--ss-text-secondary)] hover:bg-[color:var(--ss-panel-elevated)] hover:text-[color:var(--ss-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[color:var(--ss-accent)]"
             style={{ minHeight: "var(--ss-tap-target)" }}
           >
-            {intent.title}
+            <span>{intent.title}</span>
+            {intent.state === "ready" ? (
+              <span
+                className="ml-2 inline-block text-[0.55rem] font-black uppercase tracking-widest"
+                style={{ color: "var(--ss-accent)" }}
+                aria-label="ready"
+              >
+                ●
+              </span>
+            ) : null}
           </Link>
         ))}
       </nav>
@@ -110,7 +119,8 @@ export function SoundsystemUnavailable() {
         </h1>
         <div className="border-l-2 border-[color:var(--ss-warning)] pl-4 text-sm leading-7 text-[color:var(--ss-text-secondary)]">
           <p>
-            Set <code className="text-[color:var(--ss-accent)]">NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true</code> locally
+            Set <code className="text-[color:var(--ss-accent)]">INTERNAL_CONSOLE_ENABLED=true</code> on the server
+            (local dev may use <code className="text-[color:var(--ss-accent)]">NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true</code>)
             to engage the soundsystem console.
           </p>
           <p>This is not authentication. It is only a local boundary marker.</p>
