@@ -4,8 +4,15 @@ import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../../_components/BrandSymbol";
 import { GlyphRail } from "../../_components/GlyphRail";
 import { NewsletterForm } from "../../_components/NewsletterForm";
+import { ReleaseStatus } from "../../_components/ReleaseStatus";
 import { SectionFrame } from "../../_components/SectionFrame";
 import { EmbedConsentReset, SoundEmbed } from "../../_components/SoundEmbed";
+import { latestReleaseFor } from "../../_releases";
+
+// Refresh the cached HTML every 60s so the ReleaseStatus block flips from
+// "incoming" to "in transmission" within a minute of the release window
+// opening, without any manual deploy on T-0.
+export const revalidate = 60;
 
 // Operator wires these via env vars. Empty = honest offline state.
 // We never bake in fake Spotify / SoundCloud / newsletter URLs.
@@ -62,6 +69,8 @@ export const metadata: Metadata = {
 };
 
 export default function SnuffraggaPage() {
+  const release = latestReleaseFor("snuffragga");
+
   return (
     <main className="min-h-screen bg-[#070605] text-stone-100">
       {/* ---------------- HERO ---------------- */}
@@ -83,7 +92,7 @@ export default function SnuffraggaPage() {
           {/* Left column — eyebrow + title + metadata */}
           <div className="flex flex-col gap-12 border-l border-stone-800 pl-5 md:pl-8">
             <div className="flex items-start justify-between gap-6">
-              <p className="font-mono text-[0.6rem] font-black uppercase tracking-[0.35em] text-red-600 sm:text-xs">
+              <p className="font-mono text-[0.6rem] font-black uppercase tracking-[0.35em] text-[#5FB047] sm:text-xs">
                 district-002 · active signal
               </p>
               <BrandSymbol
@@ -115,7 +124,7 @@ export default function SnuffraggaPage() {
                 href={GRUENLICHTBEZIRK_URL}
                 target={SHOP_URL.startsWith("http") ? "_blank" : undefined}
                 rel={SHOP_URL.startsWith("http") ? "noopener" : undefined}
-                className="inline-flex items-center gap-3 border border-stone-100 bg-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-900 transition hover:bg-red-600 hover:text-stone-100"
+                className="inline-flex items-center gap-3 border border-stone-100 bg-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-900 transition hover:bg-[#5FB047] hover:text-stone-100"
               >
                 Enter GRÜNLICHTBEZIRK
                 <span aria-hidden>→</span>
@@ -139,7 +148,7 @@ export default function SnuffraggaPage() {
               </div>
               <div className="px-0 py-5 sm:px-6">
                 <dt className="text-stone-600">status</dt>
-                <dd className="mt-2 text-red-600">signal live</dd>
+                <dd className="mt-2 text-[#5FB047]">signal live</dd>
               </div>
             </dl>
           </div>
@@ -156,7 +165,7 @@ export default function SnuffraggaPage() {
               </div>
               <div className="border-t border-stone-800 p-4 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-stone-500 sm:text-xs">
                 <p>transmission room — no walk-in</p>
-                <p className="mt-3 text-red-600">enter via signal only</p>
+                <p className="mt-3 text-[#5FB047]">enter via signal only</p>
               </div>
             </div>
             <div className="flex flex-col gap-2 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-stone-500 sm:text-xs">
@@ -170,6 +179,13 @@ export default function SnuffraggaPage() {
       </section>
 
       <GlyphRail items={["DISTRICT", "ROOM", "BASS", "DUB", "TRACE", "SK"]} />
+
+      {/* ---------------- PRIMARY RELEASE ---------------- */}
+      {release ? (
+        <SectionFrame kicker="primary release · 001" title="Drop window.">
+          <ReleaseStatus release={release} />
+        </SectionFrame>
+      ) : null}
 
       {/* ---------------- TRANSMISSIONS ---------------- */}
       <SectionFrame kicker="transmissions · 002" title="Listening room.">
@@ -215,7 +231,7 @@ export default function SnuffraggaPage() {
       <section className="border-t border-stone-800">
         <div className="mx-auto grid max-w-7xl items-stretch gap-0 px-0 md:grid-cols-[1.05fr_0.95fr] md:px-0">
           <div className="border-stone-800 px-5 py-14 md:border-r md:px-12 md:py-20">
-            <p className="font-mono text-[0.6rem] font-black uppercase tracking-[0.35em] text-red-600 sm:text-xs">
+            <p className="font-mono text-[0.6rem] font-black uppercase tracking-[0.35em] text-[#5FB047] sm:text-xs">
               current drop · limited signal
             </p>
             <h2
@@ -237,7 +253,7 @@ export default function SnuffraggaPage() {
                 href={GRUENLICHTBEZIRK_URL}
                 target={SHOP_URL.startsWith("http") ? "_blank" : undefined}
                 rel={SHOP_URL.startsWith("http") ? "noopener" : undefined}
-                className="inline-flex items-center gap-3 border border-stone-100 bg-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-900 transition hover:bg-red-600 hover:text-stone-100"
+                className="inline-flex items-center gap-3 border border-stone-100 bg-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-900 transition hover:bg-[#5FB047] hover:text-stone-100"
               >
                 Enter shop
                 <span aria-hidden>→</span>
