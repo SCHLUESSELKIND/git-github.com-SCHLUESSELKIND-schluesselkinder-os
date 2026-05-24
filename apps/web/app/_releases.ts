@@ -93,17 +93,34 @@ export function latestReleaseFor(artist: string): Release | null {
 
 /**
  * Format the release date for display in the brand voice: cold, ISO-leaning,
- * no fluff. e.g. "12.06.2026 · 00:00 CET".
+ * no fluff. e.g. "12.06.2026 · 00:00 CEST".
+ *
+ * Parses every component DIRECTLY from the ISO 8601 source string. Going
+ * through `new Date()` + `getUTC*()` would shift the display into UTC and
+ * silently break the cutover (e.g. "2026-06-12T00:00:00+02:00" → UTC
+ * June 11 22:00 → displays "11.06" instead of "12.06"). That bug shipped
+ * once in the first prerender — it stays caught here.
+ *
+ * The timezone label is picked from the offset:
+ *   +01:00 → "CET"  (winter)
+ *   +02:00 → "CEST" (summer, DST)
+ *   anything else → raw offset string, never silently mis-labeled.
  */
 export function formatReleaseDate(release: Release): string {
-  const d = new Date(release.releaseAt);
-  const day = String(d.getUTCDate()).padStart(2, "0");
-  const month = String(d.getUTCMonth() + 1).padStart(2, "0");
-  const year = d.getUTCFullYear();
-  // Construct from the ISO string to keep CET/CEST exact rather than the
-  // server's local zone, which on Hetzner is UTC.
-  const isoTimeMatch = release.releaseAt.match(/T(\d{2}):(\d{2})/);
-  const hh = isoTimeMatch ? isoTimeMatch[1] : "00";
-  const mm = isoTimeMatch ? isoTimeMatch[2] : "00";
-  return `${day}.${month}.${year} · ${hh}:${mm} CET`;
+  const match = release.releaseAt.match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):\d{2}([+-]\d{2}):?(\d{2})$/
+  );
+  if (!match) {
+    return release.releaseAt;
+  }
+  const [, year, month, day, hh, mm, offsetHours] = match;
+  let tzLabel: string;
+  if (offsetHours === "+01") {
+    tzLabel = "CET";
+  } else if (offsetHours === "+02") {
+    tzLabel = "CEST";
+  } else {
+    tzLabel = `UTC${offsetHours}`;
+  }
+  return `${day}.${month}.${year} · ${hh}:${mm} ${tzLabel}`;
 }
