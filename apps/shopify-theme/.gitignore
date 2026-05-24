@@ -1,0 +1,5 @@
+.DS_Store
+.shopify/
+.shopify-cli/
+node_modules/
+*.log

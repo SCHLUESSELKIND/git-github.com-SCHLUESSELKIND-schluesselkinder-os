@@ -1,0 +1,62 @@
+{
+  "accessibility": {
+    "skip_to_content": "Zum Inhalt springen"
+  },
+  "header": {
+    "primary": "Hauptnavigation",
+    "menu": "Menü",
+    "close": "Schließen",
+    "search": "Suchen",
+    "cart": "Warenkorb"
+  },
+  "cart": {
+    "title": "Warenkorb",
+    "close": "Schließen",
+    "empty": "Keine Übertragung in der Warteschlange.",
+    "items": "Objekte",
+    "quantity": "Anzahl",
+    "subtotal": "Zwischensumme",
+    "view": "Warenkorb ansehen",
+    "checkout": "Zur Kasse",
+    "continue": "Weiter stöbern"
+  },
+  "product": {
+    "add_to_cart": "In den Warenkorb",
+    "sold_out": "Ausverkauft",
+    "unavailable": "Nicht verfügbar",
+    "price": "Preis",
+    "quantity": "Anzahl"
+  },
+  "collection": {
+    "product_count": {
+      "one": "1 Objekt",
+      "other": "{{ count }} Objekte"
+    },
+    "empty": "Noch keine Objekte in dieser Kollektion."
+  },
+  "newsletter": {
+    "email": "E-Mail",
+    "email_placeholder": "deine@frequenz.net",
+    "subscribe": "Abonnieren",
+    "success": "Du bist auf der Liste."
+  },
+  "sections": {
+    "featured_collection": {
+      "view_all": "Alle ansehen",
+      "empty": "Verknüpfe eine Kollektion in den Section-Einstellungen."
+    },
+    "featured_product": {
+      "view": "Objekt ansehen"
+    }
+  },
+  "search": {
+    "placeholder": "Suche",
+    "submit": "Suchen",
+    "no_results": "Kein Treffer für dieses Signal."
+  },
+  "general": {
+    "currency": {
+      "label": "Währung"
+    }
+  }
+}

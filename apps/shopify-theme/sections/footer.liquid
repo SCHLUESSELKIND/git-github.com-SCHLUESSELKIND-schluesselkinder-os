@@ -1,0 +1,59 @@
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div class="site-footer__brand">
+        <div class="site-footer__wordmark">{{ settings.brand_name | default: shop.name }}</div>
+        {%- if settings.brand_signal != blank -%}
+          <div class="site-footer__signal">{{ settings.brand_signal }}</div>
+        {%- endif -%}
+      </div>
+
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'menu' -%}
+          <div class="site-footer__col" {{ block.shopify_attributes }}>
+            <h4>{{ block.settings.title }}</h4>
+            <ul class="site-footer__list">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="site-footer__bottom">
+      <span>&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}</span>
+      <div class="row">
+        {%- if settings.social_instagram != blank -%}<a href="{{ settings.social_instagram }}" rel="noopener" target="_blank">Instagram</a>{%- endif -%}
+        {%- if settings.social_tiktok != blank -%}<a href="{{ settings.social_tiktok }}" rel="noopener" target="_blank">TikTok</a>{%- endif -%}
+        {%- if settings.social_spotify != blank -%}<a href="{{ settings.social_spotify }}" rel="noopener" target="_blank">Spotify</a>{%- endif -%}
+        {%- if settings.social_soundcloud != blank -%}<a href="{{ settings.social_soundcloud }}" rel="noopener" target="_blank">SoundCloud</a>{%- endif -%}
+        {%- if settings.social_discord != blank -%}<a href="{{ settings.social_discord }}" rel="noopener" target="_blank">Discord</a>{%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "max_blocks": 4,
+  "blocks": [
+    {
+      "type": "menu",
+      "name": "Menu column",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "SHOP" },
+        { "type": "link_list", "id": "menu", "label": "Menu", "default": "footer" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Footer",
+      "blocks": [{ "type": "menu" }, { "type": "menu" }]
+    }
+  ]
+}
+{% endschema %}

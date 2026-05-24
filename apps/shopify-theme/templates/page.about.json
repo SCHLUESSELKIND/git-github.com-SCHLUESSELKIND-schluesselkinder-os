@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "story": {
+      "type": "about-story",
+      "blocks": {
+        "p1": { "type": "paragraph", "settings": { "text": "SCHLUESSELKINDER is a label system. Cold underground. Radical reduction. Bass pressure as architecture." } },
+        "p2": { "type": "paragraph", "settings": { "text": "Objects are dispatched in limited runs. Each carries a signal — drop, capsule, soundsystem reference. Once a signal closes, the run does not return." } },
+        "q1": { "type": "pull_quote", "settings": { "text": "Not horror. Not cyberpunk. Not moodboard. A frequency." } },
+        "p3": { "type": "paragraph", "settings": { "text": "All transmissions originate from the district. SNUFFRAGGA SOUNDSYSTEM is the working line; SHIBARI KAWAII is the first artist on record. More signals to follow." } }
+      },
+      "block_order": ["p1", "p2", "q1", "p3"],
+      "settings": {
+        "eyebrow": "ARCHIVE NOTE",
+        "heading": "FUTURE OBJECT ARCHIVE"
+      }
+    }
+  },
+  "order": ["story"]
+}

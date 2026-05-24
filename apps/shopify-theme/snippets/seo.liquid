@@ -1,0 +1,53 @@
+{%- liquid
+  assign seo_title = page_title | default: shop.name
+  if template == 'product'
+    assign seo_image = product.featured_media | image_url: width: 1200
+  elsif template == 'collection'
+    assign seo_image = collection.image | image_url: width: 1200
+  endif
+-%}
+
+<meta property="og:type" content="{% if request.page_type == 'product' %}product{% else %}website{% endif %}">
+<meta property="og:site_name" content="{{ shop.name }}">
+<meta property="og:title" content="{{ seo_title }}">
+{%- if page_description -%}
+  <meta property="og:description" content="{{ page_description | escape }}">
+{%- endif -%}
+<meta property="og:url" content="{{ canonical_url }}">
+{%- if seo_image -%}
+  <meta property="og:image" content="https:{{ seo_image }}">
+  <meta name="twitter:card" content="summary_large_image">
+{%- endif -%}
+
+{%- if template == 'product' and product -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Product",
+      "name": {{ product.title | json }},
+      "image": {{ product.images | map: 'src' | json }},
+      "description": {{ product.description | strip_html | json }},
+      "sku": {{ product.selected_or_first_available_variant.sku | json }},
+      "brand": { "@type": "Brand", "name": {{ shop.name | json }} },
+      "offers": {
+        "@type": "Offer",
+        "url": {{ shop.url | append: product.url | json }},
+        "priceCurrency": {{ shop.currency | json }},
+        "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+        "availability": {% if product.available %}"https://schema.org/InStock"{% else %}"https://schema.org/OutOfStock"{% endif %}
+      }
+    }
+  </script>
+{%- endif -%}
+
+{%- if request.page_type == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ shop.name | json }},
+      "url": {{ shop.url | json }},
+      "logo": {%- if settings.favicon != blank -%}{{ settings.favicon | image_url: width: 512 | prepend: 'https:' | json }}{%- else -%}null{%- endif -%}
+    }
+  </script>
+{%- endif -%}

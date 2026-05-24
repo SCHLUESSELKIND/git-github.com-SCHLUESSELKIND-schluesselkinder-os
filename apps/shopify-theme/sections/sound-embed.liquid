@@ -1,0 +1,49 @@
+<section class="sound section">
+  <div class="wrap">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="display-md" style="margin-top:12px;margin-bottom:48px;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="sound__embeds">
+      {%- if section.settings.spotify_url != blank -%}
+        <div class="sound__embed">
+          <iframe
+            src="{{ section.settings.spotify_url }}"
+            width="100%" height="380"
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Spotify embed">
+          </iframe>
+        </div>
+      {%- endif -%}
+      {%- if section.settings.soundcloud_url != blank -%}
+        <div class="sound__embed">
+          <iframe
+            src="{{ section.settings.soundcloud_url }}"
+            width="100%" height="380"
+            scrolling="no" frameborder="no"
+            allow="autoplay"
+            loading="lazy"
+            title="SoundCloud embed">
+          </iframe>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sound",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "BASS PRESSURE" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "TRANSMISSIONS" },
+    { "type": "url", "id": "spotify_url", "label": "Spotify embed URL (iframe src)" },
+    { "type": "url", "id": "soundcloud_url", "label": "SoundCloud embed URL (iframe src)" }
+  ],
+  "presets": [{ "name": "Sound" }]
+}
+{% endschema %}

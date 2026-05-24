@@ -1,0 +1,45 @@
+<section class="hero section" aria-label="{{ section.settings.eyebrow | default: 'Hero' }}">
+  <div class="hero__bg">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 2400 | image_tag:
+        loading: 'eager', fetchpriority: 'high', sizes: '100vw',
+        widths: '480, 768, 1100, 1500, 1800, 2400',
+        alt: section.settings.image.alt | default: section.settings.heading
+      }}
+    {%- elsif section.settings.video != blank -%}
+      <video autoplay loop muted playsinline preload="metadata" poster="{{ section.settings.video_poster | image_url: width: 1800 }}">
+        <source src="{{ section.settings.video }}" type="video/mp4">
+      </video>
+    {%- endif -%}
+  </div>
+
+  <div class="wrap hero__content">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow hero__eyebrow">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="display-xl hero__title">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+    {%- if section.settings.cta_label != blank and section.settings.cta_link != blank -%}
+      <a href="{{ section.settings.cta_link }}" class="btn btn--primary hero__cta">
+        {{ section.settings.cta_label }}
+      </a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "TRANSMISSION 001" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "SCHLUESSELKINDER" },
+    { "type": "image_picker", "id": "image", "label": "Background image" },
+    { "type": "url", "id": "video", "label": "Background video URL (mp4)" },
+    { "type": "image_picker", "id": "video_poster", "label": "Video poster" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "ENTER THE DISTRICT" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" }
+  ],
+  "presets": [{ "name": "Hero" }]
+}
+{% endschema %}

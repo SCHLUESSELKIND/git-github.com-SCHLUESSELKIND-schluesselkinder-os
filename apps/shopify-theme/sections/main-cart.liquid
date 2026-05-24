@@ -1,0 +1,47 @@
+<section class="collection section">
+  <div class="wrap">
+    <header class="collection__header">
+      <h1 class="collection__title">{{ 'cart.title' | t }}</h1>
+      <div class="collection__count">{{ cart.item_count }} {{ 'cart.items' | t }}</div>
+    </header>
+
+    {%- if cart.item_count == 0 -%}
+      <p class="meta">{{ 'cart.empty' | t }}</p>
+      <a class="btn" href="{{ routes.all_products_collection_url }}" style="margin-top:24px;">{{ 'cart.continue' | t }}</a>
+    {%- else -%}
+      <form action="{{ routes.cart_url }}" method="post" novalidate>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          {%- for item in cart.items -%}
+            <div class="cart-line">
+              <div class="cart-line__media">
+                {%- if item.image -%}
+                  {{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.product.title }}
+                {%- endif -%}
+              </div>
+              <div>
+                <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+                <div class="meta">{{ item.variant.title }}</div>
+                <div class="meta">{{ 'cart.quantity' | t }}: {{ item.quantity }}</div>
+              </div>
+              <div class="price">{{ item.final_line_price | money }}</div>
+            </div>
+          {%- endfor -%}
+        </div>
+
+        <div class="row between" style="margin-top:32px;padding-top:24px;border-top:1px solid var(--border);">
+          <span class="meta">{{ 'cart.subtotal' | t }}</span>
+          <span class="price">{{ cart.total_price | money }}</span>
+        </div>
+
+        <button type="submit" name="checkout" class="btn btn--primary btn--block" style="margin-top:24px;">{{ 'cart.checkout' | t }}</button>
+      </form>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cart",
+  "settings": []
+}
+{% endschema %}

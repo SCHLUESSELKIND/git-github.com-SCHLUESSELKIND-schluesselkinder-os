@@ -1,0 +1,163 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "SCHLUESSELKINDER",
+    "theme_version": "0.1.0",
+    "theme_author": "SCHLUESSELKINDER",
+    "theme_documentation_url": "https://shop.schluesselkinder.de"
+  },
+  {
+    "name": "Brand identity",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brand"
+      },
+      {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Masterbrand",
+        "default": "SCHLUESSELKINDER"
+      },
+      {
+        "type": "text",
+        "id": "brand_signal",
+        "label": "Signal line (appears under logo on storefront)",
+        "default": "FUTURE OBJECT ARCHIVE"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Palette — keep this radically reduced"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#0A0A0A"
+      },
+      {
+        "type": "color",
+        "id": "color_fg",
+        "label": "Foreground (off-white)",
+        "default": "#F4F2EC"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Muted text",
+        "default": "#7A7A75"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (use sparingly — CTAs, active states only)",
+        "default": "#B6FF3A"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Border",
+        "default": "#1F1F1F"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Brutal condensed display + monospace meta"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_display",
+        "label": "Display (headlines)",
+        "default": "anton_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_body",
+        "label": "Body",
+        "default": "inter_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "font_mono",
+        "label": "Meta / labels",
+        "default": "jetbrains_mono_n4"
+      },
+      {
+        "type": "range",
+        "id": "display_tracking",
+        "label": "Display tracking (in 1/1000 em)",
+        "min": -20,
+        "max": 100,
+        "step": 5,
+        "default": 20
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Spacing"
+      },
+      {
+        "type": "range",
+        "id": "page_max_width",
+        "label": "Page max width (px)",
+        "min": 1200,
+        "max": 1800,
+        "step": 20,
+        "default": 1600
+      },
+      {
+        "type": "checkbox",
+        "id": "grain",
+        "label": "Subtle film grain overlay",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Social",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Real URLs only. Leave empty to hide the icon."
+      },
+      {
+        "type": "url",
+        "id": "social_instagram",
+        "label": "Instagram"
+      },
+      {
+        "type": "url",
+        "id": "social_tiktok",
+        "label": "TikTok"
+      },
+      {
+        "type": "url",
+        "id": "social_spotify",
+        "label": "Spotify"
+      },
+      {
+        "type": "url",
+        "id": "social_soundcloud",
+        "label": "SoundCloud"
+      },
+      {
+        "type": "url",
+        "id": "social_discord",
+        "label": "Discord invite"
+      }
+    ]
+  }
+]

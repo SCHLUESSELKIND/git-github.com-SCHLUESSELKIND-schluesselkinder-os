@@ -1,0 +1,62 @@
+{
+  "accessibility": {
+    "skip_to_content": "Skip to content"
+  },
+  "header": {
+    "primary": "Primary navigation",
+    "menu": "Menu",
+    "close": "Close",
+    "search": "Search",
+    "cart": "Cart"
+  },
+  "cart": {
+    "title": "Cart",
+    "close": "Close",
+    "empty": "No transmissions queued.",
+    "items": "items",
+    "quantity": "Qty",
+    "subtotal": "Subtotal",
+    "view": "View cart",
+    "checkout": "Checkout",
+    "continue": "Continue browsing"
+  },
+  "product": {
+    "add_to_cart": "Add to cart",
+    "sold_out": "Sold out",
+    "unavailable": "Unavailable",
+    "price": "Price",
+    "quantity": "Quantity"
+  },
+  "collection": {
+    "product_count": {
+      "one": "1 object",
+      "other": "{{ count }} objects"
+    },
+    "empty": "No objects in this collection yet."
+  },
+  "newsletter": {
+    "email": "Email",
+    "email_placeholder": "your@frequency.net",
+    "subscribe": "Subscribe",
+    "success": "You are on the list."
+  },
+  "sections": {
+    "featured_collection": {
+      "view_all": "View all",
+      "empty": "Connect a collection in the section settings."
+    },
+    "featured_product": {
+      "view": "View object"
+    }
+  },
+  "search": {
+    "placeholder": "Search",
+    "submit": "Search",
+    "no_results": "Nothing matched that signal."
+  },
+  "general": {
+    "currency": {
+      "label": "Currency"
+    }
+  }
+}
