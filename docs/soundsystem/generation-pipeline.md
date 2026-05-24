@@ -99,6 +99,14 @@ The target stem lanes are defined in [sound-model.md](./sound-model.md):
 `kick`, `drums`, `percussion`, `bass`, `music`, `lead`, `vocals_main`,
 `vocals_adlibs`, `fx`, `atmosphere`, `return_delay`, and `return_reverb`.
 
+The lyrics TXT/JSON entries above come from the SNUFFRAGA LYRICS ENGINE
+([lyrics-engine.md](./lyrics-engine.md)). Operators call
+`POST /v1/lyrics/versions/{version_id}/export` to produce a
+`LyricsExportManifest`, which carries the export paths plus
+`vocal_notes` and `section_index_map` for SoundGraph arrangement linkage.
+In the current slice the manifest references paths only — the files are
+not written to disk; the writer ships with the real engine integration.
+
 ### 5. Analysis
 
 Run:

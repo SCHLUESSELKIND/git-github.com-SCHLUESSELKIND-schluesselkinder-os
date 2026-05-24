@@ -15,6 +15,16 @@ The existing `services/api` Fastify service remains the SCHLUESSELKINDER archive
 
 ## Documents
 
+### Strategy & Compliance (binding)
+
+- [Operator Interface Principles](./operator-interface-principles.md) — intent-first UI; no raw model names in the operator console
+- [Admin Integration Strategy](./admin-integration-strategy.md) — how `schluesselkinder.de/admin` hosts the operator OS
+- [Model Provider Strategy](./model-provider-strategy.md) — provider groups, intent-to-provider mapping, adapter pattern
+- [Compliance Foundation](./compliance-foundation.md) — preflight ordering, license, consent, provenance, release gates
+- [Roadmap](./roadmap.md) — slice sequence
+
+### Architecture
+
 - [Research Notes](./research.md)
 - [System Architecture](./architecture.md)
 - [SNUFFRAGA SOUNDGRAPH Model](./sound-model.md)
@@ -22,12 +32,14 @@ The existing `services/api` Fastify service remains the SCHLUESSELKINDER archive
 - [Database Schema](./database-schema.md)
 - [Generation Pipeline](./generation-pipeline.md)
 - [Prompt Engine](./prompt-engine.md)
-- [Copyright Safety Layer](./copyright-safety.md)
+- [Lyrics Engine](./lyrics-engine.md)
+- [Copyright Safety Layer](./copyright-safety.md) — superseded by [Compliance Foundation](./compliance-foundation.md) for the data model
+- [Master Bus](./master-bus.md)
 - [UI Wireframes](./ui-wireframes.md)
 - [Operator Console](./operator-console.md)
 - [Claude Code Handoff](./claude-code-handoff.md)
 - [Roadmap and Deployment](./roadmap-deployment.md)
-- [Execution Order](./execution-order.md)
+- [Execution Order](./execution-order.md) — superseded by [Roadmap](./roadmap.md) where they disagree
 
 ## Implementation Artifacts
 

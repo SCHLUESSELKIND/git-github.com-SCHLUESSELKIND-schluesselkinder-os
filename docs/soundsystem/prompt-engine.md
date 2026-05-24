@@ -144,6 +144,28 @@ Use Claude API for:
 
 The prompt engine must save both raw user intent and compiled engine prompts. A later output must always be traceable to the original modules.
 
+> No live LLM call is wired today. `compile_prompt` is fully deterministic
+> and runs against in-process modules only. The LLM-role mapping above is
+> the design target; the env flag and provider abstraction that gate real
+> API calls land in a later slice.
+
+## Related Compilers
+
+The music-generation prompt compiler described here returns
+`CompiledPrompt` (prompt text, negative prompt, stem plan, tempo, druck,
+effect racks). It is distinct from the lyrics compiler.
+
+The lyrics compiler `compile_lyrics_prompt` lives in `app/lyrics_engine.py`
+and returns `CompiledLyricsPrompt` (instruction, negative prompt, safety
+notes, Suno compatibility notes, SoundGraph compatibility notes,
+risky-filler-pattern detection, resolved section structure). It owns the
+section-level vocabulary (`verse`, `pre_chorus`, `chorus`, `bridge`,
+`dub_breakdown`, `outro`, `instrumental_opening`) and the
+`avoid_intro_singing` rule.
+
+See [lyrics-engine.md](./lyrics-engine.md) for the full contract, endpoint
+examples, and the future GPT-5.5 integration boundary.
+
 ## Anti-Patterns
 
 - Do not prompt "in the style of [artist]".
