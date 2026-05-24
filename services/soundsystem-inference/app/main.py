@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+import os
 from typing import Annotated
 from uuid import UUID, uuid4
 
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response as RawResponse
 
 from app.auth import Operator, require_operator
@@ -411,6 +413,27 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url=None,
 )
+
+# ---------------------------------------------------------------------------
+# CORS — opt-in via env. The public newsletter endpoint is called from the
+# browser at schluesselkinder.de, which is cross-origin against
+# api.schluesselkinder.de. Operator endpoints stay server-to-server and do
+# not need a browser preflight.
+#
+# Env: SOUNDSYSTEM_CORS_ALLOWED_ORIGINS=comma,separated,origins
+# If unset → no CORS middleware is installed (safe default for tests + dev).
+# ---------------------------------------------------------------------------
+_cors_origins_raw = os.environ.get("SOUNDSYSTEM_CORS_ALLOWED_ORIGINS", "").strip()
+_cors_origins = [origin.strip() for origin in _cors_origins_raw.split(",") if origin.strip()]
+if _cors_origins:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=_cors_origins,
+        allow_credentials=False,
+        allow_methods=["GET", "POST", "OPTIONS"],
+        allow_headers=["Content-Type", "Accept"],
+        max_age=600,
+    )
 
 job_repository: GenerationJobRepository = InMemoryGenerationJobRepository()
 provider_registry = build_default_provider_registry()
