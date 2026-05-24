@@ -27,3 +27,9 @@ ROTATE.md
 HANDOVER.old.md
 
 *.tsbuildinfo
+
+# Runtime audio + manifest artifacts (regenerable from inference engine)
+.soundsystem-artifacts/
+
+# Large binary masters — store outside git (S3 / Backblaze / private storage)
+SNUFFRAGGA EP/
