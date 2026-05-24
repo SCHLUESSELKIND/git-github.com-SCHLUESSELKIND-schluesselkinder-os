@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { firstArtist, masterbrand } from "@schluesselkinder/brand";
 import { ArtistSignal } from "../_components/ArtistSignal";
@@ -36,7 +37,7 @@ export default function ArtistsPage() {
         aside={
           <div className="border border-stone-800 p-5 text-sm font-black uppercase text-stone-500 md:p-8">
             <p>archive status</p>
-            <p className="mt-24 text-red-600">one artist active</p>
+            <p className="mt-24 text-red-600">two districts active</p>
           </div>
         }
         eyebrow={`${masterbrand} archive`}
@@ -48,6 +49,20 @@ export default function ArtistsPage() {
       <GlyphRail items={["ARTIST", "ROOM", "BODY", "SOUND", "TRACE", "SK"]} />
       <SectionFrame kicker="active signal" title={firstArtist.role}>
         <ArtistSignal />
+      </SectionFrame>
+      <SectionFrame kicker="district 002" title="SNUFFRAGGA SOUNDSYSTEM">
+        <div className="space-y-6 text-stone-300">
+          <p className="max-w-2xl text-lg leading-8">
+            Active district. Sub-bass as geography. First capsule:
+            GRÜNLICHTBEZIRK.
+          </p>
+          <Link
+            href="/artists/snuffragga"
+            className="inline-block border border-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-100 transition hover:bg-stone-100 hover:text-stone-900"
+          >
+            enter district →
+          </Link>
+        </div>
       </SectionFrame>
     </main>
   );
