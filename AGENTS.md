@@ -3,13 +3,14 @@
 ## Product Rules
 
 - SCHLUESSELKINDER is the masterbrand.
-- SHIBARI KAWAII is the first artist.
-- Initial seed tracks are PICK ME UP, TUESDAY MORNING COMEDOWN, and ROPEMASTER.
-- Do not use Shopify.
-- Stripe and Printful are planned later, but must not be implemented in Sprint 1.
-- Auth, database migrations, and real external APIs are out of scope for Sprint 1.
-- The backend is expected to run on Hetzner later.
-- Domain and DNS will be managed through IONOS DNS later.
+- SNUFFRAGGA SOUNDSYSTEM is the first publicly active artist (lives at `/artists/snuffragga`).
+- Public-facing artist roster is opened one artist at a time. Add a roster entry only after its surface is shipped.
+- Commerce stack is live: Shopify (drafts only via `productCreate` with `status: DRAFT`), Printful (no vinyl SKUs), Listmonk (newsletter, double opt-in).
+- Stripe Connect is reserved for label-internal payouts (future), not for the public shop.
+- Auth, database migrations, and real external API integrations are now in scope and must respect the boundary + audit rules in `services/soundsystem-inference/app/`.
+- Backend runs on Hetzner (Frankfurt). DNS is managed through IONOS.
+- Newsletter endpoint must NEVER fake success when Listmonk is offline — return `status=offline`.
+- Embeds (Spotify, SoundCloud) MUST be consent-gated client-side via `sk_embed_consent` localStorage. No iframe in DOM before consent.
 
 ## Engineering Rules
 
@@ -46,9 +47,9 @@
 4. Does it avoid explaining too much?
 5. Does it protect the chair and rune system?
 
-## Sprint 1 Boundary
+## Sprint 1 Boundary (historical)
 
-Sprint 1 establishes the repo structure only:
+Sprint 1 established the repo structure only:
 
 - Next.js public website, shop route, and admin route scaffold.
 - Fastify API service with a health endpoint only.
@@ -56,3 +57,21 @@ Sprint 1 establishes the repo structure only:
 - Shared UI package placeholder.
 - Brand token and seed copy package placeholder.
 - Architecture documentation and first ADR.
+
+## Active Stack (post-Sprint 1)
+
+- Public web: `apps/web` (Next.js 16, Turbopack, static-first), deployed to `schluesselkinder.de` via Hetzner + Caddy.
+- Operator console: `apps/web/app/admin`, gated by `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED` + operator auth.
+- Inference + commerce API: `services/soundsystem-inference` (FastAPI, Python 3.12), deployed to `api.schluesselkinder.de`.
+- Newsletter: self-hosted Listmonk at `listmonk.schluesselkinder.de`, double opt-in, one list (`snuffragga` tag).
+- Commerce: Shopify (`shop.schluesselkinder.de`, drafts only from API; storefront is Shopify-hosted), Printful (sync, no vinyl).
+- Sound embeds: Spotify + SoundCloud, gated client-side via `sk_embed_consent` localStorage.
+- Repository pattern across persistence: Protocol → InMemory → Postgres → factory. Tests run against InMemory.
+
+## Live Deploy Rules
+
+- No restart of any production service during business hours (08:00–20:00 CET) without explicit user go.
+- Every container build must inline `NEXT_PUBLIC_*` envs through both `build.args` AND `environment` in `docker-compose.existing-server.yml`.
+- Caddy is the only public ingress. Never bind a service to a public port directly.
+- All API mutations require operator auth (`require_operator`). Only `/health`, `/v1/capabilities`, and `/v1/public/newsletter/subscribe` are open.
+- Audit log is append-only. Never expose a delete path for `commerce_sync_audit`.
