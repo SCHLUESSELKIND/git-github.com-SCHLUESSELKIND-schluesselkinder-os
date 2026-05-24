@@ -47,9 +47,7 @@ class GenerationJobRepository(Protocol):
         event_type: JobEventType | None = None,
     ) -> GenerationJob: ...
 
-    def set_artifacts(
-        self, job_id: UUID, artifacts: ArtifactManifest
-    ) -> GenerationJob: ...
+    def set_artifacts(self, job_id: UUID, artifacts: ArtifactManifest) -> GenerationJob: ...
 
     def set_error(self, job_id: UUID, error: str) -> GenerationJob: ...
 
@@ -64,9 +62,7 @@ class InMemoryGenerationJobRepository:
     def __init__(self) -> None:
         self._jobs: dict[UUID, GenerationJob] = {}
 
-    def create(
-        self, request: GenerationRequest, compiled_prompt: CompiledPrompt
-    ) -> GenerationJob:
+    def create(self, request: GenerationRequest, compiled_prompt: CompiledPrompt) -> GenerationJob:
         now = datetime.now(timezone.utc)
         job = GenerationJob(
             id=uuid4(),
@@ -115,9 +111,7 @@ class InMemoryGenerationJobRepository:
             job.events.append(JobEvent(event_type=event_type, created_at=now))
         return job
 
-    def set_artifacts(
-        self, job_id: UUID, artifacts: ArtifactManifest
-    ) -> GenerationJob:
+    def set_artifacts(self, job_id: UUID, artifacts: ArtifactManifest) -> GenerationJob:
         job = self._require(job_id)
         job.artifacts = artifacts
         job.updated_at = datetime.now(timezone.utc)
