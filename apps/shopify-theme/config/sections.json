@@ -1,0 +1,22 @@
+{
+  "header-group": {
+    "type": "header",
+    "sections": { "header": { "type": "header", "settings": { "menu": "main-menu" } } },
+    "order": ["header"]
+  },
+  "footer-group": {
+    "type": "footer",
+    "sections": {
+      "footer": {
+        "type": "footer",
+        "blocks": {
+          "shop": { "type": "menu", "settings": { "title": "SHOP", "menu": "main-menu" } },
+          "info": { "type": "menu", "settings": { "title": "INFO", "menu": "footer" } }
+        },
+        "block_order": ["shop", "info"],
+        "settings": {}
+      }
+    },
+    "order": ["footer"]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "TRANSMISSION 001",
+        "heading": "SCHLUESSELKINDER",
+        "cta_label": "ENTER THE DISTRICT",
+        "cta_link": "/collections/all"
+      }
+    },
+    "featured-drop": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "CURRENT DROP — GRÜNLICHTBEZIRK",
+        "collection": "gruenlichtbezirk",
+        "product_count": 8
+      }
+    },
+    "featured-uniforms": {
+      "type": "featured-collection",
+      "settings": {
+        "eyebrow": "DISTRICT UNIFORMS",
+        "collection": "district-uniforms",
+        "product_count": 8
+      }
+    },
+    "sound": {
+      "type": "sound-embed",
+      "settings": {
+        "eyebrow": "BASS PRESSURE",
+        "heading": "TRANSMISSIONS"
+      }
+    },
+    "lifestyle": {
+      "type": "lifestyle-grid",
+      "settings": {
+        "eyebrow": "FIELD RECORDINGS",
+        "heading": "STREET UNIFORMS"
+      }
+    },
+    "newsletter": {
+      "type": "newsletter",
+      "settings": {
+        "eyebrow": "JOIN THE FREQUENCY",
+        "heading": "RECEIVE TRANSMISSIONS"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "featured-drop",
+    "featured-uniforms",
+    "sound",
+    "lifestyle",
+    "newsletter"
+  ]
+}

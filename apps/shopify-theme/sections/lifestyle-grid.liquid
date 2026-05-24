@@ -1,0 +1,51 @@
+<section class="lifestyle section">
+  <div class="wrap">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow" style="margin-bottom:12px;">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h2 class="display-md" style="margin-bottom:32px;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+
+    <div class="lifestyle__grid">
+      {%- for block in section.blocks -%}
+        <div class="lifestyle__tile{% if block.settings.image == blank %} lifestyle__tile--empty{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.image != blank -%}
+            {{ block.settings.image | image_url: width: 800 | image_tag:
+              loading: 'lazy',
+              widths: '320, 480, 640, 800',
+              sizes: '(min-width: 768px) 25vw, 50vw',
+              alt: block.settings.image.alt | default: section.settings.heading
+            }}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lifestyle grid",
+  "max_blocks": 8,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "FIELD RECORDINGS" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "STREET UNIFORMS" }
+  ],
+  "blocks": [
+    {
+      "type": "tile",
+      "name": "Tile",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lifestyle grid",
+      "blocks": [{ "type": "tile" }, { "type": "tile" }, { "type": "tile" }, { "type": "tile" }]
+    }
+  ]
+}
+{% endschema %}

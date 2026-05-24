@@ -1,0 +1,66 @@
+<section class="collection section" aria-label="{{ section.settings.heading | default: 'About' }}">
+  <div class="wrap" style="max-width:920px;padding-top:48px;padding-bottom:96px;">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow" style="margin-bottom:24px;">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    {%- if section.settings.heading != blank -%}
+      <h1 class="display-lg" style="margin-bottom:48px;">{{ section.settings.heading }}</h1>
+    {%- endif -%}
+
+    <div class="product__description rte" style="font-size:18px;line-height:1.55;max-width:60ch;">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'paragraph' -%}
+            <p {{ block.shopify_attributes }} style="margin-bottom:24px;">{{ block.settings.text }}</p>
+          {%- when 'pull_quote' -%}
+            <p {{ block.shopify_attributes }} class="display-md" style="margin:48px 0;text-transform:uppercase;letter-spacing:var(--tracking-display);">{{ block.settings.text }}</p>
+          {%- when 'divider' -%}
+            <hr {{ block.shopify_attributes }} style="border:0;border-top:1px solid var(--border);margin:32px 0;">
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About story",
+  "max_blocks": 20,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "ARCHIVE NOTE" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "FUTURE OBJECT ARCHIVE" }
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "name": "Paragraph",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Paragraph" }
+      ]
+    },
+    {
+      "type": "pull_quote",
+      "name": "Pull quote",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Quote" }
+      ]
+    },
+    {
+      "type": "divider",
+      "name": "Divider",
+      "settings": []
+    }
+  ],
+  "presets": [
+    {
+      "name": "About story",
+      "blocks": [
+        { "type": "paragraph", "settings": { "text": "SCHLUESSELKINDER is a label system. Cold underground. Radical reduction. Bass pressure as architecture." } },
+        { "type": "paragraph", "settings": { "text": "Objects are dispatched in limited runs. Each carries a signal — drop, capsule, soundsystem reference. Once a signal closes, the run does not return." } },
+        { "type": "pull_quote", "settings": { "text": "Not horror. Not cyberpunk. Not moodboard. A frequency." } },
+        { "type": "paragraph", "settings": { "text": "All transmissions originate from the district. SNUFFRAGGA SOUNDSYSTEM is the working line; SHIBARI KAWAII is the first artist on record. More signals to follow." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

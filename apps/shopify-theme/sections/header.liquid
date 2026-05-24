@@ -1,0 +1,50 @@
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <nav class="site-header__nav" aria-label="{{ 'header.primary' | t }}">
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}" class="site-header__nav-item"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}</a>
+      {%- endfor -%}
+    </nav>
+
+    <a href="{{ routes.root_url }}" class="site-header__brand" aria-label="{{ shop.name }}">
+      {{ settings.brand_name | default: shop.name }}
+      {%- if settings.brand_signal != blank -%}
+        <span class="site-header__signal">{{ settings.brand_signal }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__actions">
+      <button type="button" class="nav-toggle" data-mobile-nav-open aria-label="{{ 'header.menu' | t }}">
+        {{ 'header.menu' | t }}
+      </button>
+      <a href="{{ routes.search_url }}" class="site-header__action" aria-label="{{ 'header.search' | t }}">{{ 'header.search' | t }}</a>
+      <button type="button" class="site-header__action" data-cart-open aria-label="{{ 'header.cart' | t }}">
+        {{ 'header.cart' | t }}
+        <span class="site-header__cart-count" data-cart-count data-count="{{ cart.item_count }}">{% if cart.item_count > 0 %}{{ cart.item_count }}{% endif %}</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav" data-mobile-nav aria-hidden="true">
+  <button type="button" class="mobile-nav__close" data-mobile-nav-close>{{ 'header.close' | t }}</button>
+  <ul class="mobile-nav__list">
+    {%- for link in section.settings.menu.links -%}
+      <li><a class="mobile-nav__item" href="{{ link.url }}">{{ link.title }}</a></li>
+    {%- endfor -%}
+  </ul>
+</div>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Primary menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

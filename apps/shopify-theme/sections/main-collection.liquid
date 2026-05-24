@@ -1,0 +1,41 @@
+<section class="collection section">
+  <div class="wrap">
+    <header class="collection__header">
+      <div>
+        {%- if collection.tags.size > 0 -%}
+          <div class="eyebrow">{{ collection.tags | first | upcase }}</div>
+        {%- endif -%}
+        <h1 class="collection__title">{{ collection.title }}</h1>
+        {%- if collection.description != blank -%}
+          <div class="meta" style="margin-top:16px;max-width:60ch;">{{ collection.description | strip_html }}</div>
+        {%- endif -%}
+      </div>
+      <div class="collection__count">{{ 'collection.product_count' | t: count: collection.products_count }}</div>
+    </header>
+
+    {%- paginate collection.products by 24 -%}
+      <div class="products-grid">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product %}
+        {%- else -%}
+          <p class="meta">{{ 'collection.empty' | t }}</p>
+        {%- endfor -%}
+      </div>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="row between" style="margin-top:48px;" aria-label="Pagination">
+          {%- if paginate.previous -%}<a class="btn" href="{{ paginate.previous.url }}">←</a>{%- else -%}<span></span>{%- endif -%}
+          <span class="meta">PAGE {{ paginate.current_page }} / {{ paginate.pages }}</span>
+          {%- if paginate.next -%}<a class="btn" href="{{ paginate.next.url }}">→</a>{%- else -%}<span></span>{%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection",
+  "settings": []
+}
+{% endschema %}

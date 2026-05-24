@@ -1,0 +1,69 @@
+/*
+ * SNUFFRAGA SOUNDSYSTEM operator tokens.
+ * Internal console only. Not for public surfaces.
+ *
+ * Operator modes:
+ *   blackout     — default; pure black, mint accent, amber for warnings
+ *   mint-signal  — accent rises, used for steady-state monitoring
+ *   redline      — danger/halt state, warning amber dominates
+ *
+ * Sharp, flat, machine. No rounded-16 cards. No cyan. No purple.
+ */
+
+[data-operator-mode] {
+  --ss-bg: #000000;
+  --ss-panel: #0a0a0a;
+  --ss-panel-elevated: #111111;
+  --ss-panel-hover: #141414;
+
+  --ss-border: #1c1c1c;
+  --ss-border-strong: #2a2a2a;
+  --ss-border-accent: #2a5e3e;
+
+  --ss-text-primary: #e5e5e5;
+  --ss-text-secondary: #8a8a8a;
+  --ss-text-muted: #4a4a4a;
+  --ss-text-inverse: #050505;
+
+  --ss-accent: #7cffb2;
+  --ss-accent-dim: #2a5e3e;
+  --ss-accent-faint: #0f1d14;
+
+  --ss-warning: #ffb020;
+  --ss-warning-dim: #5e4318;
+
+  --ss-danger: #ff3a3a;
+  --ss-danger-dim: #5a1818;
+
+  --ss-rail-width: 12rem;
+  --ss-rail-top-height: 3rem;
+  --ss-tap-target: 2.75rem;
+}
+
+[data-operator-mode="mint-signal"] {
+  --ss-text-primary: #f4fff5;
+  --ss-text-secondary: #9fcfa6;
+  --ss-panel: #0a0f0a;
+  --ss-panel-elevated: #111611;
+  --ss-border: #1f2a1f;
+  --ss-border-strong: #2f4030;
+  --ss-accent: #a7ffc6;
+}
+
+[data-operator-mode="redline"] {
+  --ss-text-primary: #fff5e8;
+  --ss-text-secondary: #c79b6a;
+  --ss-panel: #100806;
+  --ss-panel-elevated: #160a08;
+  --ss-border: #2a1812;
+  --ss-border-strong: #402a1f;
+  --ss-accent: #ffb020;
+  --ss-warning: #ff3a3a;
+  --ss-danger: #ff7a3a;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-operator-mode] * {
+    transition-duration: 0ms !important;
+  }
+}

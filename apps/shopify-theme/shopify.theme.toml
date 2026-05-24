@@ -1,0 +1,18 @@
+# Shopify CLI theme config — fill in the theme IDs after first push.
+# Usage:
+#   shopify theme dev          # local preview
+#   shopify theme push -e dev  # push to the unpublished dev theme
+#   shopify theme push -e live # promote to live (NEVER first thing)
+#
+# Get the IDs from `shopify theme list --store schluesselkinder.myshopify.com`
+# after your first push.
+
+[environments.dev]
+store = "schluesselkinder.myshopify.com"
+# theme = "0000000000"  # set after `shopify theme push --unpublished`
+unpublished = true
+
+[environments.live]
+store = "schluesselkinder.myshopify.com"
+# theme = "0000000000"  # set after promoting to live
+live = true

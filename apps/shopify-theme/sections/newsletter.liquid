@@ -1,0 +1,33 @@
+<section class="newsletter section">
+  <div class="wrap">
+    {%- if section.settings.eyebrow != blank -%}
+      <div class="eyebrow" style="margin-bottom:12px;">{{ section.settings.eyebrow }}</div>
+    {%- endif -%}
+    <h2 class="newsletter__title">{{ section.settings.heading | default: 'SIGNAL' }}</h2>
+
+    {%- form 'customer', class: 'newsletter__form' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="hidden" name="contact[accepts_marketing]" value="true">
+      <label class="sr-only" for="newsletter-email">{{ 'newsletter.email' | t }}</label>
+      <input class="newsletter__input" id="newsletter-email" type="email" name="contact[email]" placeholder="{{ 'newsletter.email_placeholder' | t }}" required>
+      <button type="submit" class="btn btn--primary">{{ 'newsletter.subscribe' | t }}</button>
+      {%- if form.posted_successfully? -%}
+        <p class="meta" style="grid-column:1/-1;">{{ 'newsletter.success' | t }}</p>
+      {%- endif -%}
+      {%- if form.errors -%}
+        <p class="meta" style="grid-column:1/-1;color:var(--accent);">{{ form.errors | default_errors }}</p>
+      {%- endif -%}
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "JOIN THE FREQUENCY" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "RECEIVE TRANSMISSIONS" }
+  ],
+  "presets": [{ "name": "Newsletter" }]
+}
+{% endschema %}

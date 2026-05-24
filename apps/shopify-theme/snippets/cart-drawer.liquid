@@ -1,0 +1,20 @@
+<aside class="cart-drawer" data-cart-drawer aria-hidden="true" aria-label="{{ 'cart.title' | t }}">
+  <div class="cart-drawer__backdrop" data-cart-backdrop></div>
+  <div class="cart-drawer__panel" role="dialog" aria-modal="true">
+    <div class="cart-drawer__header">
+      <span class="label">{{ 'cart.title' | t }}</span>
+      <button type="button" class="label" data-cart-close>{{ 'cart.close' | t }}</button>
+    </div>
+    <div class="cart-drawer__items" data-cart-items>
+      <p class="meta">{{ 'cart.empty' | t }}</p>
+    </div>
+    <div class="cart-drawer__footer">
+      <div class="row between">
+        <span class="label">{{ 'cart.subtotal' | t }}</span>
+        <span class="price" data-cart-subtotal></span>
+      </div>
+      <a href="{{ routes.cart_url }}" class="btn">{{ 'cart.view' | t }}</a>
+      <a href="{{ routes.cart_url }}/checkout" class="btn btn--primary">{{ 'cart.checkout' | t }}</a>
+    </div>
+  </div>
+</aside>

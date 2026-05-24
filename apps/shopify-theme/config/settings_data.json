@@ -1,0 +1,39 @@
+{
+  "current": {
+    "brand_name": "SCHLUESSELKINDER",
+    "brand_signal": "FUTURE OBJECT ARCHIVE",
+    "color_bg": "#0A0A0A",
+    "color_fg": "#F4F2EC",
+    "color_muted": "#7A7A75",
+    "color_accent": "#B6FF3A",
+    "color_border": "#1F1F1F",
+    "font_display": "anton_n4",
+    "font_body": "inter_n4",
+    "font_mono": "jetbrains_mono_n4",
+    "display_tracking": 20,
+    "page_max_width": 1600,
+    "grain": true,
+    "social_instagram": "",
+    "social_tiktok": "",
+    "social_spotify": "",
+    "social_soundcloud": "",
+    "social_discord": ""
+  },
+  "presets": {
+    "Default": {
+      "brand_name": "SCHLUESSELKINDER",
+      "brand_signal": "FUTURE OBJECT ARCHIVE",
+      "color_bg": "#0A0A0A",
+      "color_fg": "#F4F2EC",
+      "color_muted": "#7A7A75",
+      "color_accent": "#B6FF3A",
+      "color_border": "#1F1F1F",
+      "font_display": "anton_n4",
+      "font_body": "inter_n4",
+      "font_mono": "jetbrains_mono_n4",
+      "display_tracking": 20,
+      "page_max_width": 1600,
+      "grain": true
+    }
+  }
+}

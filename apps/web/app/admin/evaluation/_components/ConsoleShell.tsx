@@ -41,7 +41,7 @@ export function ConsoleUnavailable() {
           Inspection surface disabled.
         </h1>
         <div className="max-w-3xl border-l border-red-950 pl-5 text-sm leading-7 text-stone-400">
-          <p>Set `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true` locally to inspect evaluation reports.</p>
+          <p>Set `INTERNAL_CONSOLE_ENABLED=true` on the server (or `NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED=true` for local dev) to inspect evaluation reports.</p>
           <p>This is not authentication. It is only a local boundary marker.</p>
         </div>
       </section>

@@ -1,0 +1,35 @@
+{%- comment -%}
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+{%- if product != blank -%}
+  <a class="product-card" href="{{ product.url }}" aria-label="{{ product.title }}">
+    <div class="product-card__media">
+      <div class="product-card__badges">
+        {%- if product.tags contains 'limited-drop' -%}
+          <span class="product-card__badge">LIMITED SIGNAL</span>
+        {%- endif -%}
+        {%- unless product.available -%}
+          <span class="product-card__badge product-card__badge--soldout">SOLD OUT</span>
+        {%- endunless -%}
+      </div>
+      {%- if product.featured_media -%}
+        {{ product.featured_media | image_url: width: 800 | image_tag:
+          loading: 'lazy',
+          widths: '320, 480, 640, 800',
+          sizes: '(min-width: 1100px) 25vw, (min-width: 768px) 33vw, 50vw',
+          alt: product.featured_media.alt | default: product.title
+        }}
+      {%- endif -%}
+    </div>
+    <div class="product-card__body">
+      <div class="product-card__title">{{ product.title }}</div>
+      <div class="product-card__meta">{{ product.type | default: 'OBJECT' | upcase }}</div>
+      <div class="price">
+        {%- if product.compare_at_price_max > product.price -%}
+          <span class="price--compare">{{ product.compare_at_price_max | money }}</span>
+        {%- endif -%}
+        {{ product.price | money }}
+      </div>
+    </div>
+  </a>
+{%- endif -%}

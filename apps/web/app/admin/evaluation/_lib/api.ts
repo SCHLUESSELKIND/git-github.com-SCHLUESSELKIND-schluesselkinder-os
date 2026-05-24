@@ -120,9 +120,8 @@ export class ConsoleApiError extends Error {
   }
 }
 
-export function isInternalConsoleEnabled() {
-  return process.env.NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED === "true";
-}
+// Single source of truth lives in `app/admin/_lib/admin-gate.ts`.
+export { isInternalConsoleEnabled } from "../../_lib/admin-gate";
 
 export async function fetchEvaluationHealth() {
   return readJson<EvaluationHealth>("/evaluation/health");

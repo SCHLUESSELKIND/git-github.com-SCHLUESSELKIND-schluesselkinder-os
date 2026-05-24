@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "shipping_line": "SHIPS WITHIN 7–14 DAYS",
+        "materials_line": ""
+      }
+    }
+  },
+  "order": ["main"]
+}
