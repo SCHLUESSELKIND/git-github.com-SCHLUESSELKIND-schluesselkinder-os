@@ -14,6 +14,14 @@ import { getStaticMusicPageProjection } from "../lib/registry/music-page";
 const description = "Dark premium underground archive for SHIBARI KAWAII, ROPEMASTER, and SCHLUESSELKINDER objects.";
 const previewImage = "/brand/campaign-dungeon-chair.png";
 
+function formatRole(role: string) {
+  return role.replace(/-/g, " ");
+}
+
+function formatSignals(count: number) {
+  return count === 1 ? "1 signal" : `${count} signals`;
+}
+
 export const metadata: Metadata = {
   alternates: {
     canonical: "/"
@@ -89,6 +97,7 @@ export default function Home() {
           {seedCopy.collective.map((line) => (
             <ManifestLine de={line.de} en={line.en} key={line.en} />
           ))}
+          <ManifestLine de="District 001. District 002." en="One archive. Two districts." />
         </div>
       </SectionFrame>
 
@@ -96,48 +105,43 @@ export default function Home() {
         <ArtistSignal />
       </SectionFrame>
 
-      <section className="border-t border-stone-800">
-        <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[1.1fr_0.9fr] md:px-8 md:py-24">
-          <div className="self-end">
-            <p className="text-xs font-black uppercase text-red-600">campaign environment</p>
-            <p className="mt-8 max-w-4xl font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 10vw, 9rem)", lineHeight: 0.82 }}>The room keeps the signal.</p>
-          </div>
-          <EditorialImage
-            alt="Cropped dungeon room wall and chair"
-            caption="campaign"
-            className="h-[620px]"
-            imageClassName="image-noir object-[58%_48%]"
-            src={brandAssets.campaignDungeonChair}
-            symbol="none"
-          />
-        </div>
-      </section>
-
       <SectionFrame kicker="release artifacts" title="Public signals.">
         <div className="border-y border-stone-800">
           {music.releases.map((release) => (
-            <article className="grid gap-6 border-b border-stone-800 py-7 last:border-b-0 md:grid-cols-[0.22fr_1fr_0.3fr]" key={release.releaseKey}>
-              <div className="text-xs font-black uppercase">
-                <p className="text-red-600">{release.releaseCode}</p>
-                <p className="mt-3 text-stone-600">{release.role}</p>
-              </div>
-              <div>
-                <h3 className="break-words text-4xl font-black uppercase leading-[0.9] text-stone-100 md:text-6xl">
-                  {release.displayTitle}
-                </h3>
-                <div className="mt-6 grid gap-3">
-                  {release.signals.map((signal) => (
-                    <p className="border-t border-stone-800 pt-3 text-sm font-black uppercase text-stone-400" key={signal.trackKey}>
-                      <span className="text-red-600">{signal.trackCode}</span>
-                      <span className="px-3 text-stone-700">/</span>
-                      {signal.title}
-                    </p>
-                  ))}
+            <article
+              className="border-b border-stone-800 py-12 last:border-b-0 md:py-16"
+              key={release.releaseKey}
+            >
+              <div className="grid gap-6 md:grid-cols-[120px_1fr_0.6fr] md:gap-5">
+                <div className="text-xs font-black uppercase md:pt-1">
+                  <p className="text-red-600">{release.releaseCode}</p>
+                  <p className="mt-3 text-stone-600">{formatRole(release.role)}</p>
+                </div>
+                <div>
+                  <h3 className="break-words text-6xl font-black uppercase leading-[0.85] tracking-tight text-stone-100 md:text-7xl">
+                    {release.displayTitle}
+                  </h3>
+                  <p className="mt-6 text-sm font-black uppercase text-stone-500 md:mt-8">
+                    {music.artist.canonicalName}
+                  </p>
+                </div>
+                <div className="text-xs font-black uppercase text-stone-500 md:self-end md:text-right">
+                  <p>{formatSignals(release.signals.length)}</p>
                 </div>
               </div>
-              <p className="self-end text-xs font-black uppercase leading-5 text-stone-500">
-                {music.artist.canonicalName}
-              </p>
+              <ol className="mt-10 list-none border-t border-stone-900 md:mt-14">
+                {release.signals.map((signal) => (
+                  <li
+                    className="grid gap-4 border-b border-stone-900 py-5 last:border-b-0 md:grid-cols-[120px_1fr] md:gap-6 md:py-6"
+                    key={signal.trackKey}
+                  >
+                    <p className="text-xs font-black uppercase text-red-600 md:pt-2">{signal.trackCode}</p>
+                    <h4 className="break-words text-3xl font-black uppercase leading-[0.95] text-stone-200 md:text-4xl">
+                      {signal.title}
+                    </h4>
+                  </li>
+                ))}
+              </ol>
             </article>
           ))}
         </div>
@@ -151,13 +155,18 @@ export default function Home() {
       </SectionFrame>
 
       <section className="border-t border-stone-800">
-        <div className="mx-auto max-w-7xl px-5 py-20 md:px-8 md:py-28">
+        <div className="mx-auto max-w-7xl px-5 py-14 md:px-8 md:py-20">
           <div className="max-w-5xl">
-            {seedCopy.manifesto.map((line) => (
-              <p className="border-b border-stone-800 py-5 text-4xl font-black uppercase leading-none text-stone-100 md:text-7xl" key={line}>
-                {line}
-              </p>
-            ))}
+            {seedCopy.manifesto
+              .filter((line) => line !== "NO BRIGHT ROOM." && line !== "NACHT BLEIBT MATERIAL.")
+              .map((line) => (
+                <p
+                  className="border-b border-stone-800 py-5 text-4xl font-black uppercase leading-none tracking-tight text-stone-100 md:text-7xl"
+                  key={line}
+                >
+                  {line}
+                </p>
+              ))}
           </div>
         </div>
       </section>
