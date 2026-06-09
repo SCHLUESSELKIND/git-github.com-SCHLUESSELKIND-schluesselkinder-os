@@ -10,6 +10,8 @@ import { getStaticArtistPageProjection } from "../../../lib/registry/artist-page
 const campaignImage = "/brand/campaign-dungeon-chair.png";
 const description = "SHIBARI KAWAII artist dossier for the controlled SCHLUESSELKINDER release archive.";
 const title = `SHIBARI KAWAII | ${masterbrand}`;
+// Artist page URL verified live 2026-06-10 (operator-supplied).
+const SPOTIFY_ARTIST_URL = "https://open.spotify.com/artist/4CwlfdjdtoBVQAkrk84LZi";
 
 export const metadata: Metadata = {
   alternates: {
@@ -170,6 +172,22 @@ export default function ShibariKawaiiPage() {
           ))}
         </div>
       </SectionFrame>
+      <SectionFrame kicker="outbound record" title="Spotify signal.">
+        <div className="border-t border-stone-800">
+          <a
+            className="grid gap-4 border-b border-stone-800 py-10 transition-colors last:border-b-0 hover:border-red-900 hover:text-red-700 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[1fr_auto] md:items-baseline md:py-12"
+            href={SPOTIFY_ARTIST_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <span className="break-words text-3xl font-black uppercase leading-tight tracking-tight text-stone-100 md:text-5xl">
+              {dossier.artist.canonicalName} → SPOTIFY
+            </span>
+            <span className="text-xs font-black uppercase text-stone-500">EXTERNAL / NO EMBED</span>
+          </a>
+        </div>
+      </SectionFrame>
+
       <section className="border-t border-stone-800">
         <div className="mx-auto grid max-w-7xl gap-8 px-5 py-16 md:grid-cols-[0.85fr_1.15fr] md:px-8 md:py-24">
           <p className="self-end font-black uppercase text-stone-100" style={{ fontSize: "clamp(3.75rem, 10vw, 9rem)", lineHeight: 0.82 }}>The room keeps the mark.</p>
