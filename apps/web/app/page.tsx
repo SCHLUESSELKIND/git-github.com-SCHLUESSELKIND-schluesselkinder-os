@@ -1,26 +1,27 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { brandAssets, masterbrand, seedCopy } from "@schluesselkinder/brand";
-import { ArtistSignal } from "./_components/ArtistSignal";
 import { BrandSymbol } from "./_components/BrandSymbol";
 import { EditorialImage } from "./_components/EditorialImage";
 import { ManifestLine } from "./_components/ManifestLine";
+import { ReleaseStatus } from "./_components/ReleaseStatus";
 import { RotatedMeta } from "./_components/RotatedMeta";
 import { SectionFrame } from "./_components/SectionFrame";
 import { ShopPreview } from "./_components/ShopPreview";
 import { SymbolRail } from "./_components/SymbolRail";
 import { getStaticMusicPageProjection } from "../lib/registry/music-page";
+import { formatReleaseDate, latestReleaseFor } from "./_releases";
 
-const description = "Dark premium underground archive for SHIBARI KAWAII, ROPEMASTER, and SCHLUESSELKINDER objects.";
+// Refresh the cached HTML every 60s so the GRÜNLICHTBEZIRK transmission block
+// flips from "incoming" to "in transmission" within a minute of the release
+// window opening, without any manual deploy on T-0.
+export const revalidate = 60;
+
+const SIGNAL_GREEN = "#5FB047";
+
+const description =
+  "Dark underground label archive. District 001 SHIBARI KAWAII. District 002 SNUFFRAGGA SOUNDSYSTEM.";
 const previewImage = "/brand/campaign-dungeon-chair.png";
-
-function formatRole(role: string) {
-  return role.replace(/-/g, " ");
-}
-
-function formatSignals(count: number) {
-  return count === 1 ? "1 signal" : `${count} signals`;
-}
 
 export const metadata: Metadata = {
   alternates: {
@@ -42,14 +43,25 @@ export const metadata: Metadata = {
   }
 };
 
+function formatRole(role: string) {
+  return role.replace(/-/g, " ");
+}
+
+function formatSignals(count: number) {
+  return count === 1 ? "1 signal" : `${count} signals`;
+}
+
 export default function Home() {
   const music = getStaticMusicPageProjection();
-  const publicSignals = music.releases.flatMap((release) => release.signals);
+  const anchorRelease = music.releases[0];
+  const transmission = latestReleaseFor("snuffragga");
   const railLabels = [
-    music.releases[0]?.releaseCode ?? "SKR-LP-001",
-    ...publicSignals.map((signal) => signal.trackCode),
-    ...music.objects.map((object) => object.objectCode),
-    "ARCHIVE"
+    "001",
+    music.artist.canonicalName,
+    "002",
+    "SNUFFRAGGA SOUNDSYSTEM",
+    anchorRelease?.releaseCode ?? "SKR-LP-001",
+    "RELEASE-001"
   ];
 
   return (
@@ -68,7 +80,7 @@ export default function Home() {
         <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-[#070605] to-transparent" />
         <div className="relative mx-auto grid min-h-[calc(100svh-57px)] max-w-7xl grid-rows-[1fr_auto] px-5 py-8 md:px-8">
           <div className="flex items-start justify-between gap-8">
-            <p className="text-xs font-black uppercase text-red-600">{music.artist.canonicalName}</p>
+            <p className="text-xs font-black uppercase text-red-600">two districts · one archive</p>
             <BrandSymbol className="h-16 w-16 text-stone-100/80" />
           </div>
           <div className="grid items-end gap-8 md:grid-cols-[auto_1fr_120px]">
@@ -85,27 +97,72 @@ export default function Home() {
               </div>
             </div>
             <div className="hidden md:block" />
-            <RotatedMeta>{music.releases[0]?.releaseCode ?? "SKR-LP-001"} / rune index</RotatedMeta>
+            <RotatedMeta>001 / 002 / rune index</RotatedMeta>
           </div>
         </div>
       </section>
 
       <SymbolRail labels={railLabels} />
 
-      <SectionFrame kicker="system identity" title="Cold room. Red trace.">
-        <div className="border-t border-stone-800">
-          {seedCopy.collective.map((line) => (
-            <ManifestLine de={line.de} en={line.en} key={line.en} />
-          ))}
-          <ManifestLine de="District 001. District 002." en="One archive. Two districts." />
+      <SectionFrame kicker="label index" title="Two districts.">
+        <div className="border-y border-stone-800">
+          <Link
+            className="group grid gap-6 border-b border-stone-800 py-12 transition-colors duration-300 hover:bg-stone-950/25 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[120px_1fr_0.6fr] md:gap-5 md:py-16"
+            href={`/artists/${music.artist.slug}`}
+          >
+            <p className="text-xs font-black uppercase text-red-600 md:pt-1">001</p>
+            <div>
+              <h3 className="break-words text-5xl font-black uppercase leading-[0.85] tracking-tight text-stone-100 transition-colors duration-300 group-hover:text-stone-200 md:text-7xl">
+                {music.artist.canonicalName}
+              </h3>
+              <p className="mt-6 text-sm font-black uppercase text-stone-500 md:mt-8">
+                {anchorRelease ? `${anchorRelease.displayTitle} · ${anchorRelease.releaseCode}` : "ARCHIVE"}
+              </p>
+            </div>
+            <p className="text-xs font-black uppercase text-stone-500 md:self-end md:text-right">
+              body as signal →
+            </p>
+          </Link>
+          <Link
+            className="group grid gap-6 py-12 transition-colors duration-300 hover:bg-stone-950/25 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[120px_1fr_0.6fr] md:gap-5 md:py-16"
+            href="/artists/snuffragga"
+          >
+            <p className="text-xs font-black uppercase md:pt-1" style={{ color: SIGNAL_GREEN }}>
+              002
+            </p>
+            <div>
+              <h3 className="break-words text-5xl font-black uppercase leading-[0.85] tracking-tight text-stone-100 transition-colors duration-300 group-hover:text-stone-200 md:text-7xl">
+                SNUFFRAGGA SOUNDSYSTEM
+              </h3>
+              <p className="mt-6 text-sm font-black uppercase text-stone-500 md:mt-8">
+                RELEASE-001 · GRÜNLICHTBEZIRK
+              </p>
+            </div>
+            <p className="text-xs font-black uppercase text-stone-500 md:self-end md:text-right">
+              bass pressure →
+            </p>
+          </Link>
         </div>
       </SectionFrame>
 
-      <SectionFrame kicker="artist dossier" title="Body as signal.">
-        <ArtistSignal />
-      </SectionFrame>
+      {transmission ? (
+        <SectionFrame kicker="next transmission" title="Drop window.">
+          <div className="grid gap-6">
+            <ReleaseStatus release={transmission} />
+            <p className="text-xs font-black uppercase text-stone-600">
+              {formatReleaseDate(transmission)} · district 002 ·{" "}
+              <Link
+                className="text-stone-400 transition-colors hover:text-stone-100 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900"
+                href="/artists/snuffragga"
+              >
+                enter district →
+              </Link>
+            </p>
+          </div>
+        </SectionFrame>
+      ) : null}
 
-      <SectionFrame kicker="release artifacts" title="Public signals.">
+      <SectionFrame kicker="sound archive" title="Public signals.">
         <div className="border-y border-stone-800">
           {music.releases.map((release) => (
             <article
@@ -152,6 +209,15 @@ export default function Home() {
 
       <SectionFrame kicker="object archive" title="Objects later.">
         <ShopPreview />
+      </SectionFrame>
+
+      <SectionFrame kicker="system identity" title="Cold room. Red trace.">
+        <div className="border-t border-stone-800">
+          {seedCopy.collective.map((line) => (
+            <ManifestLine de={line.de} en={line.en} key={line.en} />
+          ))}
+          <ManifestLine de="District 001. District 002." en="One archive. Two districts." />
+        </div>
       </SectionFrame>
 
       <section className="border-t border-stone-800">

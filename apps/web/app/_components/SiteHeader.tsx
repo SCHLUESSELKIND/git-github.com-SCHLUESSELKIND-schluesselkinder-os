@@ -2,7 +2,7 @@ import Link from "next/link";
 import { masterbrand } from "@schluesselkinder/brand";
 
 const navItems = [
-  { href: "/artists", label: "Artist" },
+  { href: "/artists", label: "Artists" },
   { href: "/music", label: "Music" },
   { href: "/shop", label: "Objects" },
   { href: "/about", label: "System" }
