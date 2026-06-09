@@ -16,6 +16,8 @@ export const revalidate = 60;
 
 // Operator wires these via env vars. Empty = honest offline state.
 // We never bake in fake Spotify / SoundCloud / newsletter URLs.
+// Artist page URL verified live (docs/SNUFFRAGGA_LIVE_CHECKLIST.md §3).
+const SPOTIFY_ARTIST_URL = "https://open.spotify.com/artist/0Gt1TrN8G1DyXBa2Da5XLW";
 const SPOTIFY_EMBED = process.env.NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED || null;
 const SOUNDCLOUD_EMBED = process.env.NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED || null;
 const NEWSLETTER_ENDPOINT = process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT;
@@ -351,6 +353,14 @@ export default function SnuffraggaPage() {
             className="hover:text-stone-100"
           >
             Shop →
+          </a>
+          <a
+            href={SPOTIFY_ARTIST_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-stone-100"
+          >
+            Spotify →
           </a>
           <EmbedConsentReset />
         </div>
