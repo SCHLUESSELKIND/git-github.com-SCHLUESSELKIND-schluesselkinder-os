@@ -5,6 +5,7 @@ const navItems = [
   { href: "/artists", label: "Artists" },
   { href: "/music", label: "Music" },
   { href: "/shop", label: "Objects" },
+  { href: "/the-key", label: "The Key" },
   { href: "/about", label: "System" }
 ] as const;
 

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { brandAssets, masterbrand, seedCopy } from "@schluesselkinder/brand";
+import { brandAssets, masterbrand, seedCopy, theKeyTool } from "@schluesselkinder/brand";
 import { BrandSymbol } from "./_components/BrandSymbol";
 import { EditorialImage } from "./_components/EditorialImage";
 import { ManifestLine } from "./_components/ManifestLine";
@@ -61,7 +61,8 @@ export default function Home() {
     "002",
     "SNUFFRAGGA SOUNDSYSTEM",
     anchorRelease?.releaseCode ?? "SKR-LP-001",
-    "RELEASE-001"
+    "RELEASE-001",
+    theKeyTool.code
   ];
 
   return (
@@ -209,6 +210,26 @@ export default function Home() {
 
       <SectionFrame kicker="object archive" title="Objects later.">
         <ShopPreview />
+      </SectionFrame>
+
+      <SectionFrame kicker={theKeyTool.role} title="Check in. Check out.">
+        <div className="border-t border-stone-800">
+          {theKeyTool.lines.map((line) => (
+            <ManifestLine de={line.de} en={line.en} key={line.de} />
+          ))}
+        </div>
+        <div className="mt-8 flex flex-wrap items-center gap-x-8 gap-y-4">
+          <Link className="inline-block border border-red-950 px-5 py-3 text-sm font-black uppercase text-stone-100 transition-colors duration-300 hover:border-red-800 hover:bg-red-950/10 hover:text-red-600 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900" href="/the-key">
+            {theKeyTool.name}
+          </Link>
+          <p className="text-xs font-black uppercase text-stone-600">
+            <span className="text-red-600">{theKeyTool.code}</span>
+            <span className="px-3 text-stone-700">/</span>
+            {theKeyTool.platform}
+            <span className="px-3 text-stone-700">/</span>
+            {theKeyTool.status}
+          </p>
+        </div>
       </SectionFrame>
 
       <SectionFrame kicker="system identity" title="Cold room. Red trace.">

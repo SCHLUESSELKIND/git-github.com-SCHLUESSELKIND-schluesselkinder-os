@@ -143,6 +143,57 @@ export const seedCopy = {
   ]
 } as const;
 
+export const theKeyTool = {
+  name: "THE KEY",
+  code: "SK-T001",
+  role: "system tool",
+  platform: "iOS",
+  status: "APP REVIEW",
+  surfaceUrl: "https://antisobersoberclub.de",
+  surfaceLabel: "ANTISOBERSOBERCLUB",
+  toggle: "CLUB AN. / CLUB AUS.",
+  lines: [
+    {
+      de: "Ein Werkzeug für sichere Nächte.",
+      en: "A tool for safer raves."
+    },
+    {
+      de: "Wasser. Pausen. Crew. Heimweg.",
+      en: "Water. Breaks. Crew. The way home."
+    },
+    {
+      de: "Kein Lifestyle. Ein Protokoll.",
+      en: "Not a lifestyle. A protocol."
+    }
+  ],
+  signals: [
+    {
+      code: "KEY-01",
+      title: "PLAN",
+      de: "Die Nacht beginnt vor der Tür.",
+      en: "The night starts before the door."
+    },
+    {
+      code: "KEY-02",
+      title: "LIVE",
+      de: "Der Raum hält den Takt.",
+      en: "The room keeps the pulse."
+    },
+    {
+      code: "KEY-03",
+      title: "CREW",
+      de: "Niemand geht allein.",
+      en: "No one walks alone."
+    },
+    {
+      code: "KEY-04",
+      title: "HEIMWEG",
+      de: "Die Nacht endet erst zuhause.",
+      en: "The night ends at home."
+    }
+  ]
+} as const;
+
 export const brandAssets = {
   campaignDungeonChair: "/brand/campaign-dungeon-chair.png",
   posterEin: "/brand/poster-ein.png",
