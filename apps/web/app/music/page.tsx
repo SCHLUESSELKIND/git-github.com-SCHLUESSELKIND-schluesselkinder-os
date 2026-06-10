@@ -98,22 +98,6 @@ export default function MusicPage() {
           ))}
         </div>
       </SectionFrame>
-      <SectionFrame kicker="archive stance" title="No feed. No noise.">
-        <div className="space-y-10 md:space-y-12">
-          <div>
-            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
-              LP bleibt Anker.
-            </p>
-            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">The LP remains the anchor.</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
-              Signale bleiben Signale.
-            </p>
-            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">Signals remain signals.</p>
-          </div>
-        </div>
-      </SectionFrame>
     </main>
   );
 }

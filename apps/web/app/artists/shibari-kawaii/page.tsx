@@ -77,22 +77,7 @@ export default function ShibariKawaiiPage() {
               >
                 ROPEMASTER
               </p>
-              <p className="mt-8 max-w-xl">Public artist dossier for the controlled release archive.</p>
             </div>
-            <dl className="grid gap-0 border-t border-stone-800 text-xs font-black uppercase text-stone-500 md:grid-cols-3">
-              <div className="border-b border-stone-800 py-4 md:border-b-0 md:border-r">
-                <dt>language</dt>
-                <dd className="mt-2 text-stone-100">Deutsch / English</dd>
-              </div>
-              <div className="border-b border-stone-800 py-4 md:border-b-0 md:border-r md:px-5">
-                <dt>label</dt>
-                <dd className="mt-2 text-stone-100">{masterbrand}</dd>
-              </div>
-              <div className="py-4 md:px-5">
-                <dt>public signals</dt>
-                <dd className="mt-2 text-stone-100">{publicSignals.length} signals</dd>
-              </div>
-            </dl>
           </div>
           <div className="grid gap-8 md:grid-rows-[1fr_auto]">
             <EditorialImage
@@ -109,28 +94,6 @@ export default function ShibariKawaiiPage() {
         </div>
       </section>
       <SymbolRail labels={railLabels} />
-      <SectionFrame kicker="dossier fragments" title="No soft biography.">
-        <div className="space-y-10 md:space-y-12">
-          <div>
-            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
-              LP bleibt Anker.
-            </p>
-            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">The LP remains the anchor.</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
-              Signale bleiben Signale.
-            </p>
-            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">Signals remain signals.</p>
-          </div>
-          <div>
-            <p className="text-2xl font-black uppercase leading-tight text-stone-100 sm:text-3xl md:text-4xl">
-              Archiv bleibt Quelle.
-            </p>
-            <p className="mt-3 text-base leading-7 text-stone-500 md:text-lg">The archive remains the source.</p>
-          </div>
-        </div>
-      </SectionFrame>
       <SectionFrame kicker="sound records" title="Public signals.">
         <div className="border-y border-stone-800">
           {dossier.releases.map((release) => (

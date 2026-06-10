@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { firstArtist, masterbrand } from "@schluesselkinder/brand";
+import { masterbrand } from "@schluesselkinder/brand";
 import { ArtistSignal } from "../_components/ArtistSignal";
 import { EditorialHero } from "../_components/EditorialHero";
 import { GlyphRail } from "../_components/GlyphRail";
@@ -44,25 +44,18 @@ export default function ArtistsPage() {
         title="Artists as pressure."
       >
         <p>Kuenstler als Spur.</p>
-        <p>No portfolio wall. No clean biography.</p>
       </EditorialHero>
       <GlyphRail items={["ARTIST", "ROOM", "BODY", "SOUND", "TRACE", "SK"]} />
-      <SectionFrame kicker="active signal" title={firstArtist.role}>
+      <SectionFrame kicker="district 001" title="SHIBARI KAWAII.">
         <ArtistSignal />
       </SectionFrame>
-      <SectionFrame kicker="district 002" title="SNUFFRAGGA SOUNDSYSTEM">
-        <div className="space-y-6 text-stone-300">
-          <p className="max-w-2xl text-lg leading-8">
-            Active district. Sub-bass as geography. First capsule:
-            GRÜNLICHTBEZIRK.
-          </p>
-          <Link
-            href="/artists/snuffragga"
-            className="inline-block border border-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-100 transition hover:bg-stone-100 hover:text-stone-900"
-          >
-            enter district →
-          </Link>
-        </div>
+      <SectionFrame kicker="district 002" title="SNUFFRAGGA SOUNDSYSTEM.">
+        <Link
+          href="/artists/snuffragga"
+          className="inline-block border border-stone-100 px-5 py-3 font-black uppercase tracking-[0.22em] text-stone-100 transition hover:bg-stone-100 hover:text-stone-900"
+        >
+          enter district →
+        </Link>
       </SectionFrame>
     </main>
   );

@@ -3,7 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { masterbrand } from "@schluesselkinder/brand";
 import { BrandSymbol } from "../_components/BrandSymbol";
-import { SectionFrame } from "../_components/SectionFrame";
 import { SymbolRail } from "../_components/SymbolRail";
 import { getStaticShopProjection } from "../../lib/registry/object-pages";
 
@@ -100,56 +99,6 @@ export default function ShopPage() {
         </div>
       </section>
       <SymbolRail labels={railLabels} />
-      <SectionFrame kicker="archive records" title="Object index.">
-        <div className="border-y border-stone-800">
-          {shop.objects.map((record) => (
-            <Link
-              className="grid gap-6 border-b border-stone-800 py-8 transition-colors duration-300 last:border-b-0 hover:border-red-950 hover:bg-stone-950/20 focus-visible:outline focus-visible:outline-1 focus-visible:outline-offset-4 focus-visible:outline-red-900 md:grid-cols-[0.18fr_0.34fr_1fr_0.22fr] md:items-end"
-              href={record.href}
-              key={record.id}
-            >
-              <div>
-                <p className="text-xs font-black uppercase text-red-600">{record.id}</p>
-                <p className="mt-3 text-xs font-black uppercase text-stone-600">{record.archiveClass}</p>
-              </div>
-              <figure className="relative aspect-[16/10] overflow-hidden border border-stone-900 bg-black md:aspect-[4/3]">
-                <Image
-                  alt=""
-                  className="object-cover opacity-70 brightness-[0.72] contrast-[1.15] saturate-0"
-                  fill
-                  sizes="(min-width: 768px) 22vw, 100vw"
-                  src={record.boardSrc}
-                />
-              </figure>
-              <div>
-                <h2 className="break-words text-3xl font-black uppercase leading-none text-stone-100 md:text-5xl">
-                  {record.title}
-                </h2>
-                <p className="mt-5 text-xs font-black uppercase leading-5 text-stone-500">
-                  {record.objectClass} / {record.surface} / {record.releaseCode ?? "NO RELEASE REFERENCE"}
-                </p>
-              </div>
-              <p className="self-end text-xs font-black uppercase text-stone-500">{record.state}</p>
-            </Link>
-          ))}
-        </div>
-      </SectionFrame>
-      <SectionFrame kicker="object boundary" title="Archive state.">
-        <div className="border-y border-stone-800">
-          <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
-            <p className="text-xs font-black uppercase text-stone-500">archive</p>
-            <p className="text-sm font-black uppercase leading-7 text-stone-200">SCHLUESSELKINDER OBJECTS</p>
-          </div>
-          <div className="grid gap-3 border-b border-stone-800 py-5 md:grid-cols-[0.35fr_1fr]">
-            <p className="text-xs font-black uppercase text-stone-500">visible records</p>
-            <p className="text-sm font-black uppercase leading-7 text-stone-200">{shop.objects.map((object) => object.id).join(" / ")}</p>
-          </div>
-          <div className="grid gap-3 py-5 md:grid-cols-[0.35fr_1fr]">
-            <p className="text-xs font-black uppercase text-stone-500">public state</p>
-            <p className="text-sm font-black uppercase leading-7 text-stone-200">Archiv offen. Transaction closed.</p>
-          </div>
-        </div>
-      </SectionFrame>
     </main>
   );
 }
