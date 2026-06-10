@@ -77,7 +77,7 @@ Set them in Coolify under **Application → Environment Variables**, mark
 each as a build variable, then redeploy **without** build cache.
 
 ```
-NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED=https://open.spotify.com/embed/artist/0Gt1TrN8G1DyXBa2Da5XLW?utm_source=generator
+NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED=https://open.spotify.com/embed/artist/1jzZXWDrVb0jDp32zxcqc2?utm_source=generator
 NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED=https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/thomas-frerich-681624781%3Futm_source%3Dclipboard%26utm_medium%3Dtext%26utm_campaign%3Dsocial_sharing
 NEXT_PUBLIC_NEWSLETTER_ENDPOINT=https://api.schluesselkinder.de/v1/public/newsletter/subscribe
 NEXT_PUBLIC_SHOP_URL=https://shop.schluesselkinder.de

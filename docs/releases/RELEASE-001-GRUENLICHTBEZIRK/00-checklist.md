@@ -64,7 +64,7 @@ sauberer für die underground posture.
        - VAT ID added if invoicing through the GmbH
 
 [ ]  Artist profile linked:
-       - Spotify: "SNUFFRAGGA SOUNDSYSTEM" (existing artist URI 0Gt1TrN8G1DyXBa2Da5XLW)
+       - Spotify: "SNUFFRAGGA SOUNDSYSTEM" (existing artist URI 1jzZXWDrVb0jDp32zxcqc2)
        - Apple Music for Artists: claim after first release goes live
        - SoundCloud: Ditto pushes to SoundCloud Pro; if SoundCloud is on
          free tier, do a separate manual upload

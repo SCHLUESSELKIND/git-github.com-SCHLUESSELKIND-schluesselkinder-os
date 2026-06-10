@@ -45,10 +45,11 @@ export const RELEASES: readonly Release[] = [
     title: "GRÜNLICHTBEZIRK",
     releaseAt: "2026-06-12T00:00:00+02:00",
     links: {
-      // Real URLs populated once they exist. Verified 2026-06-10: the EP is
-      // not yet listed on the Spotify artist page (only the KLEINER GRÜNER
-      // ELF single), so no streaming link can be set honestly yet.
-      spotify: undefined,
+      // Verified 2026-06-10 on the canonical artist profile (1jzZXWDrVb0…):
+      // "Grünlichtbezirk" is live as a SINGLE. The locked 3-track EP shape
+      // has not appeared as one album yet — if it lands on T-0, swap this
+      // album ID for the EP's.
+      spotify: "https://open.spotify.com/album/4tzxhyGZNEPs2kES3wydfO",
       appleMusic: undefined,
       soundcloud: undefined,
       bandcamp: undefined,

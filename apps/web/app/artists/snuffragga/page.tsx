@@ -16,8 +16,10 @@ export const revalidate = 60;
 
 // Operator wires these via env vars. Empty = honest offline state.
 // We never bake in fake Spotify / SoundCloud / newsletter URLs.
-// Artist page URL verified live (docs/SNUFFRAGGA_LIVE_CHECKLIST.md §3).
-const SPOTIFY_ARTIST_URL = "https://open.spotify.com/artist/0Gt1TrN8G1DyXBa2Da5XLW";
+// Canonical artist profile (operator-supplied 2026-06-10, verified live —
+// carries all four singles incl. Grünlichtbezirk). The older profile
+// 0Gt1TrN8G1DyXBa2Da5XLW is a distributor duplicate; do not link it.
+const SPOTIFY_ARTIST_URL = "https://open.spotify.com/artist/1jzZXWDrVb0jDp32zxcqc2";
 const SPOTIFY_EMBED = process.env.NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED || null;
 const SOUNDCLOUD_EMBED = process.env.NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED || null;
 const NEWSLETTER_ENDPOINT = process.env.NEXT_PUBLIC_NEWSLETTER_ENDPOINT;

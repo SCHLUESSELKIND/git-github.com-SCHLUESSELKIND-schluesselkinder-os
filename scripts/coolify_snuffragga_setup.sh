@@ -243,7 +243,7 @@ The four NEXT_PUBLIC_* env vars the apps/web Next.js app needs. These are
 build-time variables — setting them on a running container without a fresh
 build will NOT change what the browser sees.
 
-  NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED=https://open.spotify.com/embed/artist/0Gt1TrN8G1DyXBa2Da5XLW?utm_source=generator
+  NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED=https://open.spotify.com/embed/artist/1jzZXWDrVb0jDp32zxcqc2?utm_source=generator
   NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED=https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/thomas-frerich-681624781%3Futm_source%3Dclipboard%26utm_medium%3Dtext%26utm_campaign%3Dsocial_sharing
   NEXT_PUBLIC_NEWSLETTER_ENDPOINT=https://api.schluesselkinder.de/v1/public/newsletter/subscribe
   NEXT_PUBLIC_SHOP_URL=https://shop.schluesselkinder.de

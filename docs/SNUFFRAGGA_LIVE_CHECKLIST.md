@@ -42,7 +42,7 @@ Set every variable below in your hosting provider's env panel
 
 - [ ] `NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED` — set to the production
       embed URL:
-      `https://open.spotify.com/embed/artist/0Gt1TrN8G1DyXBa2Da5XLW?utm_source=generator`
+      `https://open.spotify.com/embed/artist/1jzZXWDrVb0jDp32zxcqc2?utm_source=generator`
       Until set, Spotify panel shows "spotify signal offline" placeholder.
       Note: the embed remains **consent-gated** — even with the URL set,
       the iframe is not rendered until the visitor clicks "Signal laden".
