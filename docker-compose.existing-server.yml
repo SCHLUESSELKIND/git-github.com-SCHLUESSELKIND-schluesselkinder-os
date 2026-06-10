@@ -31,7 +31,7 @@ services:
         NEXT_PUBLIC_APP_NAME: SCHLUESSELKINDER
         NEXT_PUBLIC_WEB_URL: https://schluesselkinder.de
         NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED: "false"
-        NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED: "https://open.spotify.com/embed/artist/0Gt1TrN8G1DyXBa2Da5XLW?utm_source=generator"
+        NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED: "https://open.spotify.com/embed/artist/1jzZXWDrVb0jDp32zxcqc2?utm_source=generator"
         NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED: "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/thomas-frerich-681624781%3Futm_source%3Dclipboard%26utm_medium%3Dtext%26utm_campaign%3Dsocial_sharing"
         NEXT_PUBLIC_NEWSLETTER_ENDPOINT: "https://api.schluesselkinder.de/v1/public/newsletter/subscribe"
         NEXT_PUBLIC_SHOP_URL: "https://shop.schluesselkinder.de"
@@ -40,7 +40,7 @@ services:
       NEXT_PUBLIC_APP_NAME: SCHLUESSELKINDER
       NEXT_PUBLIC_WEB_URL: https://schluesselkinder.de
       NEXT_PUBLIC_INTERNAL_CONSOLE_ENABLED: "false"
-      NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED: "https://open.spotify.com/embed/artist/0Gt1TrN8G1DyXBa2Da5XLW?utm_source=generator"
+      NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED: "https://open.spotify.com/embed/artist/1jzZXWDrVb0jDp32zxcqc2?utm_source=generator"
       NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED: "https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/thomas-frerich-681624781%3Futm_source%3Dclipboard%26utm_medium%3Dtext%26utm_campaign%3Dsocial_sharing"
       NEXT_PUBLIC_NEWSLETTER_ENDPOINT: "https://api.schluesselkinder.de/v1/public/newsletter/subscribe"
       NEXT_PUBLIC_SHOP_URL: "https://shop.schluesselkinder.de"
