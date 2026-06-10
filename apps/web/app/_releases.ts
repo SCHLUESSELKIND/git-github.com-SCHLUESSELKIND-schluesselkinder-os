@@ -45,14 +45,19 @@ export const RELEASES: readonly Release[] = [
     title: "GRÜNLICHTBEZIRK",
     releaseAt: "2026-06-12T00:00:00+02:00",
     links: {
-      // Real URLs populated as part of the T-2 / T-1 production tasks. Empty
-      // until then — the page renders the "incoming" state until releaseAt anyway.
+      // Real URLs populated once they exist. Verified 2026-06-10: the EP is
+      // not yet listed on the Spotify artist page (only the KLEINER GRÜNER
+      // ELF single), so no streaming link can be set honestly yet.
       spotify: undefined,
       appleMusic: undefined,
       soundcloud: undefined,
       bandcamp: undefined,
       youtubeMusic: undefined,
-      shopCollection: "/collections/gruenlichtbezirk"
+      // shop.schluesselkinder.de currently redirects to the apex domain
+      // (Shopify Admin primary-domain config). A relative path would 404 on
+      // the apex after T-0. Set the absolute collection URL once the
+      // storefront resolves: https://shop.schluesselkinder.de/collections/gruenlichtbezirk
+      shopCollection: undefined
     },
     tracks: ["GRÜNLICHTBEZIRK", "DISTRICT PRESSURE", "NACHTFREQUENZ"],
     archivesAfterDays: 90

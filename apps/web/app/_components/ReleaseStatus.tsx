@@ -102,11 +102,10 @@ function InTransmissionBlock({ release }: { release: Release }) {
           {release.title}
         </h3>
         {liveLinks.length === 0 ? (
-          <p className="mt-8 max-w-xl text-sm leading-7 text-stone-500">
-            Streaming-Links werden aktiviert, sobald Distribution durch ist.
-            Operator: Links via <code className="border border-stone-800 px-1">
-            apps/web/app/_releases.ts</code> setzen.
-          </p>
+          <div className="mt-8 max-w-xl text-sm leading-7">
+            <p className="text-stone-300">Transmission aktiv. Verbindungen folgen.</p>
+            <p className="mt-1 text-stone-600">In transmission. Links follow.</p>
+          </div>
         ) : (
           <ul className="mt-8 grid gap-px bg-stone-800 sm:grid-cols-2">
             {liveLinks.map(([label, href]) => (
