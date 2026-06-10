@@ -122,6 +122,16 @@ test("public artist dossier exposes the controlled shape", () => {
   assert.deepEqual(Object.keys(getArtistDossier()).sort(), ["artistKey", "canonicalName", "slug"]);
 });
 
+test("artist dossier stays pinned to SHIBARI KAWAII despite multiple public artists", () => {
+  assert.equal(getArtistDossier().artistKey, "ARTIST-SHIBARI-KAWAII");
+});
+
+test("registry records both public artists with route-matching slugs", () => {
+  const slugs = artists.filter((artist) => artist.visibility === "public").map((artist) => artist.slug);
+
+  assert.deepEqual([...slugs].sort(), ["shibari-kawaii", "snuffragga"]);
+});
+
 test("public object projection exposes the controlled shape", () => {
   const [first] = getPublicObjects();
 
