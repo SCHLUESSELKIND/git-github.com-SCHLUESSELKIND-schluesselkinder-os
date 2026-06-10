@@ -1,66 +1,5 @@
 export const masterbrand = "SCHLUESSELKINDER" as const;
 
-export const firstArtist = {
-  name: "SHIBARI KAWAII",
-  slug: "shibari-kawaii",
-  role: "first artist",
-  location: "Berlin afterhours",
-  archiveCode: "SK-A001",
-  fragments: {
-    de: ["Kalte Nähe.", "Keine Biografie. Nur Druck.", "Nacht bleibt Material."],
-    en: ["Cold intimacy.", "Body as signal.", "Sound after the room empties."]
-  },
-  tracks: [
-    {
-      title: "D-DATE",
-      code: "SND-001",
-      mood: "static pulse",
-      duration: "3:28",
-      platform: "SoundCloud",
-      status: "ARCHIVE SIGNAL",
-      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/d-date-shibari-kawaii",
-      fragment: {
-        de: "Datum ohne Morgen.",
-        en: "Date without morning."
-      }
-    },
-    {
-      title: "ROPEMASTER",
-      code: "SND-002",
-      mood: "concrete dawn",
-      duration: "4:08",
-      platform: "SoundCloud",
-      status: "ARCHIVE SIGNAL",
-      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/ropemaster-shibari-kawaii-1",
-      fragment: {
-        de: "Kontrolle ohne Wärme.",
-        en: "Control without warmth."
-      }
-    },
-    {
-      title: "PICK ME",
-      code: "SND-003",
-      mood: "ritual force",
-      duration: "3:57",
-      platform: "SoundCloud",
-      status: "ARCHIVE SIGNAL",
-      soundCloudUrl: "https://soundcloud.com/thomas-frerich-681624781/pick-me-shibari-kawaii",
-      fragment: {
-        de: "Ein heller Griff im dunklen Raum.",
-        en: "A bright hand in a dark room."
-      }
-    }
-  ]
-} as const;
-
-export const platformPlan = {
-  backendHost: "Hetzner later",
-  dns: "IONOS DNS",
-  fulfillment: "Printful later",
-  payments: "Stripe later",
-  shopify: false
-} as const;
-
 export const seedCopy = {
   shortDescription: "Music, garments, residue.",
   hero: {
@@ -202,5 +141,3 @@ export const brandAssets = {
   shibariKawaiiSymbolCard: "/brand/shibari-kawaii-symbol-card.jpeg",
   symbolEyeKey: "/brand/symbol-eye-key.png"
 } as const;
-
-export type TrackTitle = (typeof firstArtist.tracks)[number]["title"];
