@@ -170,12 +170,6 @@ export default function SnuffraggaPage() {
                 <p className="mt-3 text-[#5FB047]">enter via signal only</p>
               </div>
             </div>
-            <div className="flex flex-col gap-2 font-mono text-[0.55rem] uppercase tracking-[0.28em] text-stone-500 sm:text-xs">
-              <p>
-                operator note · embeds &amp; newsletter wire via env vars.
-                offline by default.
-              </p>
-            </div>
           </aside>
         </div>
       </section>
@@ -190,49 +184,43 @@ export default function SnuffraggaPage() {
       ) : null}
 
       {/* ---------------- TRANSMISSIONS ---------------- */}
-      <SectionFrame kicker="transmissions · 002" title="Listening room.">
-        <div id="transmissions" className="scroll-mt-20">
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="flex flex-col gap-3">
-              <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-stone-500 sm:text-xs">
-                Spotify
-              </p>
-              <SoundEmbed
-                src={SPOTIFY_EMBED}
-                title="Spotify · SNUFFRAGGA SOUNDSYSTEM"
-                offlineLabel="spotify signal offline"
-              />
-            </div>
-            <div className="flex flex-col gap-3">
-              <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-stone-500 sm:text-xs">
-                SoundCloud
-              </p>
-              <SoundEmbed
-                src={SOUNDCLOUD_EMBED}
-                title="SoundCloud · SNUFFRAGGA SOUNDSYSTEM"
-                offlineLabel="soundcloud signal offline"
-              />
+      {SPOTIFY_EMBED || SOUNDCLOUD_EMBED ? (
+        <SectionFrame kicker="transmissions · 002" title="Listening room.">
+          <div id="transmissions" className="scroll-mt-20">
+            <div className="grid gap-6 md:grid-cols-2">
+              {SPOTIFY_EMBED ? (
+                <div className="flex flex-col gap-3">
+                  <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-stone-500 sm:text-xs">
+                    Spotify
+                  </p>
+                  <SoundEmbed
+                    src={SPOTIFY_EMBED}
+                    title="Spotify · SNUFFRAGGA SOUNDSYSTEM"
+                    offlineLabel="spotify signal offline"
+                  />
+                </div>
+              ) : null}
+              {SOUNDCLOUD_EMBED ? (
+                <div className="flex flex-col gap-3">
+                  <p className="font-mono text-[0.55rem] uppercase tracking-[0.3em] text-stone-500 sm:text-xs">
+                    SoundCloud
+                  </p>
+                  <SoundEmbed
+                    src={SOUNDCLOUD_EMBED}
+                    title="SoundCloud · SNUFFRAGGA SOUNDSYSTEM"
+                    offlineLabel="soundcloud signal offline"
+                  />
+                </div>
+              ) : null}
             </div>
           </div>
-          <p className="mt-6 max-w-2xl text-sm leading-7 text-stone-400">
-            Streams gehen live, sobald die Operator-env-vars
-            <code className="mx-1 border border-stone-800 px-1 text-stone-300">
-              NEXT_PUBLIC_SNUFFRAGGA_SPOTIFY_EMBED
-            </code>
-            und
-            <code className="mx-1 border border-stone-800 px-1 text-stone-300">
-              NEXT_PUBLIC_SNUFFRAGGA_SOUNDCLOUD_EMBED
-            </code>
-            gesetzt sind. Bis dahin bleiben beide Felder bewusst dunkel — keine
-            Platzhalter-Player, keine Fake-Streams.
-          </p>
-        </div>
-      </SectionFrame>
+        </SectionFrame>
+      ) : null}
 
       {/* ---------------- GRÜNLICHTBEZIRK CTA ---------------- */}
       <section className="border-t border-stone-800">
-        <div className="mx-auto grid max-w-7xl items-stretch gap-0 px-0 md:grid-cols-[1.05fr_0.95fr] md:px-0">
-          <div className="border-stone-800 px-5 py-14 md:border-r md:px-12 md:py-20">
+        <div className="mx-auto max-w-7xl">
+          <div className="px-5 py-14 md:px-12 md:py-20">
             <p className="font-mono text-[0.6rem] font-black uppercase tracking-[0.35em] text-[#5FB047] sm:text-xs">
               current drop · limited signal
             </p>
@@ -268,28 +256,6 @@ export default function SnuffraggaPage() {
               >
                 Alle Objekte
               </a>
-            </div>
-          </div>
-          <div className="flex items-center justify-center bg-[#0a0908] px-5 py-14 md:px-12 md:py-20">
-            <div className="grid h-full w-full max-w-md grid-cols-3 gap-px bg-stone-800">
-              {DISTRICT_UNIFORMS.map((object) => (
-                <div
-                  key={object.code}
-                  className="flex flex-col justify-between gap-2 bg-[#0a0908] p-3 transition hover:bg-[#111110] sm:p-4"
-                >
-                  <p className="font-mono text-[0.48rem] uppercase tracking-[0.25em] text-stone-600">
-                    {object.code}
-                  </p>
-                  <div>
-                    <p className="font-black uppercase tracking-[0.05em] text-stone-100">
-                      {object.name}
-                    </p>
-                    <p className="mt-1 font-mono text-[0.5rem] uppercase tracking-[0.2em] text-stone-500">
-                      {object.line}
-                    </p>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
         </div>
@@ -368,12 +334,3 @@ export default function SnuffraggaPage() {
     </main>
   );
 }
-
-const DISTRICT_UNIFORMS = [
-  { code: "OBJ-001", name: "District hoodie", line: "GRÜNLICHTBEZIRK · heavy" },
-  { code: "OBJ-002", name: "Bass tee", line: "GRÜNLICHTBEZIRK · oversized" },
-  { code: "OBJ-003", name: "Signal longsleeve", line: "GRÜNLICHTBEZIRK · cold" },
-  { code: "OBJ-004", name: "Limited beanie", line: "GRÜNLICHTBEZIRK · run" },
-  { code: "OBJ-005", name: "Poster", line: "GRÜNLICHTBEZIRK · paper" },
-  { code: "OBJ-006", name: "Sticker sheet", line: "GRÜNLICHTBEZIRK · vinyl" }
-] as const;

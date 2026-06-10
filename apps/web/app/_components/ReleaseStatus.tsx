@@ -64,10 +64,6 @@ function IncomingBlock({ release }: { release: Release }) {
             </li>
           ))}
         </ul>
-        <p className="mt-8 max-w-xl text-sm leading-7 text-stone-500">
-          Drei Tracks. Ein District. Keine Vorabhörprobe. Kein Vinyl in dieser
-          Pressung. Drop-Fenster öffnet exakt zum oben angegebenen Zeitpunkt.
-        </p>
       </div>
     </div>
   );
