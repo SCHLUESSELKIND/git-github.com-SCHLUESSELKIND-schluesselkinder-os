@@ -1,5 +1,7 @@
 # RELEASE-001 — Short-form video scripts
 
+> **CORRECTION (2026-06-14):** GRÜNLICHTBEZIRK shipped as a standalone single, not the planned 3-track EP. "DISTRICT PRESSURE" and "NACHTFREQUENZ" were never released. Any reference below to a 3-track EP or to those two track names reflects the original plan and is superseded. Canonical state: `docs/release-log.md`.
+
 > 3 fragments × ≤15s each. Phone-shoot-ready. No actors. No talking heads.
 > All three follow the "intercepted transmission" doctrine: they look like leaked
 > fragments from a larger system the viewer was not supposed to see.
@@ -107,7 +109,7 @@
 | Publish | Fri 2026-06-12 · 08:00 CET (release day, after midnight launch) |
 | Length | 14s |
 | Channels | TikTok, Reels, Shorts |
-| Audio | cover-art animated reveal + 10s GRÜNLICHTBEZIRK track 02 (DISTRICT PRESSURE) climax bar |
+| Audio | cover-art animated reveal + 10s GRÜNLICHTBEZIRK climax bar |
 | Caption | `in transmission · grünlichtbezirk · alle plattformen` |
 | Hashtags | `#snuffragga #grünlichtbezirk #soundsystem` |
 
@@ -124,7 +126,7 @@
 4.0 – 12.0s   cover art holds. Single piece of typography slides in from
               left across the bottom third, mono 11pt:
               "SNUFFRAGGA SOUNDSYSTEM · GRÜNLICHTBEZIRK · LIVE"
-              audio: full bar of DISTRICT PRESSURE peaks
+              audio: full bar of GRÜNLICHTBEZIRK peaks
 
 12.0 – 13.5s  text shrinks to 9pt at bottom:
               "spotify · soundcloud · bandcamp · shop"
@@ -138,7 +140,7 @@
 - Cover art is the entire visual. No additional B-roll required.
 - Animation: 3s ease-in fade on the cover, slide-in text using After Effects /
   CapCut / or DaVinci Resolve Fusion. Total post-production: 90 minutes.
-- Audio bed: pull 10s from track 02 around its loudest bar. Apply 200ms fade-in
+- Audio bed: pull 10s from GRÜNLICHTBEZIRK around its loudest bar. Apply 200ms fade-in
   and 100ms fade-out. Match peak to -1.0 dBTP.
 - Vertical 9:16, cover scaled to 90% width centred. 5% margin top + bottom for
   text safe zone.

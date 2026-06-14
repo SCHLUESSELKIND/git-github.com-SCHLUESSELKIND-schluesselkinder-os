@@ -1,12 +1,14 @@
 # RELEASE-001 — Operator checklist
 
+> **CORRECTION (2026-06-14):** GRÜNLICHTBEZIRK shipped as a standalone single, not the planned 3-track EP. "DISTRICT PRESSURE" and "NACHTFREQUENZ" were never released. Any reference below to a 3-track EP or to those two track names reflects the original plan and is superseded. Canonical state: `docs/release-log.md`.
+
 > Append decisions to `docs/release-log.md` as you complete each block.
 
 ---
 
 ## §1. Mastering QA (Week 0 — operator-flagged)
 
-Goal: confirm the 3 `.wav` files in `SNUFFRAGGA EP/` are deliverable quality.
+Goal: confirm the `.wav` file in `SNUFFRAGGA EP/` is deliverable quality.
 Distribution requires 16-bit/44.1kHz minimum, but masters should be 24-bit/44.1kHz
 for streaming services that ingest higher quality (Spotify HiFi, Bandcamp lossless).
 
@@ -71,7 +73,7 @@ sauberer für die underground posture.
 
 [ ]  Pre-flight metadata locked (must be identical on every track):
        Primary artist:    SNUFFRAGGA SOUNDSYSTEM
-       Album / EP name:   GRÜNLICHTBEZIRK
+       Single / release name:  GRÜNLICHTBEZIRK
        Album artist:      SNUFFRAGGA SOUNDSYSTEM
        Genre:             Electronic / Dub
        Sub-genre:         (Ditto dropdown — "Dub Techno" or "Bass Music"
@@ -87,8 +89,6 @@ sauberer für die underground posture.
 
 [ ]  Tracklist order locked:
        01 GRÜNLICHTBEZIRK
-       02 DISTRICT PRESSURE
-       03 NACHTFREQUENZ
 
 [ ]  Upload by Tue 2026-06-02 (Ditto lead time for editorial pitch + propagation):
        - upload .wav (24-bit master if available, else 16-bit)
@@ -108,7 +108,7 @@ sauberer für die underground posture.
 ```
 WEEK 0  (now)            2026-05-24 → 2026-05-30
         Sun 05-24        ✓ release locked (this checklist)
-        Mon 05-25        [ ] mastering QA pass on all 3 tracks
+        Mon 05-25        [ ] mastering QA pass on the track
         Tue 05-26        [ ] DistroKid account ready + metadata draft
         Wed 05-27        [ ] cover-art brief frozen (see 01-cover-brief.md)
         Thu 05-28        [ ] cover-art production starts (commission or in-house)

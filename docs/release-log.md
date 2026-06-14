@@ -1,5 +1,7 @@
 # SCHLUESSELKINDER · Release log
 
+> **CORRECTION (2026-06-14):** GRÜNLICHTBEZIRK shipped as a standalone single, not the planned 3-track EP. "DISTRICT PRESSURE" and "NACHTFREQUENZ" were never released. Any reference below to a 3-track EP or to those two track names reflects the original plan and is superseded. Canonical state: `docs/release-log.md`.
+
 > Append-only ledger. Newest entry on top. Every release decision, slip, and learning
 > recorded here by date. The log is the truth — if it didn't get logged, it didn't
 > happen.
@@ -19,13 +21,14 @@ No section is ever rewritten. Corrections are appended, not edited.
 ## RELEASE-001 · SNUFFRAGGA SOUNDSYSTEM · GRÜNLICHTBEZIRK
 
 **Locked release date:** Friday 2026-06-12 · 00:00 CET
-**Format:** 3-track EP, digital only, self-released via SCHLUESSELKINDER
+**Format:** Single (geplant als 3-Track-EP, descoped 2026-06-14), digital only, self-released via SCHLUESSELKINDER
 **Distribution:** DistroKid (account TBC)
 **Vehicles:** Spotify, Apple Music, SoundCloud, Bandcamp, YouTube Music
 **Artefact stack:** `docs/releases/RELEASE-001-GRUENLICHTBEZIRK/`
 
 ### Log
 
+- **2026-06-14 · CORRECTION** GRÜNLICHTBEZIRK ist als eigenstaendige Single erschienen, nicht als geplanter 3-Track-EP. DISTRICT PRESSURE und NACHTFREQUENZ wurden nie veroeffentlicht. Der Katalog sind Einzel-Singles (Grünlichtbezirk, Kaputtes Blau, Kleiner Grüner Elf, Gorilla Glue). Live-Seite und Tracklist entsprechend auf Single korrigiert.
 - **2026-05-24 · LOCK** — release scope locked under OPUS MAX directive. EP title
   GRÜNLICHTBEZIRK confirmed by operator. Tracklist: GRÜNLICHTBEZIRK / DISTRICT
   PRESSURE / NACHTFREQUENZ. Date Fri 2026-06-12. Vinyl explicitly cut from V1.

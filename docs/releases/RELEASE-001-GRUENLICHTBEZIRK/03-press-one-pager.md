@@ -1,5 +1,7 @@
 # RELEASE-001 — Press one-pager
 
+> **CORRECTION (2026-06-14):** GRÜNLICHTBEZIRK shipped as a standalone single, not the planned 3-track EP. "DISTRICT PRESSURE" and "NACHTFREQUENZ" were never released. Any reference below to a 3-track EP or to those two track names reflects the original plan and is superseded. Canonical state: `docs/release-log.md`.
+
 > Single page. Sparse. Render to PDF via `pandoc 03-press-one-pager.md -o press.pdf`
 > with custom LaTeX template, or open in any markdown editor and export.
 
@@ -13,15 +15,13 @@ SCHLUESSELKINDER · RELEASE-001
 SNUFFRAGGA SOUNDSYSTEM
 GRÜNLICHTBEZIRK
 
-3-track EP · self-released · 2026-06-12
+Single · self-released · 2026-06-12
 
 
 
 TRACKLIST
 
 01    GRÜNLICHTBEZIRK
-02    DISTRICT PRESSURE
-03    NACHTFREQUENZ
 
 
 
@@ -30,7 +30,7 @@ DISTRICT NOTE
 SNUFFRAGGA SOUNDSYSTEM ist ein District im SCHLUESSELKINDER-Archiv.
 Sub-Bass als Geographie. Transmission only.
 
-Die erste Kapsel GRÜNLICHTBEZIRK ist drei Tracks aus dem Signalraum.
+Die erste Kapsel GRÜNLICHTBEZIRK ist eine Single aus dem Signalraum.
 43 Hertz Anker, post-club Decay, pirate-radio Geräusch.
 
 Keine Vinylpressung in V1. Heavy garments im Shop. Limited run.

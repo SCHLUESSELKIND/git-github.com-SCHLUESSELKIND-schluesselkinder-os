@@ -1,12 +1,14 @@
 # RELEASE-001 — GRÜNLICHTBEZIRK
 
-> SNUFFRAGGA SOUNDSYSTEM · 3-track EP · digital · self-released via SCHLUESSELKINDER
+> **CORRECTION (2026-06-14):** GRÜNLICHTBEZIRK shipped as a standalone single, not the planned 3-track EP. "DISTRICT PRESSURE" and "NACHTFREQUENZ" were never released. Any reference below to a 3-track EP or to those two track names reflects the original plan and is superseded. Canonical state: `docs/release-log.md`.
+
+> SNUFFRAGGA SOUNDSYSTEM · single · digital · self-released via SCHLUESSELKINDER
 
 | Field | Value |
 |---|---|
 | Release ID | `RELEASE-001` |
 | Title | GRÜNLICHTBEZIRK |
-| Format | EP, 3 tracks |
+| Format | Single, 1 track |
 | Date | **Friday 2026-06-12 · 00:00 CEST** |
 | Distribution | **Ditto Music** (UK indie) — replaces DistroKid per 2026-05-24 operator lock |
 | Upload deadline | **Tue 2026-06-02** (10-day Ditto lead for editorial pitch + propagation) |
@@ -19,8 +21,6 @@
 
 ```
 01  GRÜNLICHTBEZIRK         — district anchor, sub-bass spine
-02  DISTRICT PRESSURE       — pressure-wave track, mid-record peak
-03  NACHTFREQUENZ           — closer, pirate-radio decay
 ```
 
 ## Priority lock (operator directive 2026-05-24)
@@ -64,8 +64,8 @@ See also: `docs/runbooks/shopify-golive.md` — Phase S1 theme push + product ac
 P1  [ ]  Shopify theme pushed as unpublished + previewed on mobile + PDP + cart
 P1  [ ]  2 products DRAFTed in Shopify (hoodie + tee), checkout reaches payment step
 P2  [ ]  Cover art final at 3000×3000 PNG, signal-green tested at 40×40
-P3  [ ]  Ditto Music account exists + 3 .wav uploaded + metadata locked by 2026-06-02
-P3  [ ]  Mastering QA pass on the 3 .wav files (see 00-checklist.md §1)
+P3  [ ]  Ditto Music account exists + 1 .wav uploaded + metadata locked by 2026-06-02
+P3  [ ]  Mastering QA pass on the 1 .wav file (see 00-checklist.md §1)
 T-0 [ ]  Shopify products manually flip DRAFT → ACTIVE on Fri 2026-06-12
 ```
 
