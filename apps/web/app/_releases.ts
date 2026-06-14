@@ -45,10 +45,13 @@ export const RELEASES: readonly Release[] = [
     title: "GRÜNLICHTBEZIRK",
     releaseAt: "2026-06-12T00:00:00+02:00",
     links: {
-      // Verified 2026-06-10 on the canonical artist profile (1jzZXWDrVb0…):
-      // "Grünlichtbezirk" is live as a SINGLE. The locked 3-track EP shape
-      // has not appeared as one album yet — if it lands on T-0, swap this
-      // album ID for the EP's.
+      // Verified 2026-06-14 on the canonical artist profile (1jzZXWDrVb0...):
+      // "Grünlichtbezirk" shipped as a standalone SINGLE (1 track, 4:12). The
+      // originally planned 3-track EP shape (DISTRICT PRESSURE / NACHTFREQUENZ)
+      // never landed as one album; the catalogue is individual singles
+      // (Grünlichtbezirk, Kaputtes Blau, Kleiner Grüner Elf, Gorilla Glue).
+      // So this stays an honest single. If a real EP album ever lands, swap
+      // this single's album ID for the EP's and extend tracks accordingly.
       spotify: "https://open.spotify.com/album/4tzxhyGZNEPs2kES3wydfO",
       appleMusic: undefined,
       soundcloud: undefined,
@@ -60,7 +63,7 @@ export const RELEASES: readonly Release[] = [
       // storefront resolves: https://shop.schluesselkinder.de/collections/gruenlichtbezirk
       shopCollection: undefined
     },
-    tracks: ["GRÜNLICHTBEZIRK", "DISTRICT PRESSURE", "NACHTFREQUENZ"],
+    tracks: ["GRÜNLICHTBEZIRK"],
     archivesAfterDays: 90
   }
 ] as const;
